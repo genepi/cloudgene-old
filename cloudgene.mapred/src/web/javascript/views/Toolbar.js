@@ -1,0 +1,185 @@
+/*******************************************************************************
+ * Cloudgene: A graphical MapReduce interface for cloud computing
+ * 
+ * Copyright (C) 2010, 2011 Sebastian Schoenherr, Lukas Forer
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
+Ext.ns('MapRed.view');
+
+MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
+    initComponent : function() {
+
+	Ext.apply(this, {
+
+	    height : 65,
+	    collapsible : false,
+	    split : false,
+	    border : false,
+	    bodyStyle : 'background-color: #ffffff',
+	    items : [ {
+		xtype : 'tbspacer'
+	    }, {
+		text : 'Submit Job',
+		tooltip : 'Submit a new Job',
+		xtype : 'tbbutton',
+		icon : '../images/submit-job.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.SubmitJob();
+		    wizard.show();
+
+		}
+	    }, {
+		text : 'Import Data',
+		tooltip : 'Import Data',
+		xtype : 'tbbutton',
+		icon : '../images/import-data.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+
+		menu : [ {
+		    text : 'File Upload...',
+		    handler : function(btn) {
+
+			var wizard = new MapRed.wizards.ImportDataUpload();
+			wizard.show();
+
+		    }
+		}, {
+		    text : 'From URL...',
+		    handler : function(btn) {
+
+			var wizard = new MapRed.wizards.ImportDataHttp();
+			wizard.show();
+
+		    }
+		}, {
+		    text : 'From FTP Server...',
+		    handler : function(btn) {
+
+			var wizard = new MapRed.wizards.ImportDataFtp();
+			wizard.show();
+
+		    }
+		}, {
+		    text : 'From S3 Bucket...',
+		    handler : function(btn) {
+
+			var wizard = new MapRed.wizards.ImportDataS3();
+			wizard.show();
+
+		    }
+		}, {
+		    text : 'From Local Filesystem...',
+		    handler : function(btn) {
+
+			var wizard = new MapRed.wizards.ImportLocalFile();
+			wizard.show();
+
+		    }
+		} ]
+
+	    }, {
+		text : 'Install App',
+		tooltip : 'Install App',
+		xtype : 'tbbutton',
+		icon : '../images/settings.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.ImportApp();
+		    wizard.show();
+
+		}
+	    },
+
+	    {
+		xtype : 'tbfill'
+	    }, {
+		text : 'My Account',
+		tooltip : 'My Account Settings',
+		xtype : 'tbbutton',
+		icon : '../images/favorite.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.AccountSettings();
+		    wizard.show();
+
+		}
+	    }, {
+		text : 'My Cluster',
+		tooltip : 'My Cluster Information',
+		xtype : 'tbbutton',
+		icon : '../images/info.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.Cluster();
+		    wizard.show();
+
+		}
+
+	    }, {
+		id: 'admin-button',
+		text : 'Admin',
+		tooltip : 'Users',		
+		xtype : 'tbbutton',
+		icon : '../images/settings.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+		hidden : true,
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.Users();
+		    wizard.show();
+
+		}
+	    }, {
+		text : 'Logout',
+		xtype : 'tbbutton',
+		icon : '../images/logout.png',
+		iconAlign : 'top',
+		cls : 'x-btn-text-icon',
+		scale : 'large',
+		handler : function(btn) {
+		    Ext.Msg.confirm('Logout', 'Really?', function(btn, text) {
+			if (btn == 'yes') {
+			    window.location = "logout";
+			}
+		    });
+		}
+	    } ]
+
+	});
+
+	// call parent
+	MapRed.view.Toolbar.superclass.initComponent.apply(this, arguments);
+    }
+});
+
+Ext.reg('mytoolbar', MapRed.view.Toolbar);

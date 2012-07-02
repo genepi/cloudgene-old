@@ -1,0 +1,6 @@
+hadoopPath: /usr/lib/hadoop-0.20
+appsPath: tools
+outputPath: output
+tempPath: tmp
+localWorkspace: /home/users/cloudgene/workspace
+hdfsWorkspace: workspace

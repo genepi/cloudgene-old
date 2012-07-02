@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="run_server" name="" >
+    
+	
+	<property name="cloud.host" value="192.168.71.201" />
+	<property name="cloud.username" value="hadoop" />
+	<property name="cloud.password" value="hadoop#6020" />	
+	<property name="cloud.dir" value="/home/hadoop/cloudgene-mapred" />
+	<property name="hadoop.bin" value="/home/hadoop/hadoop-0.20.2-cdh3u3/bin/hadoop" />
+	<property name="app.jar" value="cloudgene.jar" />
+
+	<property name="app.main" value="cloudgene.mapred.Main" />
+	
+	<target name="clean">
+    	<delete dir="dist"></delete>
+    	<mkdir dir="dist"></mkdir>
+	</target>
+	
+	<target name="compile" depends="clean">
+    	<javac srcdir="src" destdir="dist" classpath="" >
+			<classpath>
+				<fileset dir="lib" />
+			</classpath>
+    	</javac>   	
+    </target>
+
+	
+    <target name="create_jar" depends="compile">   	
+
+		<fileset dir="lib" id="lib.dist.fileset" >
+			<include name="**/*.jar" />
+		</fileset>
+    	
+   	
+		<pathconvert pathsep=" " property="compile.classpath" refid="lib.dist.fileset" dirsep="/">
+			<map from="${basedir}\lib\" to="lib/" />
+		</pathconvert>
+
+    	<echo message="${compile.classpath}"></echo>
+    	
+        <jar destfile="dist/${app.jar}" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="${app.main}"/>
+				<attribute name="Class-Path" value=". ${compile.classpath}" />
+            </manifest>
+        	<zipfileset excludes="META-INF/*.*" src="lib/genepi-jets3t-0.9.0.jar"/>
+			<zipfileset excludes="META-INF/*.*" src="lib/httpclient-4.1.2.jar"/>
+        	<zipfileset excludes="META-INF/*.*" src="lib/httpcore-4.1.2.jar"/>
+            <fileset dir="bin"/>
+        	
+    
+        </jar>
+    </target>
+
+	
+	<target name="copy_jar_file" depends="create_jar">
+		
+		<echo>Copy jar file...</echo>
+		<scp file="dist/${app.jar}" todir="${cloud.username}@${cloud.host}:${cloud.dir}" password="${cloud.password}" trust="true"></scp>
+	
+	</target>
+
+	
+	<target name="run_server" depends="copy_jar_file">	
+		
+		<echo>Kill old instances...</echo>
+
+		<sshexec host="${cloud.host}" username="${cloud.username}" password="${cloud.password}" trust="true" failonerror="false"
+			command="sh /home/hadoop/stop_server.sh">
+		</sshexec> 
+		
+		<echo>Run server...</echo>
+		
+		<sshexec host="${cloud.host}" username="${cloud.username}" password="${cloud.password}" trust="true" 
+			command="cd ${cloud.dir}; ${hadoop.bin} jar ${app.jar} --add-user cloud cloud" >
+		</sshexec> 
+			
+	</target>
+</project>

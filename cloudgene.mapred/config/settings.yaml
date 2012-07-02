@@ -1,0 +1,6 @@
+hadoopPath: /usr/bin
+appsPath: ../cloudgene.tools
+outputPath: output
+tempPath: tmp
+localWorkspace: workspace/local
+hdfsWorkspace: workspace/hdfs
