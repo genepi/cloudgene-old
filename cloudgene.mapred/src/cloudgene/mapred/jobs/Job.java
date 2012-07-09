@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.LogFactory;
 
 import cloudgene.mapred.apps.Parameter;
@@ -189,7 +190,7 @@ abstract public class Job implements Runnable {
 	public void run() {
 
 		try {
-
+			initLocalDirectories();
 			initStdOutFiles();
 
 		} catch (FileNotFoundException e1) {
@@ -307,6 +308,20 @@ abstract public class Job implements Runnable {
 		logStream = new BufferedOutputStream(new FileOutputStream(
 				getLogOutFile()));
 
+	}
+	
+	private void initLocalDirectories(){
+		
+		if (getUser() != null) {
+
+			String localWorkspace = Settings.getInstance().getLocalWorkspace(
+					getUser().getUsername());
+
+			String directory =  FileUtil.path(localWorkspace, "output", getId());
+			FileUtil.createDirectory(directory);
+
+		}
+		
 	}
 
 	public String getStdOutFile() {
