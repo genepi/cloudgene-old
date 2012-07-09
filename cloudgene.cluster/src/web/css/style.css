@@ -1,0 +1,144 @@
+.stylePanel {
+	font-family: helvetica, tahoma, verdana, sans-serif;
+	padding: 20px;
+	font-size: 13px;
+	background-color: #fff !important;
+}
+
+.stylePanel table {
+	font-family: helvetica, tahoma, verdana, sans-serif;
+	font-size: 13px;
+	padding-bottom: 30px;
+}
+
+.header {
+	background: #025587 url(../images/background.png) repeat-y;
+	font: normal 12pt 'century gothic', arial, sans-serif;
+	padding-top: 0px;
+	padding-left: 8px;
+	color: #FFF;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+}
+
+.logo {
+	position: absolute;
+	top: 0px;
+	left: 5px;
+}
+
+.subtitle {
+	position: absolute;
+	right: 10px;
+	top: 25px;
+}
+
+.footer {
+	background: #FFF;
+	font: normal 9pt 'century gothic', arial, sans-serif;
+	padding-top: 4px;
+	padding-right: 8px;
+	text-align: center;
+	vertical-align:middle;
+	color: #333;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+	margin-bottom: 8px;
+}
+
+.key {
+	font-weight: bold;
+	text-align: left;
+	height: 32px;
+	width: 200px;
+}
+
+.value {
+	text-align: left;
+	padding-left: 8px;
+	padding-right: 20px;
+}
+
+.stylePanel p {
+	margin-bottom: 20px;
+}
+
+.stylePanel h1 {
+	font-size: large;
+	margin-bottom: 20px;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+.stylePanel h2 {
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 40px;
+}
+
+.stylePanel h3 {
+	font-weight: bold;
+	margin-top: 0px;
+	border-bottom: 1px solid;
+	border-color: #A0A0A0;
+}
+
+.styleUpTime {
+	font-family: helvetica, tahoma, verdana, sans-serif;
+	padding: 10px;
+	font-size: 13px;
+	background-color: #fff !important;
+}
+
+.lukas {
+	background: url('images/folder.png') no-repeat top left;
+}
+
+.info,.success,.warning,.error,.validation {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	border: 1px solid;
+	margin: 10px 10px 10px 10px;
+	padding: 15px 15px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px 5px;
+}
+
+.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('../images/info.png');
+}
+
+.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image: url('../images/success.png');
+}
+
+.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('../images/warning.png');
+}
+
+.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('../images/error.png');
+}
+
+.box {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	border: 1px solid;
+	margin: 10px 10px 10px 10px;
+	padding: 15px 15px 15px 20px;
+	border-color: #A0A0A0;
+	background-color: #f7f7f7;
+}
+
+.x-grid-cell-text {
+	font-size: 20px;
+	text-align: right;
+}

@@ -1,0 +1,1 @@
+java -cp lib -jar cloudgene-cluster.jar --port 80 --portSecure 443

@@ -1,0 +1,81 @@
+<!-- CloudGene-Cluster cloudgene.html 
+Lukas Forer, Sebastian Schoenherr, 2011 -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="CACHE-CONTROL" content="no-store, no-cache, max-age=0, must-revalidate, private" /> 
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/fileuploadfield.css" />
+        <link rel="stylesheet" type="text/css" href="libs/ext-3.4.0/resources/css/ext-all.css" />
+	    <link rel="stylesheet" type="text/css" href="libs/ext-wiz/src/resources/css/ext-ux-wiz.css" />
+        <link rel="stylesheet" type="text/css" href="libs/ext-wiz/src/resources/css/ext-ux-wiz-genepi.css" />
+        <link rel="shortcut icon" href="./img/extjs.ico" />
+        <style>    
+                
+            .failure-field {
+                background: red !important;
+            }
+            .success-field {
+                background: green !important;
+        </style>
+        <style type="text/css">
+        </style>
+        <!-- ExtJS library: standard js includes -->
+        <script type="text/javascript" src="libs/ext-3.4.0/adapter/ext/ext-base.js">
+        </script>
+        <script type="text/javascript" src="libs/ext-3.4.0/ext-all-debug.js">
+        </script>
+        
+         <!-- Job Queue (north) Ext.ux.Wiz  -->
+    	<script type="text/javascript" src="libs/ext-cardlayout/src/CardLayout.js">
+    	 </script>
+    	<script type="text/javascript" src="libs/ext-wiz/src/Wizard.js">
+    	 </script>
+   	 	<script type="text/javascript" src="libs/ext-wiz/src/Header.js">
+    	 </script>
+    	<script type="text/javascript" src="libs/ext-wiz/src/Card.js">
+         </script>    
+        
+        <!-- Cloudgene imports  -->
+        <script type="text/javascript" src="javascript/components/Toolbar.js">
+         </script>
+        <script type="text/javascript" src="javascript/panels/ClusterGrid.js">
+         </script>
+		<script type="text/javascript" src="javascript/wizard/WizardHandler.js">
+    	 </script>
+    	<script type="text/javascript" src="javascript/util/FileUploadField.js">
+    	 </script>
+    	
+		
+      <!-- add Cards and Wizards  -->   
+       <script type="text/javascript" src="javascript/wizard/cards/ClusterEntry.js">
+        </script>
+       <script type="text/javascript" src="javascript/wizard/cards/ClusterDetails.js">
+        </script>
+       <script type="text/javascript" src="javascript/wizard/cards/ClusterSecurity.js">
+        </script>
+         <script type="text/javascript" src="javascript/wizard/cards/ClusterSSH.js">
+        </script>
+        <script type="text/javascript" src="javascript/wizard/cards/PwdCard.js">
+        </script>
+        <script type="text/javascript" src="javascript/wizard/cards/UserCard.js">
+        </script>
+       <script type="text/javascript" src="javascript/wizard/LaunchWizard.js">
+    	</script>
+    	<script type="text/javascript" src="javascript/wizard/UserWizard.js">
+    	</script>
+    	<script type="text/javascript" src="javascript/wizard/PwdWizard.js">
+    	</script>
+    	
+      <!-- CloudGene-Cluster main entry point -->
+      <script type="text/javascript" src="javascript/panels/StartCloudgene.js">     
+      </script>
+    
+    <!-- Title --><title id="page-title">cloudgene - generating clouds </title> 
+    </head>
+	   <div id="header" class="header"> <div class="subtitle">Set up your cluster</div>
+        <img src="images/cloudgene.png"/>  
+    </div>
+    <body>
+    </body>
+</html>

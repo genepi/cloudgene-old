@@ -1,0 +1,11 @@
+/config
+/dist
+/h2_db
+/https
+/logs
+/sshKey
+/buildJar.xml
+/cloudgene.log
+/cloudgene-cluster.log
+/cloudgene-cluster.log.1
+/run-clustinator.xml
