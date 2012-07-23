@@ -16,5 +16,5 @@ How to start Cloudgene-Cluster and Cloudgene-MapRed
 =========
 1. Clone both repositories https://github.com/genepi/cloudgene.git **and** https://github.com/genepi/cloudgene-samples.git. The file <code> conf/settings.yaml </code> (keyword **appsPath:**) defines the relative path to each other.
 2. 
-  * Start **Cloudgene-Cluster**, use the username 'cloudgene' and pwd 'cloud' to login at *http://localhost:8085*
+  * Start **Cloudgene-Cluster** and login at *http://localhost:8085* with username **cloudgene** and password **cloud** 
   * Start **Cloudgene-MapRed**, create a user by adding the program argument <code> --add-user user pwd --admin </code>and login at *http://localhost:8082*
