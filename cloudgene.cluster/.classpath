@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="sql"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_30"/>
 	<classpathentry kind="lib" path="libsRestlet/javax.servlet_2.5/javax.servlet.jar"/>
 	<classpathentry kind="lib" path="libsRestlet/org.apache.commons.fileupload_1.2/org.apache.commons.fileupload.jar"/>
 	<classpathentry kind="lib" path="libsRestlet/org.eclipse.jetty_7.1/org.eclipse.jetty.ajp.jar"/>
@@ -164,5 +163,6 @@
 	<classpathentry kind="lib" path="libsWhirr/whirr-mahout-0.7.1.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/whirr-puppet-0.7.1.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/whirr-zookeeper-0.7.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
