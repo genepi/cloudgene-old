@@ -1,0 +1,20 @@
+body {
+	background: #025587 url(../images/background.png) repeat-y center;
+}
+
+.logo{
+	position:relative;
+  	top:20px;
+  	right: 10px;
+  	/*left:50px;*/
+  	float: right; 
+}
+
+.logo p{
+	font: normal 12pt  'century gothic', arial, sans-serif;
+padding-top: 0px;
+padding-left: 23px;
+  color: #FFF;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
