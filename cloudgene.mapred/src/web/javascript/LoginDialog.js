@@ -17,6 +17,12 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+function openSignup(){
+    
+    Ext.Msg.alert('Sign Up', 'Please send an email to sebastian.schoenherr@uibk.ac.at to receive the login data.');
+    
+}
+
 Ext.onReady(function(){
     Ext.QuickTips.init();
     
@@ -43,7 +49,12 @@ Ext.onReady(function(){
             name: 'loginPassword',
             inputType: 'password',
             allowBlank: false
-        }],
+        },{
+		xtype : 'panel',
+		border : false,
+		anchor : '100%',
+		html : '<p style="text-align:left;padding-top:10px;">Please send an email to <a href="mailto:sebastian.schoenherr@uibk.ac.at">sebastian.schoenherr@uibk.ac.at</a> to receive the login data.<p>'
+	}],
         
         // All the magic happens after the user clicks the button     
         buttons: [{
@@ -118,8 +129,8 @@ Ext.onReady(function(){
     // The login object is passed to the items collection.       
     var win = new Ext.Window({
         layout: 'fit',
-        width: 300,
-        height: 150,
+        width: 320,
+        height: 180,
         closable: false,
         resizable: false,
         plain: true,
