@@ -26,7 +26,7 @@
 		<mkdir dir="dist/src/lib" />
     	<copy todir="dist/src/lib">
     		<fileset dir="libsRestlet" />
-    	</copy>    
+    	</copy>   
 		
 		<copy todir="dist/src/lib">
 		<fileset dir="libsWhirr" />
