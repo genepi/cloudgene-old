@@ -10,12 +10,13 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 
 public class ClusterMain {
-	private static Logger logger = Logger.getLogger(ClusterMain.class);
+	private static final Log logger = LogFactory.getLog(ClusterMain.class);
 	public static void main(String[] args) throws IOException {
 		System.out.println("Cloudgene-Cluster 0.2.0-120424\n");
 
@@ -56,7 +57,7 @@ public class ClusterMain {
 			int port = Integer.parseInt(line.getOptionValue("port", "8085"));
 			int portS = Integer.parseInt(line.getOptionValue("portSecure", "4443"));
 			
-			logger.info("Entering application Cloudgene-Cluster on "+ " "+port +" "+ portS);
+			logger.info("Entering application Cloudgene-Cluster on localhost:"+ port);
 			new ClusterWeb(port,portS).start();
 			
 		} catch (Exception e) {
