@@ -45,6 +45,7 @@ public class LoadPrograms extends ServerResource {
 		Settings settings = null;
 		settings = Settings.getInstance();
 		File root = new File(settings.getAppsPath());
+		System.out.println(root.getAbsolutePath());
 
 		File[] files = root.listFiles();
 		if (files == null) {
