@@ -11,7 +11,7 @@ public class Programs {
 
 	private static Programs instance;
 
-	private static Map<String, CloudgeneYaml> progs;
+	private static Map<String, Program> progs;
 
 	public static Programs getInstance() {
 		if (instance == null) {
@@ -21,10 +21,10 @@ public class Programs {
 	}
 
 	private Programs() {
-		progs = new HashMap<String, CloudgeneYaml>();
+		progs = new HashMap<String, Program>();
 	}
 
-	public void addProgram(CloudgeneYaml prog) {
+	public void addProgram(Program prog) {
 		System.out.println("add program "+prog.getName());
 		progs.put(prog.getName(), prog);
 	}
@@ -33,10 +33,10 @@ public class Programs {
 		progs.remove(token);
 	}
 
-	public static CloudgeneYaml getProgramByName(String name) {
+	public static Program getProgramByName(String name) {
 		return progs.get(name);
 	}
-	public Map<String, CloudgeneYaml> getProgs() {
+	public Map<String, Program> getProgs() {
 		return progs;
 	}
 

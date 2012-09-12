@@ -1,7 +1,7 @@
 package cloudgene.core.programs;
 
 
-public class UserProgramMetadata  {
+public class ProgramMetadata  {
 
 	private boolean installed = false;
 	private String source = "";

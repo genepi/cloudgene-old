@@ -3,7 +3,7 @@ package cloudgene.core.programs;
 import java.util.Map;
 
 //extracted from YAML file. Only GenericProgram cluster is important here
-public class CloudgeneYaml extends UserProgramMetadata {
+public class Program extends ProgramMetadata {
 
 	private ClusterYaml cluster;
 
