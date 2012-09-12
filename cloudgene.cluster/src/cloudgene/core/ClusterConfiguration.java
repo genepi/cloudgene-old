@@ -7,9 +7,9 @@ package cloudgene.core;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import cloudgene.core.programs.ClusterYaml;
+import cloudgene.user.User;
+import cloudgene.util.Settings;
 
-import user.User;
-import util.Settings;
 
 
 public class ClusterConfiguration {

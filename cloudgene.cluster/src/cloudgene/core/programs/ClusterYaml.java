@@ -8,8 +8,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 
-import util.EC2Communication;
-import util.Settings;
+
+import cloudgene.util.EC2Communication;
+import cloudgene.util.Settings;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;

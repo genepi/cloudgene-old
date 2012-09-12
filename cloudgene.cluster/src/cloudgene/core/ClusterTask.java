@@ -30,9 +30,9 @@ import org.jclouds.compute.ComputeServiceContext;
 
 import cloudgene.core.programs.ClusterYaml;
 import cloudgene.database.ClusterDao;
+import cloudgene.queue.ClusterQueue;
+import cloudgene.util.EC2Communication;
 
-import queue.ClusterQueue;
-import util.EC2Communication;
 
 
 public class ClusterTask implements Runnable {

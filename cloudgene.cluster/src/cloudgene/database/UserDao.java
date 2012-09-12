@@ -7,8 +7,9 @@ package cloudgene.database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import user.User;
-import util.MySecretKey;
+import cloudgene.user.User;
+import cloudgene.util.MySecretKey;
+
 
 public class UserDao extends Dao {
 
