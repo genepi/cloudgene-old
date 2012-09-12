@@ -13,6 +13,12 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
+
+import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.Programs;
+import cloudgene.database.UserDao;
+
 import com.esotericsoftware.yamlbeans.YamlException;
 import user.JSONAnswer;
 import user.User;
@@ -20,10 +26,6 @@ import user.UserSessions;
 import util.Utils;
 import util.Settings;
 import util.YamlLoader;
-import core.programs.ClusterYaml;
-import core.programs.CloudgeneYaml;
-import core.programs.Programs;
-import database.UserDao;
 
 public class ValidateLogin extends ServerResource {
 

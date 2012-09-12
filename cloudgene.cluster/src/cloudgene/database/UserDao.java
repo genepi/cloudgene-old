@@ -1,4 +1,4 @@
-package database;
+package cloudgene.database;
 
 /**
  * @author seppinho

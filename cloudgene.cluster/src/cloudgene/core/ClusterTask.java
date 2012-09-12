@@ -1,4 +1,4 @@
-package core;
+package cloudgene.core;
 
 /**
  * @author seppinho
@@ -28,11 +28,12 @@ import org.apache.whirr.service.FirewallManager.Rule;
 import org.apache.whirr.service.hadoop.HadoopCluster;
 import org.jclouds.compute.ComputeServiceContext;
 
+import cloudgene.core.programs.ClusterYaml;
+import cloudgene.database.ClusterDao;
+
 import queue.ClusterQueue;
 import util.EC2Communication;
-import core.programs.ClusterYaml;
 
-import database.ClusterDao;
 
 public class ClusterTask implements Runnable {
 

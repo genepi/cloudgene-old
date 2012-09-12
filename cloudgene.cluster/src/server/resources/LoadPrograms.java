@@ -21,15 +21,16 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 
+import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.Programs;
+
 import com.esotericsoftware.yamlbeans.YamlException;
 
 import user.User;
 import user.UserSessions;
 import util.Settings;
 import util.YamlLoader;
-import core.programs.CloudgeneYaml;
-import core.programs.ClusterYaml;
-import core.programs.Programs;
 
 public class LoadPrograms extends ServerResource {
 

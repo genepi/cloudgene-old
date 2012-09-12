@@ -21,6 +21,12 @@ import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 import queue.ClusterQueue;
 import queue.ClusterThreadPoolCreate;
+import cloudgene.core.ClusterConfiguration;
+import cloudgene.core.ClusterTask;
+import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Programs;
+import cloudgene.database.UserDao;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.KeyPair;
@@ -29,11 +35,6 @@ import user.User;
 import user.UserSessions;
 import util.ConnectionUtil;
 import util.Utils;
-import core.ClusterConfiguration;
-import core.ClusterTask;
-import core.programs.CloudgeneYaml;
-import core.programs.Programs;
-import database.UserDao;
 
 public class CreateCluster extends ServerResource {
 

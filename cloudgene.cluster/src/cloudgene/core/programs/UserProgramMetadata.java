@@ -1,4 +1,4 @@
-package core.programs;
+package cloudgene.core.programs;
 
 
 public class UserProgramMetadata  {

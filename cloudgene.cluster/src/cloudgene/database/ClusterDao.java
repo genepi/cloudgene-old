@@ -1,4 +1,4 @@
-package database;
+package cloudgene.database;
 /**
  * @author seppinho
  *
@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Vector;
 
-import core.ClusterConfiguration;
+import cloudgene.core.ClusterConfiguration;
+
 
 
 

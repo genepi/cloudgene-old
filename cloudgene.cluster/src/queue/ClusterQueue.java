@@ -7,14 +7,15 @@ package queue;
 import java.util.List;
 import java.util.Vector;
 
-import core.ClusterConfiguration;
-import core.ClusterDetails;
+import cloudgene.core.ClusterConfiguration;
+import cloudgene.core.ClusterDetails;
+import cloudgene.database.ClusterDao;
+
 
 import user.User;
 
 
 
-import database.ClusterDao;
 
 public class ClusterQueue {
 

@@ -14,17 +14,18 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
+
+import cloudgene.core.ClusterConfiguration;
+import cloudgene.core.ClusterTask;
+import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Programs;
+import cloudgene.database.UserDao;
 import queue.ClusterQueue;
 import queue.ClusterThreadPoolCreate;
 import user.JSONAnswer;
 import user.User;
 import user.UserSessions;
 
-import core.ClusterConfiguration;
-import core.ClusterTask;
-import core.programs.CloudgeneYaml;
-import core.programs.Programs;
-import database.UserDao;
 
 public class KeyUpload extends ServerResource {
 

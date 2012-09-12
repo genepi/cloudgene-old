@@ -14,10 +14,11 @@ import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 
+import cloudgene.database.ClusterDao;
+
 import user.User;
 import user.UserSessions;
 
-import database.ClusterDao;
 
 public class GetKeys extends ServerResource {
 

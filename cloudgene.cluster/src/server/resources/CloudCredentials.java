@@ -15,8 +15,9 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
-import database.Dao;
-import database.UserDao;
+import cloudgene.database.Dao;
+import cloudgene.database.UserDao;
+
 import user.User;
 import user.UserSessions;
 

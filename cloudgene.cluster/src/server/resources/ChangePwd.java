@@ -12,7 +12,8 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
-import database.UserDao;
+
+import cloudgene.database.UserDao;
 import user.User;
 import user.UserSessions;
 import util.Utils;

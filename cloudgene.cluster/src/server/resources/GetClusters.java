@@ -14,7 +14,8 @@ import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 
-import core.ClusterDetails;
+import cloudgene.core.ClusterDetails;
+
 
 
 import queue.ClusterQueue;

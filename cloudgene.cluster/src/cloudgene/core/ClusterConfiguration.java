@@ -1,4 +1,4 @@
-package core;
+package cloudgene.core;
 
 /**
  * @author seppinho
@@ -6,10 +6,11 @@ package core;
  */
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import cloudgene.core.programs.ClusterYaml;
+
 import user.User;
 import util.Settings;
 
-import core.programs.ClusterYaml;
 
 public class ClusterConfiguration {
 

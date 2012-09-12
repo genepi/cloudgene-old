@@ -18,11 +18,12 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 
+import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Programs;
+
 import user.User;
 import user.UserSessions;
 import util.Type;
-import core.programs.CloudgeneYaml;
-import core.programs.Programs;
 
 public class GetTypes extends ServerResource {
 

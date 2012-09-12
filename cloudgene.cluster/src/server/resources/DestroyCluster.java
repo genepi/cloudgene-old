@@ -12,14 +12,15 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
-import core.ClusterConfiguration;
-import core.ClusterTask;
+
+import cloudgene.core.ClusterConfiguration;
+import cloudgene.core.ClusterTask;
+import cloudgene.database.ClusterDao;
 import queue.ClusterQueue;
 import queue.ClusterThreadPoolDelete;
 import user.User;
 import user.UserSessions;
 import util.ConnectionUtil;
-import database.ClusterDao;
 
 public class DestroyCluster extends ServerResource {
 

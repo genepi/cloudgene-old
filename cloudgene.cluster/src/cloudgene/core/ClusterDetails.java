@@ -1,4 +1,4 @@
-package core;
+package cloudgene.core;
 
 import java.text.DateFormat;
 import java.util.Date;

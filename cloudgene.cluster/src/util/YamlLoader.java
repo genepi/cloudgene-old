@@ -3,10 +3,11 @@ package util;
 import java.io.FileReader;
 import java.io.IOException;
 
+import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.ClusterYaml;
+
 import com.esotericsoftware.yamlbeans.YamlReader;
 
-import core.programs.ClusterYaml;
-import core.programs.CloudgeneYaml;
 
 public class YamlLoader {
 	
