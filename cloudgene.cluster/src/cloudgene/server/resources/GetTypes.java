@@ -18,7 +18,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 
-import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Program;
 import cloudgene.core.programs.Programs;
 import cloudgene.user.User;
 import cloudgene.user.UserSessions;
@@ -36,7 +36,7 @@ public class GetTypes extends ServerResource {
 		if (user != null) {
 			Type cloudType;
 			ArrayList<Type> typeList = new ArrayList<Type>();
-			CloudgeneYaml progYaml = Programs.getProgramByName(form
+			Program progYaml = Programs.getProgramByName(form
 					.getFirstValue("prog"));
 			JsonConfig config = new JsonConfig();
 			String type = progYaml.getCluster().getType();

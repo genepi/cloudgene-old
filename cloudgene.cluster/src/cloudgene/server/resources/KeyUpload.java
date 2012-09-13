@@ -17,7 +17,7 @@ import org.restlet.representation.StringRepresentation;
 
 import cloudgene.core.ClusterConfiguration;
 import cloudgene.core.ClusterTask;
-import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Program;
 import cloudgene.core.programs.Programs;
 import cloudgene.database.UserDao;
 import cloudgene.queue.ClusterQueue;
@@ -39,7 +39,7 @@ public class KeyUpload extends ServerResource {
 			User user = sessions.getUserByRequest(getRequest());
 
 			if (entity != null && user != null) {
-				CloudgeneYaml prog = null;
+				Program prog = null;
 				File file = null;
 				ClusterConfiguration clusterConfig = new ClusterConfiguration();
 				String sshDir = "sshKey";

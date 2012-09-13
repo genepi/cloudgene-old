@@ -22,7 +22,7 @@ import org.restlet.representation.StringRepresentation;
 
 import cloudgene.core.ClusterConfiguration;
 import cloudgene.core.ClusterTask;
-import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Program;
 import cloudgene.core.programs.Programs;
 import cloudgene.database.UserDao;
 import cloudgene.queue.ClusterQueue;
@@ -97,7 +97,7 @@ public class CreateCluster extends ServerResource {
 				/**
 				 * CONFIGURE CLUSTER
 				 */
-				CloudgeneYaml prog = Programs.getProgramByName(program);
+				Program prog = Programs.getProgramByName(program);
 				clusterConfig.setProgram(prog.getCluster());
 				Utils.checkDirAvailable(dirLog);
 				clusterConfig.setLog(dirLog + File.separatorChar

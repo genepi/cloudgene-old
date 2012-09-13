@@ -18,6 +18,7 @@ import cloudgene.server.resources.CheckKey;
 import cloudgene.server.resources.CloudCredentials;
 import cloudgene.server.resources.CreateCluster;
 import cloudgene.server.resources.DestroyCluster;
+import cloudgene.server.resources.GetAppsFromRepository;
 import cloudgene.server.resources.GetClusters;
 import cloudgene.server.resources.GetKeys;
 import cloudgene.server.resources.GetLog;
@@ -25,6 +26,7 @@ import cloudgene.server.resources.GetMyBuckets;
 import cloudgene.server.resources.GetPrograms;
 import cloudgene.server.resources.GetTypes;
 import cloudgene.server.resources.GetUserDetails;
+import cloudgene.server.resources.InstallApp;
 import cloudgene.server.resources.KeyUpload;
 import cloudgene.server.resources.LoadPrograms;
 import cloudgene.server.resources.LogoutUser;
@@ -83,6 +85,9 @@ public class ClusterApp extends Application {
 		router.attach("/loadPrograms", LoadPrograms.class);
 		//getPrograms from User
 		router.attach("/getPrograms", GetPrograms.class);
+		//install apps
+		router.attach("/getAppsFromRepo", GetAppsFromRepository.class);
+		router.attach("/installApp", InstallApp.class);		
 		
 		Directory dir = new Directory(getContext(), new LocalReference(
 				"clap://thread/web"));

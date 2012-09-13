@@ -21,7 +21,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 
-import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Program;
 import cloudgene.core.programs.ClusterYaml;
 import cloudgene.core.programs.Programs;
 import cloudgene.user.User;
@@ -60,7 +60,7 @@ public class LoadPrograms extends ServerResource {
 
 					// only if YAML file is included
 					if (yamlFile.length >= 1) {
-						CloudgeneYaml progYaml;
+						Program progYaml;
 						try {
 							progYaml = YamlLoader.loadAppFromFile(yamlFile[0]
 									.getPath());

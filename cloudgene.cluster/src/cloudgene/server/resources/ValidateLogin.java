@@ -14,7 +14,7 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
-import cloudgene.core.programs.CloudgeneYaml;
+import cloudgene.core.programs.Program;
 import cloudgene.core.programs.ClusterYaml;
 import cloudgene.core.programs.Programs;
 import cloudgene.database.UserDao;
