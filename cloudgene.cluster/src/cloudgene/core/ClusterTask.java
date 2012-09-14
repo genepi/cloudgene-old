@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.whirr.Cluster;
 import org.apache.whirr.Cluster.Instance;
 import org.apache.whirr.ClusterController;
 import org.apache.whirr.ClusterSpec;
@@ -28,7 +27,7 @@ import org.apache.whirr.service.FirewallManager.Rule;
 import org.apache.whirr.service.hadoop.HadoopCluster;
 import org.jclouds.compute.ComputeServiceContext;
 
-import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.ClusterSetup;
 import cloudgene.database.ClusterDao;
 import cloudgene.queue.ClusterQueue;
 import cloudgene.util.EC2Communication;
@@ -74,9 +73,9 @@ public class ClusterTask implements Runnable {
 		FileWriter logWriter = null;
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		logWriter = new FileWriter(clusterConfig.getLog());
-		ClusterYaml prog = clusterConfig.getProgram();
+		ClusterSetup prog = clusterConfig.getProgram();
 		String namenode = null;
-		Cluster c;
+		org.apache.whirr.Cluster c;
 		ClusterSpec spec;
 		PropertiesConfiguration whirrConfig;
 

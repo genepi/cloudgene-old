@@ -5,15 +5,15 @@ import java.util.Map;
 //extracted from YAML file. Only GenericProgram cluster is important here
 public class Program extends ProgramMetadata {
 
-	private ClusterYaml cluster;
+	private ClusterSetup cluster;
 
 	private Map<String, String> mapred;
 
-	public ClusterYaml getCluster() {
+	public ClusterSetup getCluster() {
 		return cluster;
 	}
 
-	public void setCluster(ClusterYaml cluster) {
+	public void setCluster(ClusterSetup cluster) {
 		this.cluster = cluster;
 	}
 

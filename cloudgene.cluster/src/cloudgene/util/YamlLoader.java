@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import cloudgene.core.programs.Program;
-import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.ClusterSetup;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
 
@@ -19,7 +19,7 @@ public class YamlLoader {
 		YamlReader reader = new YamlReader(new FileReader(filename));
 
 		reader.getConfig().setPropertyDefaultType(Program.class, "cluster",
-				ClusterYaml.class);
+				ClusterSetup.class);
 		
 
 		Program prog = reader.read(Program.class);

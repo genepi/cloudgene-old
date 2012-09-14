@@ -29,7 +29,13 @@ Ext.onReady(function(){
                 name:'loginPassword', 
                 inputType:'password', 
                 allowBlank:false 
-            }],
+            },
+            {
+        		xtype : 'panel',
+        		border : false,
+        		anchor : '100%',
+        		html : '<p style="text-align:left;padding-top:10px;">Please send an email to <a href="mailto:sebastian.schoenherr@uibk.ac.at">sebastian.schoenherr@uibk.ac.at</a> to receive the login data.<p>'
+        	}],
         
         // All the magic happens after the user clicks the button     
         buttons: [{
@@ -110,7 +116,7 @@ Ext.onReady(function(){
     var win = new Ext.Window({
         layout: 'fit',
         width: 300,
-        height: 150,
+        height: 180,
         closable: false,
         resizable: false,
         plain: true,

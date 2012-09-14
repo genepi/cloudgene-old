@@ -6,13 +6,11 @@ package cloudgene.core;
  */
 import java.io.FileNotFoundException;
 
-
 import cloudgene.util.EC2Communication;
 import cloudgene.util.Settings;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
-
 
 public class MapReduce {
 
@@ -24,7 +22,8 @@ public class MapReduce {
 		String[] file = address.split("/");
 
 		communication.executeCmd("wget " + address + logFile);
-		communication.executeCmd("unzip " + file[file.length - 1]);
+		communication.executeCmd("unzip " + file[file.length - 1]+" > log.log 2>&1 < /dev/null &");
+		communication.executeCmd("sleep 5");
 	}
 
 	public void startWebInterface(EC2Communication communication,
@@ -32,14 +31,20 @@ public class MapReduce {
 			String s3Bucket) throws FileNotFoundException, JSchException,
 			SftpException {
 
-		String cmd = "sudo hadoop jar " + "cloudgene-mapred.jar" + " -port "
-				+ port + " -add-user " + username + " " + pwd + " -md5";
+		String cmdCreateUser = "sudo hadoop jar " + "cloudgene-mapred.jar"
+				+ " -add-user " + username + " " + pwd + " -md5";
+
+		String cmdExecute = "sudo hadoop jar " + "cloudgene-mapred.jar"
+				+ " -port " + port;
 
 		if (!s3Bucket.equals(""))
-			cmd += " -bucket " + s3Bucket;
-		cmd += " > log.log 2>&1 < /dev/null &";
+			cmdExecute += " -bucket " + s3Bucket;
+		
+		cmdExecute += " > log.log 2>&1 < /dev/null &";
 
-		communication.executeCmd(cmd);
+		communication.executeCmd(cmdCreateUser);		
+		communication.executeCmd(cmdExecute);
+		
 		communication.executeCmd("sleep 10");
 		communication.disconnect();
 	}

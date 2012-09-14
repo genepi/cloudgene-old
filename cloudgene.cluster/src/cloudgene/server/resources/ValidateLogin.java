@@ -15,7 +15,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import cloudgene.core.programs.Program;
-import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.ClusterSetup;
 import cloudgene.core.programs.Programs;
 import cloudgene.database.UserDao;
 import cloudgene.user.JSONAnswer;
