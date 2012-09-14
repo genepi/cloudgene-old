@@ -19,12 +19,12 @@ Ext.onReady(function(){
         // Specific attributes for the text fields for username / password. 
         // The "name" attribute defines the name of variables sent to the server.
         items:[{ 
-        		value: 'cloudgene',
+        		value: '',
                 fieldLabel:'Username', 
                 name:'loginUsername', 
                 allowBlank:false 
             },{ 
-            	value: 'cloud',
+            	value: '',
                 fieldLabel:'Password', 
                 name:'loginPassword', 
                 inputType:'password', 
