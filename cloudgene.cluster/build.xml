@@ -2,7 +2,7 @@
 <project default="zip" name="" >
     
 	<property name="app.jar" value="cloudgene-cluster.jar" />
-	<property name="app.main" value="server.ClusterMain" />
+	<property name="app.main" value="cloudgene.server.ClusterMain" />
 	
 	<target name="clean">
     	<delete dir="dist"></delete>
@@ -88,7 +88,7 @@
 
 	
 	<target name="zip" depends="create_jar">
-		<zip zipfile="dist/cloudgene-cluster-0.2.0.zip" basedir="dist/jar" whenempty="create" />
-		<zip zipfile="dist/cloudgene-cluster-src-0.2.0.zip" basedir="dist/src" whenempty="create" />
+		<zip zipfile="dist/cloudgene-cluster-0.3.0.zip" basedir="dist/jar" whenempty="create" />
+		<zip zipfile="dist/cloudgene-cluster-src-0.3.0.zip" basedir="dist/src" whenempty="create" />
 	</target>
 </project>

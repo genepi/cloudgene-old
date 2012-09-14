@@ -21,7 +21,7 @@
 	 -->
 <project default="zip" name="">
 
-	<property name="app.version" value="0.2.0" />
+	<property name="app.version" value="0.3.0" />
 
 	<target name="clean">
 

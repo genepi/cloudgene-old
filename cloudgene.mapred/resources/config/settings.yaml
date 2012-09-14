@@ -5,5 +5,5 @@ tempPath: tmp
 localWorkspace: workspace
 hdfsWorkspace: workspace
 cloudUser: cloudgene
-mapRed: http://cloudgene.uibk.ac.at/downloads/cloudgene-mapred-0.2.0.zip
+mapRed: http://cloudgene.uibk.ac.at/downloads/cloudgene-0.3.0.zip
 cloudFolder: tools
