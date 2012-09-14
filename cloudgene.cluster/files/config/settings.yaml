@@ -1,4 +1,5 @@
 cloudUser: cloudgene
-appsPath: tools/
-mapRed: http://cloudgene.uibk.ac.at/downloads/cloudgene-mapred-0.2.0.zip
+appsPath: apps/
+mapRed: http://cloudgene.uibk.ac.at/downloads/cloudgene-0.3.0.zip
 cloudFolder: tools
+tempPath: tmp
