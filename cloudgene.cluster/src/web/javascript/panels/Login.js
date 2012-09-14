@@ -116,7 +116,7 @@ Ext.onReady(function(){
     var win = new Ext.Window({
         layout: 'fit',
         width: 300,
-        height: 180,
+        height: 190,
         closable: false,
         resizable: false,
         plain: true,
