@@ -25,6 +25,21 @@
 			                }
 			            },
 			            {
+			        		text : 'Install App',
+			        		tooltip : 'Install App',
+			        		xtype : 'tbbutton',
+			        		icon : '../images/settings.png',
+			        		iconAlign : 'top',
+			        		cls : 'x-btn-text-icon',
+			        		scale : 'large',
+			        		handler : function(btn) {
+
+			        		    var wizard = new CloudgeneCluster.wizards.ImportApp();
+			        		    wizard.show();
+
+			        		}
+			        	    },
+			            {
 			                xtype: 'tbseparator',
 			                scale: 'medium'
 			            }, {

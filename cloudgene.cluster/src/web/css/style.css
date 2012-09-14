@@ -33,6 +33,20 @@
 	top: 25px;
 }
 
+.application-item {
+	background: #ffffff;
+	font-size: 13px;
+	color: #333;
+	border-bottom: 1px solid #e3e3e3;
+	padding: 10px;
+}
+
+.application-item table {
+	font-size: 11px;
+	color: #333;
+	padding: 0px;
+}
+
 .footer {
 	background: #FFF;
 	font: normal 9pt 'century gothic', arial, sans-serif;
