@@ -1,6 +1,9 @@
 hadoopPath: /usr/lib/hadoop-0.20
-appsPath: tools
+appsPath: apps
 outputPath: output
 tempPath: tmp
-localWorkspace: /home/users/cloudgene/workspace
+localWorkspace: workspace
 hdfsWorkspace: workspace
+cloudUser: cloudgene
+mapRed: http://cloudgene.uibk.ac.at/downloads/cloudgene-mapred-0.2.0.zip
+cloudFolder: tools

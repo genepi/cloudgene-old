@@ -26,6 +26,14 @@ public class Settings {
 
 	private String streamingJar = "";
 
+	private String cloudUser;
+
+	private String mapRed;
+
+	private String cloudFolder;
+
+	private String version;
+
 	private static Settings instance = null;
 
 	private static final Log log = LogFactory.getLog(Settings.class);
@@ -178,6 +186,38 @@ public class Settings {
 
 		return true;
 
+	}
+
+	public String getCloudUser() {
+		return cloudUser;
+	}
+
+	public void setCloudUser(String cloudUser) {
+		this.cloudUser = cloudUser;
+	}
+
+	public String getMapRed() {
+		return mapRed;
+	}
+
+	public void setMapRed(String mapRed) {
+		this.mapRed = mapRed;
+	}
+
+	public String getCloudFolder() {
+		return cloudFolder;
+	}
+
+	public void setCloudFolder(String cloudFolder) {
+		this.cloudFolder = cloudFolder;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

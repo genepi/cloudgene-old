@@ -56,8 +56,7 @@ public class Main {
 				"the password is provided as md5-hash");
 		md5Option.setRequired(false);
 		options.addOption(md5Option);
-		
-		
+
 		Option adminOption = new Option(null, "admin", false,
 				"the user has admin rights");
 		adminOption.setRequired(false);
@@ -109,20 +108,32 @@ public class Main {
 					password = HashUtil.getMD5(password);
 				}
 				user.setPassword(password);
-				
+
 				if (line.hasOption("admin")) {
 					user.setRole("Admin");
 				}
-				
+
 				if (bucket != null) {
 					user.setExportToS3(true);
 					user.setS3Bucket(bucket);
 				}
 				dao.insert(user);
 				log.info("User " + username + " created.");
+				System.out.println("User " + username
+						+ " created successfully.");
 			} else {
-				log.info("User " + username + " exists.");
+				log.info("User " + username + " already exists.");
+				System.out.println("User " + username + " already exists.");
 			}
+
+			try {
+				H2Connector.getInstance().disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+
+			System.exit(0);
 		}
 
 		try {

@@ -48,16 +48,7 @@
 		
 		<mkdir dir="dist/temp" />
 			
-		<mkdir dir="dist/jar/tools" />
-		<mkdir dir="dist/jar/tools/cloudburst" />
-    	<copy todir="dist/jar/tools/cloudburst">
-    		<fileset dir="../cloudgene.tools/dist/cloudburst" />
-    	</copy>
-		
-		<mkdir dir="dist/jar/tools/haplogrep" />
-    	<copy todir="dist/jar/tools/haplogrep">
-    		<fileset dir="../cloudgene.tools/dist/haplogrep" />
-    	</copy>    
+   
 	</target>
 	
 	<target name="compile" depends="clean">
