@@ -236,19 +236,42 @@ public class ClusterYaml {
 
 	public void install(EC2Communication communication)
 			throws FileNotFoundException, JSchException, SftpException {
-		
+		/*FileFilter fileFilter = new FileFilter() {
+			public boolean accept(File file) {
+				return !file.getName().toLowerCase().startsWith(".");
+			}
+		};*/
 		// copy program and sample data
 		System.out.println("name: " + folder.getName());
 		String path = cloudFolder + "/" + folder.getName();
-		String zipFile= folder.getPath()+"/"+folder.getName()+".zip";
+		File zipFile= new File(Settings.getInstance().getAppsPath()+"/"+folder.getName()+".zip");
+		System.out.println("ZIP FILE IS " +zipFile.getAbsolutePath());
+		System.out.println("ZIP FILE IS " +zipFile.getPath());
+		
 		try {
-			Utils4J.zipDir(folder, "", new File(zipFile));
+			Utils4J.zipDir(folder, "", zipFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		communication.executeCmd("unzip " + zipFile + " -d " + path);
 		
+		communication.copyData(zipFile.getPath(), path + "/"
+				+ zipFile.getName());
+		communication.executeCmd("unzip " + path + "/" + zipFile.getName() + " -d " + path);
+		
+		/*for (int i = 0; i < files.length; i++) {
+			if (files[i].isDirectory()) {
+			} else {
+				communication.copyData(files[i].getPath(), path + "/"
+						+ files[i].getName());
+				*//** unzip data if necessary *//*
+				if (files[i].getName().endsWith("zip")) {
+					communication.executeCmd("unzip " + path + "/"
+							+ files[i].getName() + " -d " + path);
+				}
+			}
+
+		}*/
 	}
 
 	public void startbyScript(EC2Communication communication, int clusterPK,

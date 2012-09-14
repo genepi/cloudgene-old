@@ -24,30 +24,40 @@ public class Settings {
 	
 	private String tempPath = "tmp";
 	
+	private String hdfsWorkspace = "cloudgene-workspace";
+	
+	private String localWorkspace= "cloudgene-workspace";
+	
+	private String hadoopPath= "cloudgene-workspace";
+	
+	public String getHdfsWorkspace() {
+		return hdfsWorkspace;
+	}
+	public void setHdfsWorkspace(String hdfsWorkspace) {
+		this.hdfsWorkspace = hdfsWorkspace;
+	}
+	public String getLocalWorkspace() {
+		return localWorkspace;
+	}
+	public void setLocalWorkspace(String localWorkspace) {
+		this.localWorkspace = localWorkspace;
+	}
+	public String getHadoopPath() {
+		return hadoopPath;
+	}
+	public void setHadoopPath(String hadoopPath) {
+		this.hadoopPath = hadoopPath;
+	}
+	public String getOutputPath() {
+		return outputPath;
+	}
+	public void setOutputPath(String outputPath) {
+		this.outputPath = outputPath;
+	}
+	private String outputPath= "cloudgene-workspace";
+	
 	private Settings() {
 
-	}
-	public static void load(String filename) throws FileNotFoundException,
-			YamlException {
-
-		YamlReader reader = new YamlReader(new FileReader(filename));
-
-		instance = reader.read(Settings.class);
-
-	}
-
-	public static Settings getInstance()  {
-		if (instance == null) {
-			instance = new Settings();
-			try {
-				load(configLocation);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		}
-		return instance;
 	}
 
 	public String getAppsPath() {
@@ -96,5 +106,28 @@ public class Settings {
 	public void setTempPath(String tempPath) {
 		this.tempPath = tempPath;
 	}
+	
+	public static void load(String filename) throws FileNotFoundException,
+	YamlException {
+
+YamlReader reader = new YamlReader(new FileReader(filename));
+
+instance = reader.read(Settings.class);
+
+}
+
+public static Settings getInstance()  {
+if (instance == null) {
+	instance = new Settings();
+	try {
+		load(configLocation);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+}
+return instance;
+}
 
 }
