@@ -22,6 +22,8 @@ public class Settings {
 
 	private static Settings instance = null;
 	
+	private String tempPath = "tmp";
+	
 	private Settings() {
 
 	}
@@ -87,6 +89,12 @@ public class Settings {
 	
 	public String getVersion() {
 		return version;
+	}
+	public String getTempPath() {
+		return tempPath;
+	}
+	public void setTempPath(String tempPath) {
+		this.tempPath = tempPath;
 	}
 
 }

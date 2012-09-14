@@ -146,7 +146,7 @@ public class ClusterTask implements Runnable {
 			
 			Set<Instance> instances = c.getInstances();
 			for (Instance i1 : instances) {
-				logWriter.append(df.format(new Date()) + ": ***NODES***"
+				logWriter.append(df.format(new Date()) + ": ***NODES*** "
 						+ System.getProperty("line.separator"));
 				logWriter.flush();
 				

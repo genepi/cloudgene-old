@@ -163,6 +163,7 @@
 	<classpathentry kind="lib" path="libsWhirr/whirr-mahout-0.7.1.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/whirr-puppet-0.7.1.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/whirr-zookeeper-0.7.1.jar"/>
+	<classpathentry kind="lib" path="libsWhirr/utils4j-0.6.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

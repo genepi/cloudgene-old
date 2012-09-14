@@ -7,6 +7,9 @@ package cloudgene.core.programs;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.fuin.utils4j.Utils4J;
 
 
 import cloudgene.util.EC2Communication;
@@ -233,28 +236,19 @@ public class ClusterYaml {
 
 	public void install(EC2Communication communication)
 			throws FileNotFoundException, JSchException, SftpException {
-		FileFilter fileFilter = new FileFilter() {
-			public boolean accept(File file) {
-				return !file.getName().toLowerCase().startsWith(".");
-			}
-		};
+		
 		// copy program and sample data
 		System.out.println("name: " + folder.getName());
-		File[] files = folder.listFiles(fileFilter);
 		String path = cloudFolder + "/" + folder.getName();
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].isDirectory()) {
-			} else {
-				communication.copyData(files[i].getPath(), path + "/"
-						+ files[i].getName());
-				/** unzip data if necessary */
-				if (files[i].getName().endsWith("zip")) {
-					communication.executeCmd("unzip " + path + "/"
-							+ files[i].getName() + " -d " + path);
-				}
-			}
-
+		String zipFile= folder.getPath()+"/"+folder.getName()+".zip";
+		try {
+			Utils4J.zipDir(folder, "", new File(zipFile));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		communication.executeCmd("unzip " + zipFile + " -d " + path);
+		
 	}
 
 	public void startbyScript(EC2Communication communication, int clusterPK,
