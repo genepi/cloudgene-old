@@ -22,7 +22,7 @@ import org.restlet.resource.ServerResource;
 import org.restlet.representation.StringRepresentation;
 
 import cloudgene.core.programs.Program;
-import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.ClusterSetup;
 import cloudgene.core.programs.Programs;
 import cloudgene.user.User;
 import cloudgene.user.UserSessions;
@@ -65,7 +65,7 @@ public class LoadPrograms extends ServerResource {
 							progYaml = YamlLoader.loadAppFromFile(yamlFile[0]
 									.getPath());
 							// set program path
-							ClusterYaml cluster = progYaml.getCluster();
+							ClusterSetup cluster = progYaml.getCluster();
 							if (progYaml.getCluster() != null) {
 								File folder = new File(files[i].getPath());
 								cluster.setFolder(folder);

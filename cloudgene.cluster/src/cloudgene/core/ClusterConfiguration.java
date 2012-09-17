@@ -6,7 +6,7 @@ package cloudgene.core;
  */
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-import cloudgene.core.programs.ClusterYaml;
+import cloudgene.core.programs.ClusterSetup;
 import cloudgene.user.User;
 import cloudgene.util.Settings;
 
@@ -36,7 +36,7 @@ public class ClusterConfiguration {
 
 	private String name;
 
-	private ClusterYaml program;
+	private ClusterSetup program;
 
 	private String cloudUsername;
 
@@ -148,11 +148,11 @@ public class ClusterConfiguration {
 		return actionType;
 	}
 
-	public void setProgram(ClusterYaml program) {
+	public void setProgram(ClusterSetup program) {
 		this.program = program;
 	}
 
-	public ClusterYaml getProgram() {
+	public ClusterSetup getProgram() {
 		return program;
 	}
 
