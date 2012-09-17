@@ -1,8 +1,11 @@
 package cloudgene.mapred.apps;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import cloudgene.mapred.util.ExtJsTreeItem;
 
-public class Category extends ExtJsTreeItem {
+public class Category extends ExtJsTreeItem implements Comparable<Category> {
 
 	private AppMetaData[] children;
 
@@ -16,10 +19,20 @@ public class Category extends ExtJsTreeItem {
 
 	public void setChildren(AppMetaData[] children) {
 		this.children = children;
+		sort();
 	}
 
 	public AppMetaData[] getChildren() {
 		return children;
+	}
+
+	public void sort(){
+		Arrays.sort(children);
+	}
+	
+	@Override
+	public int compareTo(Category o) {
+		return getText().compareTo(o.getText());
 	}
 
 }

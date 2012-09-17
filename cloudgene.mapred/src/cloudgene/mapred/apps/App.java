@@ -2,7 +2,7 @@ package cloudgene.mapred.apps;
 
 import java.util.Map;
 
-public class App extends AppMetaData {
+public class App extends AppMetaData implements Comparable<App>{
 
 	private MapReduceConfig mapred;
 
@@ -22,6 +22,11 @@ public class App extends AppMetaData {
 
 	public void setCluster(Map<String, String> cluster) {
 		this.cluster = cluster;
+	}
+
+	@Override
+	public int compareTo(App o) {
+		return getName().compareTo(o.getName());
 	}
 
 }

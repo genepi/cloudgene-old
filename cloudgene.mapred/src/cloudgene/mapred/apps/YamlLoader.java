@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,10 +100,19 @@ public class YamlLoader {
 		Settings settings = Settings.getInstance();
 
 		File dir = new File(FileUtil.path(settings.getAppsPath(), name));
-		File manifest = new File(FileUtil.path(dir.getAbsolutePath(),
-				"cloudgene.yaml"));
 
-		if (dir.isDirectory() && manifest.exists()) {
+		File manifest = null;
+
+		if (dir.isDirectory()) {
+			//old style
+			manifest = new File(FileUtil.path(dir.getAbsolutePath(),
+					"cloudgene.yaml"));
+		} else {
+			//new style
+			manifest = new File(FileUtil.path(settings.getAppsPath(), name)+".yaml");
+		}
+
+		if (manifest.exists()) {
 			try {
 				return loadAppFromFile(manifest.getAbsolutePath());
 			} catch (IOException e) {
@@ -110,6 +120,7 @@ public class YamlLoader {
 				return null;
 			}
 		} else {
+
 			return null;
 		}
 
@@ -133,6 +144,8 @@ public class YamlLoader {
 			File dir = listOfFiles[i];
 			filename = FileUtil.path(dir.getAbsolutePath(), "cloudgene.yaml");
 			File manifest = new File(filename);
+
+			// old style
 
 			if (dir.isDirectory() && manifest.exists()) {
 				filename = manifest.getAbsolutePath();
@@ -160,6 +173,38 @@ public class YamlLoader {
 				}
 
 			}
+
+			// new style: all other yaml files.
+			if (dir.isDirectory()) {
+				File[] filesInDir = dir.listFiles();
+				for (File file : filesInDir) {
+					if (file.getName().endsWith(".yaml") && !file.getName().equals("cloudgene.yaml")) {
+						try {
+							filename = file.getAbsolutePath();
+							App app = loadAppFromFile(filename);
+
+							AppMetaData meta = (AppMetaData) app;
+
+							if (meta != null && app.getMapred() != null) {
+
+								meta.setId(dir.getName() + "/" + (file.getName()).replace(".yaml", ""));
+
+								List<AppMetaData> listApps = categories
+										.get(meta.getCategory());
+								if (listApps == null) {
+									listApps = new Vector<AppMetaData>();
+									categories
+											.put(meta.getCategory(), listApps);
+								}
+								listApps.add(meta);
+
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 		}
 
 		for (String text : categories.keySet()) {
@@ -174,8 +219,11 @@ public class YamlLoader {
 			}
 			tool.setChildren(children);
 			result.add(tool);
+			
 		}
 
+		Collections.sort(result);
+		
 		return result;
 
 	}
