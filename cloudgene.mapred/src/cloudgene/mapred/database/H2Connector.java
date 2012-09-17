@@ -60,6 +60,8 @@ public class H2Connector {
 
 		// connection.setAutoCommit(false);
 
+		//updateSchema();
+		
 		if (!exists) {
 			createSchema();
 		}
@@ -81,6 +83,16 @@ public class H2Connector {
 		try {
 			log.info("Creating tables...");
 			executeSqlFromFile("create-tables.sql");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void updateSchema() {
+		try {
+			log.info("Updating tables...");
+			executeSqlFromFile("update-tables.sql");
 
 		} catch (Exception e) {
 			e.printStackTrace();

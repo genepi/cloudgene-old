@@ -30,6 +30,8 @@ public abstract class Parameter {
 
 	private boolean required = true;
 
+	private String format = null;
+
 	public static final String LOCAL_FOLDER = "local-folder";
 
 	public static final String LOCAL_FILE = "local-file";
@@ -150,6 +152,14 @@ public abstract class Parameter {
 
 	public boolean isRequired() {
 		return required;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 
 }

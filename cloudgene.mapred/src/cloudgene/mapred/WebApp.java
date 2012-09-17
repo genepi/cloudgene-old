@@ -20,6 +20,7 @@ import cloudgene.mapred.resources.data.GetBucketsPrivate;
 import cloudgene.mapred.resources.data.GetBucketsPublic;
 import cloudgene.mapred.resources.data.GetFileList;
 import cloudgene.mapred.resources.data.GetFolderList;
+import cloudgene.mapred.resources.data.GetFormatsList;
 import cloudgene.mapred.resources.data.GetLocalFiles;
 import cloudgene.mapred.resources.data.GetMyBuckets;
 import cloudgene.mapred.resources.data.ImportFiles;
@@ -77,7 +78,8 @@ public class WebApp extends Application {
 
 		router.attach("/logs/{id}", GetLogs.class);
 
-		router.attach("/hdfs/files", GetFileList.class);
+		router.attach("/hdfs/files", GetFileList.class);		
+		router.attach("/hdfs/format/{format}", GetFormatsList.class);
 		router.attach("/hdfs/folders", GetFolderList.class);
 		router.attach("/hdfs/import", ImportFiles.class);
 		router.attach("/hdfs/upload", FileUploadRessource.class);

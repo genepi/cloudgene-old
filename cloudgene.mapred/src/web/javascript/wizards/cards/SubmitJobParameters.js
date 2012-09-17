@@ -139,6 +139,7 @@ MapRed.wizards.SubmitJobParameters = Ext.extend(Ext.ux.Wiz.Card,
 			    textfieldId : 'input-' + param.id,
 			    fieldLabel : param.description,
 			    myValue : param.value,
+			    format : param.format,
 			    allowBlank : !param.required,
 			    required : param.required
 			});

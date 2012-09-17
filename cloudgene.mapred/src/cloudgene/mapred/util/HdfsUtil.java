@@ -378,5 +378,10 @@ public class HdfsUtil {
 		}
 
 	}
-
+	
+	public static boolean isAbsolute(String path){
+		
+		return path.startsWith("hdfs://");
+		
+	}
 }

@@ -8,6 +8,7 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import cloudgene.mapred.apps.InputParameter;
 import cloudgene.mapred.apps.Parameter;
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.jobs.Job;
@@ -154,6 +155,59 @@ public class JobDao extends Dao {
 					job.setOutputParams(outputParams);
 
 				}
+
+				result.add(job);
+			}
+			rs.close();
+
+			log.info("find all jobs successful. results: " + result.size());
+
+			return result;
+		} catch (SQLException e) {
+			log.error("find all jobs failed", e);
+			return null;
+		}
+	}
+
+	public List<Job> findAllByUserAndFormat(User user, String format) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select j.type, j.id, j.name, j.state, j.start_time, j.end_time, j.s3_url, p.value ");
+		sql.append("from job j ");
+		sql.append("join parameter p on j.id = p.job_id ");
+		sql.append("where user_id = ? and format = ? and j.state = ? and p.input = false ");
+		sql.append("order by start_time desc ");
+
+		Object[] params = new Object[3];
+		params[0] = user.getId();
+		params[1] = format;
+		params[2] = Job.FINISHED;
+
+		List<Job> result = new Vector<Job>();
+
+		try {
+
+			ResultSet rs = query(sql.toString(), params);
+			while (rs.next()) {
+
+				int type = rs.getInt("type");
+
+				Job job = JobFactory.create(type);
+				job.setId(rs.getString("id"));
+				job.setName(rs.getString("name"));
+				job.setState(rs.getInt("state"));
+				job.setStartTime(rs.getLong("start_time"));
+				job.setEndTime(rs.getLong("end_time"));
+				job.setS3Url(rs.getString("s3_url"));
+				job.setUser(user);
+
+				List<Parameter> outputParams = new Vector<Parameter>();
+
+				Parameter parameter = new InputParameter();
+				parameter.setValue(rs.getString("value"));
+				outputParams.add(parameter);
+
+				job.setOutputParams(outputParams);
 
 				result.add(job);
 			}

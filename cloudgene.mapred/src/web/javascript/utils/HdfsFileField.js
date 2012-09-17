@@ -35,6 +35,8 @@ MapRed.utils.HdfsFileField = Ext.extend(Ext.form.CompositeField, {
 
     required : true,
 
+    format : null,
+    
     initComponent : function() {
 
 	items:
@@ -56,6 +58,7 @@ MapRed.utils.HdfsFileField = Ext.extend(Ext.form.CompositeField, {
 	    myTextfieldId : '-' + this.textfieldId,
 	    myOpenDialog : this.openDialog,
 	    myFolderDialog : this.folderDialog,
+	    format : this.format,
 	    handler : function() {
 
 		if (this.myFolderDialog) {
@@ -64,7 +67,8 @@ MapRed.utils.HdfsFileField = Ext.extend(Ext.form.CompositeField, {
 		    var dialog = new MapRed.utils.HdfsFileDialog({
 			folderDialog : true,
 			openDialog : this.myOpenDialog,
-			outputTextfield : this.myTextfieldId
+			outputTextfield : this.myTextfieldId,
+			format : this.format
 		    });
 		    dialog.show();
 
@@ -74,7 +78,8 @@ MapRed.utils.HdfsFileField = Ext.extend(Ext.form.CompositeField, {
 		    var dialog = new MapRed.utils.HdfsFileDialog({
 			folderDialog : false,
 			openDialog : this.myOpenDialog,
-			outputTextfield : this.myTextfieldId
+			outputTextfield : this.myTextfieldId,
+			format : this.format
 		    });
 		    dialog.show();
 

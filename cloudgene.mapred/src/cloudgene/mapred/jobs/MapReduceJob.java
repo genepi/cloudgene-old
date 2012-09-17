@@ -165,11 +165,15 @@ public class MapReduceJob extends Job {
 					String workspace = Settings.getInstance().getHdfsWorkspace(
 							getUser().getUsername());
 					if (param != null && !param.isEmpty()) {
-						String path = HdfsUtil.path(workspace, param);
-						if (inputParam.isMakeAbsolute()) {
-							inputValues.set(i, HdfsUtil.makeAbsolute(path));
+						if (HdfsUtil.isAbsolute(param)) {
+							inputValues.set(i, param);
 						} else {
-							inputValues.set(i, path);
+							String path = HdfsUtil.path(workspace, param);
+							if (inputParam.isMakeAbsolute()) {
+								inputValues.set(i, HdfsUtil.makeAbsolute(path));
+							} else {
+								inputValues.set(i, path);
+							}
 						}
 					} else {
 

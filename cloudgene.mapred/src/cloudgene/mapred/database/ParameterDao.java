@@ -19,12 +19,12 @@ public class ParameterDao extends Dao {
 
 	public boolean insert(Parameter parameter) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("insert into parameter (name, value, input, job_id, type, variable, download) ");
-		sql.append("values (?,?,?,?,?,?,?)");
+		sql.append("insert into parameter (name, value, input, job_id, type, variable, download, format) ");
+		sql.append("values (?,?,?,?,?,?,?,?)");
 
 		try {
 
-			Object[] params = new Object[7];
+			Object[] params = new Object[8];
 			params[0] = parameter.getDescription();
 			params[1] = parameter.getValue();
 			params[2] = parameter.isInput();
@@ -32,6 +32,7 @@ public class ParameterDao extends Dao {
 			params[4] = parameter.getType();
 			params[5] = parameter.getId();
 			params[6] = parameter.isDownload();
+			params[7] = parameter.getFormat();
 
 			update(sql.toString(), params);
 
@@ -72,6 +73,7 @@ public class ParameterDao extends Dao {
 				parameter.setJobId(rs.getString("job_id"));
 				parameter.setType(rs.getString("type"));
 				parameter.setDownload(rs.getBoolean("download"));
+				parameter.setFormat(rs.getString("format"));
 				result.add(parameter);
 			}
 			rs.close();
@@ -112,6 +114,7 @@ public class ParameterDao extends Dao {
 				parameter.setJobId(rs.getString("job_id"));
 				parameter.setType(rs.getString("type"));
 				parameter.setDownload(rs.getBoolean("download"));
+				parameter.setFormat(rs.getString("format"));
 				result.add(parameter);
 
 			}
