@@ -300,6 +300,20 @@ abstract public class Job implements Runnable {
 
 	}
 
+	public void cancle() {
+
+		setEndTime(System.currentTimeMillis());
+
+		writeLog("Canceled by user.");
+		
+		if (state == RUNNING) {
+			closeStdOutFiles();
+		}
+
+		setState(Job.CANCELED);
+		
+	}
+
 	private void initStdOutFiles() throws FileNotFoundException {
 
 		stdOutStream = new BufferedOutputStream(new FileOutputStream(
@@ -309,19 +323,19 @@ abstract public class Job implements Runnable {
 				getLogOutFile()));
 
 	}
-	
-	private void initLocalDirectories(){
-		
+
+	private void initLocalDirectories() {
+
 		if (getUser() != null) {
 
 			String localWorkspace = Settings.getInstance().getLocalWorkspace(
 					getUser().getUsername());
 
-			String directory =  FileUtil.path(localWorkspace, "output", getId());
+			String directory = FileUtil.path(localWorkspace, "output", getId());
 			FileUtil.createDirectory(directory);
 
 		}
-		
+
 	}
 
 	public String getStdOutFile() {

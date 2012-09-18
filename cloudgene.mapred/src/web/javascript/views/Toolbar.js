@@ -96,7 +96,7 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		    }
 		} ]
 
-	    }, {
+	    }, /*{
 		text : 'Install App',
 		tooltip : 'Install App',
 		xtype : 'tbbutton',
@@ -110,7 +110,7 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		    wizard.show();
 
 		}
-	    },
+	    },*/
 
 	    {
 		xtype : 'tbfill'

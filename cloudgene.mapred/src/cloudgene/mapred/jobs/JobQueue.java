@@ -50,8 +50,7 @@ public class JobQueue implements Runnable {
 
 			log.info("Cancel Job ...");
 
-			job.setEndTime(System.currentTimeMillis());
-			job.setState(Job.CANCELED);
+			job.cancle();
 
 			thread.stop();
 
@@ -78,8 +77,7 @@ public class JobQueue implements Runnable {
 
 			log.info("Cancel Job...");
 
-			job.setEndTime(System.currentTimeMillis());
-			job.setState(Job.CANCELED);
+			job.cancle();
 
 			queue.remove(job);
 

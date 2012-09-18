@@ -22,6 +22,10 @@ public class GetLogs extends ServerResource {
 
 		if (user != null) {
 			String id = (String) getRequest().getAttributes().get("id");
+			String file = (String) getRequest().getAttributes().get("file");
+			if (file != null){
+				id += "/" + file;
+			}
 
 			JobDao jobDao = new JobDao();
 			Job job = jobDao.findById(id);

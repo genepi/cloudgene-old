@@ -52,12 +52,18 @@ public class RerunJob extends ServerResource {
 			String jobId = form.getFirstValue("id");
 			if (jobId != null) {
 
-				// delete job from database
 				JobDao dao = new JobDao();
 				Job oldJob = dao.findById(jobId);
 
-				String tool = jobId.split("-")[0];
+				String[] tiles = jobId.split("-");
 
+				String tool = tiles[0];
+				for (int i = 1; i < tiles.length - 2; i++) {
+					tool += "-" + tiles[i];
+				}
+
+				System.out.println(tool);
+				
 				App app = YamlLoader.loadApp(tool);
 				if (app.getMapred() != null) {
 
