@@ -75,6 +75,7 @@ public class WebApp extends Application {
 
 		router.attach("/results/{job}/{id}", DownloadResults.class);
 		router.attach("/results/{job}/{id}/{filename}", DownloadResults.class);
+		router.attach("/results/{job}/{id}/{filename}/{filename2}", DownloadResults.class);
 
 		router.attach("/logs/{id}", GetLogs.class);
 		router.attach("/logs/{id}/{file}", GetLogs.class);

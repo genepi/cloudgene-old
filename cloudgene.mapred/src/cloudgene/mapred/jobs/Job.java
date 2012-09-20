@@ -386,6 +386,7 @@ abstract public class Job implements Runnable {
 
 		try {
 			stdOutStream.write(line.getBytes());
+			stdOutStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -397,6 +398,7 @@ abstract public class Job implements Runnable {
 			stdOutStream.write((formatter.format(new Date()) + " ").getBytes());
 			stdOutStream.write(line.getBytes());
 			stdOutStream.write("\n".getBytes());
+			stdOutStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -408,6 +410,7 @@ abstract public class Job implements Runnable {
 			logStream.write((formatter.format(new Date()) + " ").getBytes());
 			logStream.write(line.getBytes());
 			logStream.write("\n".getBytes());
+			logStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

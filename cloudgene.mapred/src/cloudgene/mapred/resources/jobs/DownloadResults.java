@@ -42,6 +42,17 @@ public class DownloadResults extends ServerResource {
 
 			}
 
+			if (getRequest().getAttributes().containsKey("filename2")) {
+
+				jobId = (String) getRequest().getAttributes().get("job") + "/"
+						+ (String) getRequest().getAttributes().get("id");
+				id = (String) getRequest().getAttributes().get("filename");
+
+				filename = (String) getRequest().getAttributes().get(
+						"filename2");
+
+			}
+
 			Job job = jobDao.findById(jobId);
 
 			MediaType mediaType = MediaType.ALL;

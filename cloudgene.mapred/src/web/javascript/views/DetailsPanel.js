@@ -40,9 +40,30 @@ MapRed.view.DetailsPanel = Ext
 
 					    store : new Ext.data.Store(
 						    {
-
+							id : 'store-job-details',
 							url : 'jobs/details',
+							/*listeners : {
+							    'load' : function() {
 
+								if (this
+									.getCount() > 0) {
+								    record = this
+									    .getAt(0);
+
+								    if (record
+									    .get("state") == 1
+									    || record
+										    .get("state") == 2
+									    || record
+										    .get("state") == 3) {
+
+									var t = setTimeout(
+										'Ext.StoreMgr.lookup("store-job-details").reload()',
+										5000);
+								    }
+								}
+							    }
+							},*/
 							reader : new Ext.data.JsonReader(
 								{
 								    fields : [
@@ -114,9 +135,10 @@ MapRed.view.DetailsPanel = Ext
 			    '<tr><td class="key">Finished At</td><td class="value">{endTime:this.formatTimestamp}</td></tr>',
 			    '<tr><td class="key">Execution Time</td><td class="value">{executionTime:this.formatTime}</td></tr>',
 			    '<tr><td class="key">Logs</td><td class="value">',
-			    '<tpl if="state &gt; 3">',
-			    '<a href="logs/{id}" target="_blank">View</a>',
-			    '</tpl>',
+			    //'<tpl if="state &gt; 3">',
+			    /*'<a href="logs/{id}" target="_blank">View</a>',*/
+			    '<a href="javascript:temp = new MapRed.dialogs.consoleWindow({logFile:\'logs/{id}\'});temp.show();">View</a>',
+			    //'</tpl>',
 			    '</td></tr></table>',
 			    '<tpl if="state == 4">',
 			    '<tpl if="outputParams.length != 0">',

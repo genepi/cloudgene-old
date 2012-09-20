@@ -9,6 +9,7 @@ import cloudgene.mapred.core.User;
 import cloudgene.mapred.core.UserSessions;
 import cloudgene.mapred.database.JobDao;
 import cloudgene.mapred.jobs.Job;
+import cloudgene.mapred.jobs.JobQueue;
 import cloudgene.mapred.representations.LoginPageRepresentation;
 import cloudgene.mapred.util.FileUtil;
 
@@ -30,6 +31,10 @@ public class GetLogs extends ServerResource {
 			JobDao jobDao = new JobDao();
 			Job job = jobDao.findById(id);
 
+			if (job == null){
+				job = JobQueue.getInstance().getJobById(id);
+			}
+			
 			if (job != null) {
 
 				job.setUser(user);
@@ -39,6 +44,8 @@ public class GetLogs extends ServerResource {
 				String log = FileUtil.readFileAsString(job.getLogOutFile());
 				String output = FileUtil.readFileAsString(job.getStdOutFile());
 
+				buffer.append("<code><pre>");
+				
 				if (!log.isEmpty()) {
 					buffer.append("job.txt:\n\n");
 					buffer.append(log);
@@ -51,11 +58,13 @@ public class GetLogs extends ServerResource {
 					buffer.append(output);
 
 				}
-
+				buffer.append("</code></pre>");
 				return new StringRepresentation(buffer.toString());
 
 			} else {
 
+				
+				
 				return new LoginPageRepresentation();
 			}
 
