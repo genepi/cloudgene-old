@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -68,11 +70,12 @@ public class MapReduceJob extends Job {
 				MapReduceJob job = new MapReduceJob(app.getMapred(), this);
 
 				String name = step.getName() + " (" + step.getJob() + ")";
-	
-				job.setId(step.getJob());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
+				job.setId(step.getJob() + "-" + sdf.format(new Date()));
 				job.setName(name);
 				job.setUser(getUser());
 				step.setMapReduceJob(job);
+
 			} else if (step.getExec() != null) {
 
 				// command
@@ -277,6 +280,38 @@ public class MapReduceJob extends Job {
 				}
 
 			}
+		} else {
+
+			// map reduce job (only temp params)
+
+			// set output directory, temp directory & jobname
+			String workspace = Settings.getInstance().getHdfsWorkspace(
+					getUser().getUsername());
+
+			// find the right id
+			Job myParent = parent;
+			while (myParent.parent != null) {
+				myParent = myParent.parent;
+			}
+			String id = myParent.getId();
+
+			String tempDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
+					workspace, "output", id, "temp", getId()));
+
+			// create output directories
+			for (int i = 0; i < config.getOutputs().size(); i++) {
+
+				Parameter param = config.getOutputs().get(i);
+				if (param.getType().equals(Parameter.HDFS_FILE)
+						| param.getType().equals(Parameter.HDFS_FOLDER)) {
+					if (param.isTemp()) {
+						param.setValue(HdfsUtil.path(tempDirectory,
+								param.getId()));
+					}
+				}
+
+			}
+
 		}
 
 		try {
@@ -298,8 +333,8 @@ public class MapReduceJob extends Job {
 				log.info("job " + getId() + " submitted...");
 
 				writeOutputln("------------------------------------------------------");
-				writeOutputln(getId() + " (" + step + "/"
-						+ config.getSteps().size() + ")");
+				writeOutputln((parent != null ? parent.getId() + ": " : "")
+						+ getCurrentStep());
 				writeOutputln("------------------------------------------------------");
 
 				// normal command
@@ -433,7 +468,7 @@ public class MapReduceJob extends Job {
 	private boolean executeJob(MapReduceJob job, Step step) throws IOException,
 			InterruptedException {
 
-		writeOutputln("Input Parameters: ");
+		writeOutputln("Inputs: ");
 
 		job.setUser(getUser());
 
@@ -462,7 +497,7 @@ public class MapReduceJob extends Job {
 
 		}
 
-		writeOutputln("Output Parameters: ");
+		writeOutputln("Outputs: ");
 
 		// set output values
 		for (String key : step.getJobOutputs().keySet()) {
