@@ -74,6 +74,8 @@ abstract public class Job implements Runnable {
 
 	private BufferedOutputStream logStream;
 
+	protected Job parent;
+
 	public String getId() {
 		return id;
 	}
@@ -305,13 +307,13 @@ abstract public class Job implements Runnable {
 		setEndTime(System.currentTimeMillis());
 
 		writeLog("Canceled by user.");
-		
+
 		if (state == RUNNING) {
 			closeStdOutFiles();
 		}
 
 		setState(Job.CANCELED);
-		
+
 	}
 
 	private void initStdOutFiles() throws FileNotFoundException {
@@ -384,35 +386,61 @@ abstract public class Job implements Runnable {
 
 	public void writeOutput(String line) {
 
-		try {
-			stdOutStream.write(line.getBytes());
-			stdOutStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (parent != null) {
+
+			parent.writeOutput("    " + line);
+
+		} else {
+
+			try {
+				stdOutStream.write(line.getBytes());
+				stdOutStream.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 	}
 
 	public void writeOutputln(String line) {
-		try {
-			stdOutStream.write((formatter.format(new Date()) + " ").getBytes());
-			stdOutStream.write(line.getBytes());
-			stdOutStream.write("\n".getBytes());
-			stdOutStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		if (parent != null) {
+
+			parent.writeOutputln("    " + line);
+
+		} else {
+
+			try {
+				stdOutStream.write((formatter.format(new Date()) + " ")
+						.getBytes());
+				stdOutStream.write(line.getBytes());
+				stdOutStream.write("\n".getBytes());
+				stdOutStream.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void writeLog(String line) {
+	public void writeLog(String line) {
 
-		try {
-			logStream.write((formatter.format(new Date()) + " ").getBytes());
-			logStream.write(line.getBytes());
-			logStream.write("\n".getBytes());
-			logStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (parent != null) {
+
+			//parent.writeLog("    " + line);
+
+		} else {
+
+			try {
+				logStream
+						.write((formatter.format(new Date()) + " ").getBytes());
+				logStream.write(line.getBytes());
+				logStream.write("\n".getBytes());
+				logStream.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 	}
 

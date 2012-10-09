@@ -78,7 +78,7 @@ public class SubmitJob extends ServerResource {
 						queue.submit(job);
 
 					} catch (Exception e) {
-
+						e.printStackTrace();
 						return new JSONAnswer(e.getMessage(), false);
 
 					}

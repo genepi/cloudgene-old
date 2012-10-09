@@ -2,6 +2,7 @@ package cloudgene.mapred.jobs;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -13,9 +14,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.mapred.RunningJob;
 
+import cloudgene.mapred.apps.App;
 import cloudgene.mapred.apps.MapReduceConfig;
 import cloudgene.mapred.apps.Parameter;
 import cloudgene.mapred.apps.Step;
+import cloudgene.mapred.apps.YamlLoader;
 import cloudgene.mapred.database.JobDao;
 import cloudgene.mapred.jobs.export.ExportJob;
 import cloudgene.mapred.util.FileUtil;
@@ -34,7 +37,7 @@ public class MapReduceJob extends Job {
 
 	private MapReduceConfig config;
 
-	private String jobId = null;
+	protected String jobId = null;
 
 	private static final Log log = LogFactory.getLog(MapReduceJob.class);
 
@@ -43,8 +46,14 @@ public class MapReduceJob extends Job {
 	}
 
 	public MapReduceJob(MapReduceConfig config) throws Exception {
+		this(config, null);
+	}
+
+	public MapReduceJob(MapReduceConfig config, MapReduceJob parent)
+			throws Exception {
 
 		this.config = config;
+		this.parent = parent;
 
 		String hadoopPath = Settings.getInstance().getHadoopPath();
 		String hadoop = FileUtil.path(hadoopPath, "bin", "hadoop");
@@ -52,8 +61,21 @@ public class MapReduceJob extends Job {
 
 		for (Step step : config.getSteps()) {
 
-			// command
-			if (step.getExec() != null) {
+			// other MapReduce Job
+			if (step.getJob() != null) {
+
+				App app = YamlLoader.loadApp(step.getJob());
+				MapReduceJob job = new MapReduceJob(app.getMapred(), this);
+
+				String name = step.getName() + " (" + step.getJob() + ")";
+	
+				job.setId(step.getJob());
+				job.setName(name);
+				job.setUser(getUser());
+				step.setMapReduceJob(job);
+			} else if (step.getExec() != null) {
+
+				// command
 
 				String tiles[] = step.getExec().split(" ");
 
@@ -161,6 +183,7 @@ public class MapReduceJob extends Job {
 			Parameter inputParam = inputParams.get(i);
 
 			if (inputParam.getId().equalsIgnoreCase(id)) {
+
 				if (isHdfsInput(i)) {
 					String workspace = Settings.getInstance().getHdfsWorkspace(
 							getUser().getUsername());
@@ -202,10 +225,62 @@ public class MapReduceJob extends Job {
 
 		JobDao dao = new JobDao();
 
+		if (parent == null) {
+			// normal job
+
+			// set output directory, temp directory & jobname
+			String workspace = Settings.getInstance().getHdfsWorkspace(
+					getUser().getUsername());
+
+			String tempDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
+					workspace, "output", getId(), "temp"));
+
+			String outputDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
+					workspace, "output", getId()));
+
+			String localWorkspace = new File(Settings.getInstance()
+					.getLocalWorkspace(getUser().getUsername()))
+					.getAbsolutePath();
+
+			String localOutputDirectory = new File(FileUtil.path(
+					localWorkspace, "output", getId())).getAbsolutePath();
+
+			FileUtil.createDirectory(localOutputDirectory);
+
+			// create output directories
+			for (int i = 0; i < config.getOutputs().size(); i++) {
+
+				Parameter param = config.getOutputs().get(i);
+				if (param.getType().equals(Parameter.HDFS_FILE)
+						| param.getType().equals(Parameter.HDFS_FOLDER)) {
+					if (param.isTemp()) {
+						param.setValue(HdfsUtil.path(tempDirectory,
+								param.getId()));
+					} else {
+						param.setValue(HdfsUtil.path(outputDirectory,
+								param.getId()));
+					}
+				}
+
+				if (param.getType().equals(Parameter.LOCAL_FILE)) {
+					FileUtil.createDirectory(FileUtil.path(
+							localOutputDirectory, param.getId()));
+					param.setValue(FileUtil.path(localOutputDirectory,
+							param.getId(), param.getId()));
+				}
+
+				if (param.getType().equals(Parameter.LOCAL_FOLDER)) {
+					param.setValue(FileUtil.path(localOutputDirectory,
+							param.getId()));
+					FileUtil.createDirectory(FileUtil.path(
+							localOutputDirectory, param.getId()));
+				}
+
+			}
+		}
+
 		try {
 			for (int k = 0; k < config.getSteps().size(); k++) {
-
-				List<String> command = commands.get(k);
 
 				String stepName = config.getSteps().get(k).getName();
 				int step = k + 1;
@@ -220,139 +295,210 @@ public class MapReduceJob extends Job {
 				}
 				dao.update(this);
 
-				// set input values
-				for (int i = 0; i < config.getInputs().size(); i++) {
-					for (int j = 0; j < command.size(); j++) {
-						String value = inputValues.get(i);
-						String name = config.getInputs().get(i).getId();
-						String cmd = command.get(j).replaceAll("\\$" + name,
-								value);
-						command.set(j, cmd);
-					}
-				}
-
-				// set output directory, temp directory & jobname
-				String workspace = Settings.getInstance().getHdfsWorkspace(
-						getUser().getUsername());
-
-				String tempDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
-						workspace, "output", getId(), "temp"));
-
-				String outputDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
-						workspace, "output", getId()));
-
-				String localWorkspace = new File(Settings.getInstance()
-						.getLocalWorkspace(getUser().getUsername()))
-						.getAbsolutePath();
-
-				String localOutputDirectory = new File(FileUtil.path(
-						localWorkspace, "output", getId())).getAbsolutePath();
-
-				FileUtil.createDirectory(localOutputDirectory);
-
-				// set global variables
-				for (int j = 0; j < command.size(); j++) {
-
-					String cmd = command.get(j)
-							.replaceAll("\\$job_id", getId());
-					command.set(j, cmd);
-				}
-
-				// set output values
-				for (int i = 0; i < config.getOutputs().size(); i++) {
-
-					Parameter param = config.getOutputs().get(i);
-					if (param.getType().equals(Parameter.HDFS_FILE)
-							| param.getType().equals(Parameter.HDFS_FOLDER)) {
-						if (param.isTemp()) {
-							param.setValue(HdfsUtil.path(tempDirectory,
-									param.getId()));
-						} else {
-							param.setValue(HdfsUtil.path(outputDirectory,
-									param.getId()));
-						}
-					}
-
-					if (param.getType().equals(Parameter.LOCAL_FILE)) {
-						FileUtil.createDirectory(FileUtil.path(
-								localOutputDirectory, param.getId()));
-						param.setValue(FileUtil.path(localOutputDirectory,
-								param.getId(), param.getId()));
-					}
-
-					if (param.getType().equals(Parameter.LOCAL_FOLDER)) {
-						param.setValue(FileUtil.path(localOutputDirectory,
-								param.getId()));
-						FileUtil.createDirectory(FileUtil.path(
-								localOutputDirectory, param.getId()));
-					}
-
-					for (int j = 0; j < command.size(); j++) {
-						String value = param.getValue();
-						String name = param.getId();
-						String cmd = command.get(j).replaceAll("\\$" + name,
-								value);
-						command.set(j, cmd);
-					}
-				}
-
 				log.info("job " + getId() + " submitted...");
 
 				writeOutputln("------------------------------------------------------");
 				writeOutputln(getId() + " (" + step + "/"
 						+ config.getSteps().size() + ")");
 				writeOutputln("------------------------------------------------------");
-				writeOutputln("Command: " + command);
-				writeOutputln("Working Directory: "
-						+ new File(getConfig().getPath()).getAbsolutePath());
 
-				ProcessBuilder builder = new ProcessBuilder(command);
-				builder.directory(new File(getConfig().getPath()));
-				builder.redirectErrorStream(true);
-				Process process = builder.start();
-				InputStream is = process.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				String line = null;
+				// normal command
 
-				// Find job id and write output into file
-				Pattern pattern = Pattern.compile("Running job: (.*)");
-				jobId = null;
-				writeOutputln("Output: ");
-				while ((line = br.readLine()) != null) {
-					if (jobId == null) {
-						Matcher matcher = pattern.matcher(line);
-						if (matcher.find()) {
-							jobId = matcher.group(1).trim();
-							log.info("Job " + getId() + " -> HadoopJob "
-									+ jobId);
-						}
+				if (config.getSteps().get(k).getMapReduceJob() != null) {
+
+					MapReduceJob job = config.getSteps().get(k)
+							.getMapReduceJob();
+					boolean successful = executeJob(job,
+							config.getSteps().get(k));
+					if (!successful) {
+						return false;
 					}
-					writeOutputln("  " + line);
-				}
 
-				br.close();
-				isr.close();
-				is.close();
-
-				process.waitFor();
-				writeOutputln("Exit Code: " + process.exitValue());
-				if (process.exitValue() != 0) {
-					setError("Abnormal Termination: " + process.exitValue());
-					return false;
 				} else {
-					process.destroy();
+
+					List<String> command = commands.get(k);
+					boolean successful = executeCommand(command);
+					if (!successful) {
+						return false;
+					}
+
 				}
+
 			}
 
 			setError(null);
 			return true;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			setError(e.getMessage());
 			return false;
 		}
 
+	}
+
+	private boolean executeCommand(List<String> command) throws IOException,
+			InterruptedException {
+
+		// set input values
+		for (int i = 0; i < config.getInputs().size(); i++) {
+			for (int j = 0; j < command.size(); j++) {
+				String value = inputValues.get(i);
+				String name = config.getInputs().get(i).getId();
+				String cmd = command.get(j).replaceAll("\\$" + name, value);
+				command.set(j, cmd);
+			}
+		}
+
+		// set global variables
+		for (int j = 0; j < command.size(); j++) {
+
+			String cmd = command.get(j).replaceAll("\\$job_id", getId());
+			command.set(j, cmd);
+		}
+
+		// set output values
+		for (int i = 0; i < config.getOutputs().size(); i++) {
+			for (int j = 0; j < command.size(); j++) {
+				String value = config.getOutputs().get(i).getValue();
+				String name = config.getOutputs().get(i).getId();
+				String cmd = command.get(j).replaceAll("\\$" + name, value);
+				command.set(j, cmd);
+			}
+		}
+
+		log.info(command);
+
+		writeOutputln("Command: " + command);
+		writeOutputln("Working Directory: "
+				+ new File(getConfig().getPath()).getAbsolutePath());
+
+		ProcessBuilder builder = new ProcessBuilder(command);
+		builder.directory(new File(getConfig().getPath()));
+		builder.redirectErrorStream(true);
+		Process process = builder.start();
+		InputStream is = process.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		String line = null;
+
+		// Find job id and write output into file
+		Pattern pattern = Pattern.compile("Running job: (.*)");
+		if (parent != null) {
+			((MapReduceJob) parent).jobId = null;
+		} else {
+			jobId = null;
+		}
+		writeOutputln("Output: ");
+		while ((line = br.readLine()) != null) {
+
+			if (parent != null) {
+				if (((MapReduceJob) parent).jobId == null) {
+
+					Matcher matcher = pattern.matcher(line);
+					if (matcher.find()) {
+						((MapReduceJob) parent).jobId = matcher.group(1).trim();
+						log.info("Job " + getId() + " -> HadoopJob "
+								+ ((MapReduceJob) parent).jobId);
+					}
+				}
+			} else {
+				if (jobId == null) {
+
+					Matcher matcher = pattern.matcher(line);
+					if (matcher.find()) {
+						jobId = matcher.group(1).trim();
+						log.info("Job " + getId() + " -> HadoopJob " + jobId);
+					}
+				}
+			}
+			writeOutputln("  " + line);
+		}
+
+		br.close();
+		isr.close();
+		is.close();
+
+		process.waitFor();
+		writeOutputln("Exit Code: " + process.exitValue());
+		if (process.exitValue() != 0) {
+			setError("Abnormal Termination: " + process.exitValue());
+			return false;
+		} else {
+			process.destroy();
+		}
+		return true;
+	}
+
+	private boolean executeJob(MapReduceJob job, Step step) throws IOException,
+			InterruptedException {
+
+		writeOutputln("Input Parameters: ");
+
+		job.setUser(getUser());
+
+		// set input values
+		for (String key : step.getJobInputs().keySet()) {
+
+			String value = step.getJobInputs().get(key);
+
+			for (int i = 0; i < config.getInputs().size(); i++) {
+				String id = config.getInputs().get(i).getId();
+				String newValue = config.getInputs().get(i).getValue();
+				value = value.replaceAll("\\$" + id, newValue);
+			}
+
+			for (int i = 0; i < config.getOutputs().size(); i++) {
+
+				String id = config.getOutputs().get(i).getId();
+				String newValue = config.getOutputs().get(i).getValue();
+				value = value.replaceAll("\\$" + id, newValue);
+
+			}
+
+			writeOutputln("  " + key + ": " + value);
+
+			job.setInputParam(key, value);
+
+		}
+
+		writeOutputln("Output Parameters: ");
+
+		// set output values
+		for (String key : step.getJobOutputs().keySet()) {
+
+			String value = step.getJobOutputs().get(key);
+
+			for (int i = 0; i < config.getInputs().size(); i++) {
+				String id = config.getInputs().get(i).getId();
+				String newValue = config.getInputs().get(i).getValue();
+				value = value.replaceAll("\\$" + id, newValue);
+			}
+
+			for (int i = 0; i < config.getOutputs().size(); i++) {
+
+				String id = config.getOutputs().get(i).getId();
+				String newValue = config.getOutputs().get(i).getValue();
+				value = value.replaceAll("\\$" + id, newValue);
+
+			}
+
+			for (int i = 0; i < job.config.getOutputs().size(); i++) {
+
+				Parameter outputParam = job.config.getOutputs().get(i);
+
+				if (outputParam.getId().equalsIgnoreCase(key)) {
+					outputParam.setValue(value);
+					writeOutputln("  " + key + ": " + value);
+				}
+
+			}
+
+		}
+
+		job.run();
+
+		return (job.getError() == null);
 	}
 
 	@Override
