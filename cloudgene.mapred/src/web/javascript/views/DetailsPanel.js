@@ -137,7 +137,7 @@ MapRed.view.DetailsPanel = Ext
 			    '<tr><td class="key">Logs</td><td class="value">',
 			    //'<tpl if="state &gt; 3">',
 			    /*'<a href="logs/{id}" target="_blank">View</a>',*/
-			    '<a href="javascript:temp = new MapRed.dialogs.consoleWindow({logFile:\'logs/{id}\'});temp.show();">View</a>',
+			    '<a href="JavaScript:showConsole(\'logs/{id}\');">View</a>',
 			    //'</tpl>',
 			    '</td></tr></table>',
 			    '<tpl if="state == 4">',
@@ -228,6 +228,14 @@ MapRed.view.DetailsPanel = Ext
 		});
 
 Ext.reg('detailspanel', MapRed.view.DetailsPanel);
+
+
+showConsole = function(file){
+    
+    var temp = new MapRed.dialogs.consoleWindow({logFile: file});
+    temp.show();
+    
+}
 
 deleteItem = function(id) {
 
