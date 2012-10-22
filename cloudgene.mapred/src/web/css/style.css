@@ -240,6 +240,14 @@ a[href$='.txt']
     line-height: 18px;
     background: transparent url('../images/icons/txt.png') no-repeat left;
 }
+
+a[href$='.html']
+ {
+     background-position: left;
+    padding-left: 20px;
+    line-height: 18px;
+    background: transparent url('../images/icons/txt.png') no-repeat left;
+}
  
 
 a[href$='.png'],a[href$='.jpg'],a[href$='.jpeg'],a[href$='.bmp'],a[href$='.gif']

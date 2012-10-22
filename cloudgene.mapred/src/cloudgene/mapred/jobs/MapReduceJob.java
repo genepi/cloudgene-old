@@ -419,6 +419,7 @@ public class MapReduceJob extends Job {
 
 		// Find job id and write output into file
 		Pattern pattern = Pattern.compile("Running job: (.*)");
+		Pattern pattern2 = Pattern.compile("HadoopJobId: (.*)");
 		if (parent != null) {
 			((MapReduceJob) parent).jobId = null;
 		} else {
@@ -428,24 +429,38 @@ public class MapReduceJob extends Job {
 		while ((line = br.readLine()) != null) {
 
 			if (parent != null) {
-				if (((MapReduceJob) parent).jobId == null) {
+				// if (((MapReduceJob) parent).jobId == null) {
 
-					Matcher matcher = pattern.matcher(line);
-					if (matcher.find()) {
-						((MapReduceJob) parent).jobId = matcher.group(1).trim();
+				Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					((MapReduceJob) parent).jobId = matcher.group(1).trim();
+					log.info("Job " + getId() + " -> HadoopJob "
+							+ ((MapReduceJob) parent).jobId);
+				} else {
+					Matcher matcher2 = pattern2.matcher(line);
+					if (matcher2.find()) {
+						((MapReduceJob) parent).jobId = matcher2.group(1)
+								.trim();
 						log.info("Job " + getId() + " -> HadoopJob "
 								+ ((MapReduceJob) parent).jobId);
 					}
 				}
+				// }
 			} else {
-				if (jobId == null) {
+				// if (jobId == null) {
 
-					Matcher matcher = pattern.matcher(line);
-					if (matcher.find()) {
-						jobId = matcher.group(1).trim();
+				Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					jobId = matcher.group(1).trim();
+					log.info("Job " + getId() + " -> HadoopJob " + jobId);
+				} else {
+					Matcher matcher2 = pattern2.matcher(line);
+					if (matcher2.find()) {
+						jobId = matcher2.group(1).trim();
 						log.info("Job " + getId() + " -> HadoopJob " + jobId);
 					}
 				}
+				// }
 			}
 			writeOutputln("  " + line);
 		}

@@ -62,6 +62,8 @@ public class DownloadResults extends ServerResource {
 				mediaType = MediaType.TEXT_PLAIN;
 			} else if (filename.endsWith(".pdf")) {
 				mediaType = MediaType.APPLICATION_PDF;
+			} else if (filename.endsWith(".html")) {
+				mediaType = MediaType.TEXT_HTML;
 			}
 
 			Settings settings = Settings.getInstance();
