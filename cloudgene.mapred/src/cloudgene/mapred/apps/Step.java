@@ -18,12 +18,14 @@ public class Step {
 
 	private String exec;
 
+	private String pig;
+
 	private String job;
 
 	private Map<String, String> jobInputs;
 
 	private Map<String, String> jobOutputs;
-	
+
 	private MapReduceJob mapReduceJob;
 
 	public String getJar() {
@@ -72,6 +74,14 @@ public class Step {
 
 	public String getExec() {
 		return exec;
+	}
+
+	public void setPig(String pig) {
+		this.pig = pig;
+	}
+
+	public String getPig() {
+		return pig;
 	}
 
 	public void setJob(String job) {

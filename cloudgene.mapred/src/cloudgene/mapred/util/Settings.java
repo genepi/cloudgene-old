@@ -14,6 +14,8 @@ public class Settings {
 
 	private String hadoopPath = "";
 
+	private String pigPath = "/home/hadoop/pig-0.10.0/";
+
 	private String appsPath = "../cloudgene.tools";
 
 	private String outputPath = "output";
@@ -88,6 +90,14 @@ public class Settings {
 
 	public void setHadoopPath(String hadoopPath) {
 		this.hadoopPath = hadoopPath;
+	}
+
+	public void setPigPath(String pigPath) {
+		this.pigPath = pigPath;
+	}
+
+	public String getPigPath() {
+		return pigPath;
 	}
 
 	public String getAppsPath() {

@@ -58,7 +58,9 @@ public class MapReduceJob extends Job {
 		this.parent = parent;
 
 		String hadoopPath = Settings.getInstance().getHadoopPath();
+		String pigPath = Settings.getInstance().getPigPath();
 		String hadoop = FileUtil.path(hadoopPath, "bin", "hadoop");
+		String pig = FileUtil.path(pigPath, "bin", "pig");
 		String streamingJar = Settings.getInstance().getStreamingJar();
 
 		for (Step step : config.getSteps()) {
@@ -76,6 +78,23 @@ public class MapReduceJob extends Job {
 				job.setUser(getUser());
 				step.setMapReduceJob(job);
 
+			} else if (step.getPig() != null) {
+
+				// pig script
+				List<String> command = new Vector<String>();
+
+				command.add(pig);
+				command.add("-f");
+				command.add(step.getPig());
+
+				// params
+				String[] tiles1 = step.getParams().split(" ");
+				for (String tile : tiles1) {
+					command.add(tile.trim());
+				}
+				
+				commands.add(command);
+				
 			} else if (step.getExec() != null) {
 
 				// command

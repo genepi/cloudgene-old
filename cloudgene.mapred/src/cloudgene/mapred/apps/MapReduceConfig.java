@@ -13,6 +13,8 @@ public class MapReduceConfig {
 
 	private String exec;
 
+	private String pig;
+
 	private String params;
 
 	private List<Step> steps = new Vector<Step>();
@@ -93,6 +95,14 @@ public class MapReduceConfig {
 
 	public String getExec() {
 		return exec;
+	}
+
+	public void setPig(String pig) {
+		this.pig = pig;
+	}
+
+	public String getPig() {
+		return pig;
 	}
 
 }
