@@ -9,6 +9,8 @@ import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.JobStatus;
 import org.apache.hadoop.mapred.RunningJob;
+import org.apache.hadoop.mapred.TaskReport;
+import org.apache.hadoop.mapred.TaskStatus;
 import org.apache.hadoop.util.VersionInfo;
 
 import cloudgene.mapred.core.User;
@@ -103,6 +105,36 @@ public class HadoopUtil {
 
 	}
 
+	public TaskReport[] getMapperByJob(String id) {
+
+		TaskReport[] result = null;
+		try {
+
+			result = client.getMapTaskReports(id);
+			return result;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+
+	}
+
+	public TaskReport[] getReducerByJob(String id) {
+
+		TaskReport[] result = null;
+		try {
+			result = client.getReduceTaskReports(id);
+			return result;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
 	public ClusterStatus getClusterDetails() {
 
 		try {
@@ -115,11 +147,11 @@ public class HadoopUtil {
 		}
 
 	}
-	
-	public String getVersion(){
-			
+
+	public String getVersion() {
+
 		return VersionInfo.getVersion();
-		
+
 	}
 
 }

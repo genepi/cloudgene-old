@@ -82,6 +82,14 @@ public abstract class Parameter {
 		this.mergeOutput = mergeOutput;
 	}
 
+	public boolean isMerge() {
+		return mergeOutput;
+	}
+
+	public void setMerge(boolean mergeOutput) {
+		this.mergeOutput = mergeOutput;
+	}
+
 	public String getJobId() {
 		return jobId;
 	}

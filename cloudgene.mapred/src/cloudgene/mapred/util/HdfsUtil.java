@@ -1,5 +1,6 @@
 package cloudgene.mapred.util;
 
+import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
@@ -383,5 +384,59 @@ public class HdfsUtil {
 		
 		return path.startsWith("hdfs://");
 		
+	}
+	
+	public static void checkOut(String hdfs, String filename)
+			throws IOException {
+
+		Configuration conf = new Configuration();
+		FileSystem fileSystem = FileSystem.get(conf);
+		Path path = new Path(hdfs);
+
+		if (fileSystem.isDirectory(path)) {
+
+			// merge
+			DataOutputStream fos = new DataOutputStream(new FileOutputStream(
+					filename));
+			FileStatus[] files = fileSystem.listStatus(new Path(hdfs));
+
+			for (FileStatus file : files) {
+				if (!file.isDir()) {
+
+					FSDataInputStream is = fileSystem.open(file.getPath());
+					byte[] readData = new byte[1024];
+					int i = is.read(readData);
+					long size = i;
+					while (i != -1) {
+						fos.write(readData, 0, i);
+						i = is.read(readData);
+						size += i;
+					}
+					is.close();
+
+				}
+			}
+			fos.close();
+
+		} else {
+
+			FileOutputStream fos = new FileOutputStream(filename);
+
+			FSDataInputStream is = fileSystem.open(path);
+			byte[] readData = new byte[1024];
+			int i = is.read(readData);
+			long size = i;
+			while (i != -1) {
+				fos.write(readData, 0, i);
+				i = is.read(readData);
+				size += i;
+			}
+			is.close();
+
+			fos.close();
+			System.out.println("Check out file done... (" + size + " bytes)");
+
+		}
+
 	}
 }

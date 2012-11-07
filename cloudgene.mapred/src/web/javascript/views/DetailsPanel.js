@@ -137,7 +137,7 @@ MapRed.view.DetailsPanel = Ext
 			    '<tr><td class="key">Logs</td><td class="value">',
 			    //'<tpl if="state &gt; 3">',
 			    /*'<a href="logs/{id}" target="_blank">View</a>',*/
-			    '<a href="JavaScript:showConsole(\'logs/{id}\');">View</a>',
+			    '<a href="JavaScript:showConsole(\'logs/{id}\');">View</a> | <a href="reports/{id}" target="_blank">Statistics</a>',
 			    //'</tpl>',
 			    '</td></tr></table>',
 			    '<tpl if="state == 4">',

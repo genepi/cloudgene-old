@@ -32,6 +32,7 @@ import cloudgene.mapred.resources.jobs.GetJobDetails;
 import cloudgene.mapred.resources.jobs.GetJobStatus;
 import cloudgene.mapred.resources.jobs.GetJobs;
 import cloudgene.mapred.resources.jobs.GetLogs;
+import cloudgene.mapred.resources.jobs.GetReport;
 import cloudgene.mapred.resources.jobs.RerunJob;
 import cloudgene.mapred.resources.jobs.SubmitJob;
 import cloudgene.mapred.resources.users.DeleteUser;
@@ -75,12 +76,16 @@ public class WebApp extends Application {
 
 		router.attach("/results/{job}/{id}", DownloadResults.class);
 		router.attach("/results/{job}/{id}/{filename}", DownloadResults.class);
-		router.attach("/results/{job}/{id}/{filename}/{filename2}", DownloadResults.class);
+		router.attach("/results/{job}/{id}/{filename}/{filename2}",
+				DownloadResults.class);
+
+		router.attach("/reports/{id}", GetReport.class);
+		router.attach("/reports/{id}/{file}", GetReport.class);
 
 		router.attach("/logs/{id}", GetLogs.class);
 		router.attach("/logs/{id}/{file}", GetLogs.class);
 
-		router.attach("/hdfs/files", GetFileList.class);		
+		router.attach("/hdfs/files", GetFileList.class);
 		router.attach("/hdfs/format/{format}", GetFormatsList.class);
 		router.attach("/hdfs/folders", GetFolderList.class);
 		router.attach("/hdfs/import", ImportFiles.class);

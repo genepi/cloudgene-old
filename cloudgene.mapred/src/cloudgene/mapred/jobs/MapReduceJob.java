@@ -1,7 +1,10 @@
 package cloudgene.mapred.jobs;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,6 +18,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.mapred.RunningJob;
+import org.apache.hadoop.mapred.TaskReport;
+import org.apache.hadoop.mapred.TaskTracker;
 
 import cloudgene.mapred.apps.App;
 import cloudgene.mapred.apps.MapReduceConfig;
@@ -26,6 +31,7 @@ import cloudgene.mapred.jobs.export.ExportJob;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.HadoopUtil;
 import cloudgene.mapred.util.HdfsUtil;
+import cloudgene.mapred.util.RMarkdown;
 import cloudgene.mapred.util.S3Util;
 import cloudgene.mapred.util.Settings;
 
@@ -40,6 +46,8 @@ public class MapReduceJob extends Job {
 	private MapReduceConfig config;
 
 	protected String jobId = null;
+
+	private BufferedOutputStream reportStream;
 
 	private static final Log log = LogFactory.getLog(MapReduceJob.class);
 
@@ -92,9 +100,9 @@ public class MapReduceJob extends Job {
 				for (String tile : tiles1) {
 					command.add(tile.trim());
 				}
-				
+
 				commands.add(command);
-				
+
 			} else if (step.getExec() != null) {
 
 				// command
@@ -334,6 +342,9 @@ public class MapReduceJob extends Job {
 		}
 
 		try {
+
+			initJobStats();
+
 			for (int k = 0; k < config.getSteps().size(); k++) {
 
 				String stepName = config.getSteps().get(k).getName();
@@ -378,7 +389,14 @@ public class MapReduceJob extends Job {
 
 				}
 
+				if (jobId != null) {
+					writeJobStats(jobId);
+				}
+				
 			}
+
+
+			closeJobState();
 
 			setError(null);
 			return true;
@@ -452,12 +470,18 @@ public class MapReduceJob extends Job {
 
 				Matcher matcher = pattern.matcher(line);
 				if (matcher.find()) {
+					if (((MapReduceJob) parent).jobId != null) {
+						writeJobStats(((MapReduceJob) parent).jobId);
+					}
 					((MapReduceJob) parent).jobId = matcher.group(1).trim();
 					log.info("Job " + getId() + " -> HadoopJob "
 							+ ((MapReduceJob) parent).jobId);
 				} else {
 					Matcher matcher2 = pattern2.matcher(line);
 					if (matcher2.find()) {
+						if (((MapReduceJob) parent).jobId != null) {
+							writeJobStats(((MapReduceJob) parent).jobId);
+						}
 						((MapReduceJob) parent).jobId = matcher2.group(1)
 								.trim();
 						log.info("Job " + getId() + " -> HadoopJob "
@@ -470,11 +494,18 @@ public class MapReduceJob extends Job {
 
 				Matcher matcher = pattern.matcher(line);
 				if (matcher.find()) {
+					// write statistics from old job
+					if (jobId != null) {
+						writeJobStats(jobId);
+					}
 					jobId = matcher.group(1).trim();
 					log.info("Job " + getId() + " -> HadoopJob " + jobId);
 				} else {
 					Matcher matcher2 = pattern2.matcher(line);
 					if (matcher2.find()) {
+						if (jobId != null) {
+							writeJobStats(jobId);
+						}
 						jobId = matcher2.group(1).trim();
 						log.info("Job " + getId() + " -> HadoopJob " + jobId);
 					}
@@ -828,6 +859,12 @@ public class MapReduceJob extends Job {
 			writeOutputln("Exporting data successful.");
 		}
 
+		// Write report
+		if (new File(getStatFile()).exists()) {
+			RMarkdown.convert("job-report.Rmd", getReportFile(),
+					new String[] { getStatFile() });
+		}
+
 		// Delete temporary directory
 		String tempDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(workspace,
 				"output", getId(), "temp"));
@@ -855,6 +892,117 @@ public class MapReduceJob extends Job {
 
 		return Job.MAPREDUCE;
 
+	}
+
+	protected void initJobStats() {
+
+		String header = "job\tid\ttype\tstart\tend\tseconds";
+
+		try {
+			reportStream = new BufferedOutputStream(new FileOutputStream(
+					getStatFile()));
+			reportStream.write(header.getBytes());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void closeJobState() {
+
+		try {
+			reportStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public String getStatFile() {
+
+		if (getUser() != null) {
+
+			String localWorkspace = Settings.getInstance().getLocalWorkspace(
+					getUser().getUsername());
+
+			return FileUtil.path(localWorkspace, "output", getId(),
+					"statistics.txt");
+
+		} else {
+
+			return "";
+		}
+	}
+
+	public String getReportFile() {
+
+		if (getUser() != null) {
+
+			String localWorkspace = Settings.getInstance().getLocalWorkspace(
+					getUser().getUsername());
+
+			return FileUtil.path(localWorkspace, "output", getId(),
+					"statistics.html");
+
+		} else {
+
+			return "";
+		}
+	}
+
+	protected void writeJobStats(String jobId) {
+
+		log.info("Write Statistics for job " + jobId);
+
+		RunningJob job = HadoopUtil.getInstance().getJob(jobId);
+		TaskReport[] mappers = HadoopUtil.getInstance().getMapperByJob(jobId);
+		TaskReport[] reducers = HadoopUtil.getInstance().getReducerByJob(jobId);
+
+		try {
+
+			for (TaskReport mapper : mappers) {
+
+				String line = job.getJobName()
+						+ " ("
+						+ job.getJobID()
+						+ ") "
+						+ "\t"
+						+ mapper.getTaskId()
+						+ "\tmapper\t"
+						+ mapper.getStartTime()
+						+ "\t"
+						+ mapper.getFinishTime()
+						+ "\t"
+						+ ((mapper.getFinishTime() - mapper.getStartTime()) / 1000);
+
+				reportStream.write("\n".getBytes());
+				reportStream.write(line.getBytes());
+
+			}
+
+			for (TaskReport reducer : reducers) {
+				String line = job.getJobName()
+						+ " ("
+						+ job.getJobID()
+						+ ") "
+						+ "\t"
+						+ reducer.getTaskId()
+						+ "\treducer\t"
+						+ reducer.getStartTime()
+						+ "\t"
+						+ reducer.getFinishTime()
+						+ "\t"
+						+ ((reducer.getFinishTime() - reducer.getStartTime()) / 1000);
+
+				reportStream.write("\n".getBytes());
+				reportStream.write(line.getBytes());
+
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void updateProgress() {
