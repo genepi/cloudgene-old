@@ -347,7 +347,55 @@ public class HdfsUtil {
 		}
 		return false;
 	}
+	
+	public static boolean createDirectory(FileSystem fileSystem,
+			String directory) {
+		Path path = new Path(directory);
+		try {
+			fileSystem.mkdirs(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 
+	public static boolean createDirectory(String directory) {
+		Configuration conf = new Configuration();
+		FileSystem fileSystem;
+		try {
+			fileSystem = FileSystem.get(conf);
+			return createDirectory(fileSystem, directory);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public static boolean rename(FileSystem fileSystem,
+			String oldPath, String newPath) {
+		Path old = new Path(oldPath);
+		Path newP = new Path(newPath);
+		try {
+			fileSystem.rename(old, newP);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public static boolean rename(String oldPath, String newPath) {
+		Configuration conf = new Configuration();
+		FileSystem fileSystem;
+		try {
+			fileSystem = FileSystem.get(conf);
+			return rename(fileSystem, oldPath, newPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
 	public static String path(String... paths) {
 		String result = "";
 		for (int i = 0; i < paths.length; i++) {

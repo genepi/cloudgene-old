@@ -27,33 +27,42 @@ MapRed.view.MainPanel = Ext.extend(Ext.Panel, {
 	    id : 'vp',
 
 	    items : [ {
-		region : "north",
-		xtype : 'mytoolbar',
-		height : 65,
-		split : true
-	    }, {
-		region : 'center',
-		xtype : 'jobtable',
-		id : 'jobtable',
-		layout : 'fit',
-		border : false
-	    }, {
-		region : 'south',
-		height : 400,
-		split : true,
-		header : false,
-		collapsible : true,
-		collapseMode : 'mini',
-		autoScroll: true,
-		items : [ {
-		    region : 'south',
-		    preventBodyReset : true,
-		    border : true,
-		    id : 'detailspanel',
-		    xtype : 'detailspanel'
-		} ]
+			region : "north",
+			xtype : 'mytoolbar',
+			height : 65,
+			split : true
+	    },  
 
-	    } ]
+	    {
+			region : 'center',
+			split : true,
+			header : false,
+			collapsible : true,
+			collapseMode : 'mini',
+			autoScroll: true,
+			items : [ 	  {
+			region : 'center',
+			xtype : 'jobtable',
+			id : 'jobtable',
+			layout : 'fit',
+			border : false,
+			split: true
+	    }, {
+		    	region : 'south',
+		    	height: 400,
+		    	preventBodyReset : true,
+		    	border : true,
+		    	id : 'detailspanel',
+		    	xtype : 'detailspanel',
+		    				split: true
+			} ]
+
+	    },{
+					xtype: 'workspacepanel',
+					region: 'west',
+							split : true
+
+				} ]
 	});
 
 	// call parent

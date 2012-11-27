@@ -151,7 +151,8 @@ MapRed.view.JobTable = Ext.extend(Ext.grid.GridPanel, {
     initComponent : function() {
 
 	Ext.apply(this, {
-
+	    title : 'Jobs',
+	    height: 300,
 	    columns : [ {
 		id : 'icon',
 		header : "",

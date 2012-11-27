@@ -21,6 +21,8 @@ Ext.ns('MapRed.wizards');
 
 MapRed.wizards.ImportDataS3 = Ext.extend(Ext.ux.Wiz, {
 
+	folder: "",
+
     initComponent : function() {
 
 	Ext.apply(this, {
@@ -46,7 +48,7 @@ MapRed.wizards.ImportDataS3 = Ext.extend(Ext.ux.Wiz, {
 	    },
 	    width : 480,
 	    height : 500,
-	    cards : [ new MapRed.wizards.SelectBucketCard(),
+	    cards : [ new MapRed.wizards.SelectBucketCard({folder: this.folder}),
 		    new MapRed.wizards.S3TreeCard() ],
 	    listeners : {
 		// defined in addSessionHandler

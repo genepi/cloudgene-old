@@ -13,6 +13,8 @@ MapRed.wizards.SelectBucketCard = Ext
 
 		    bucketNamePublicExamples : null,
 
+			folder : "",
+
 		    initComponent : function() {
 
 			this.bucketNamePublicField = new Ext.form.TextField({
@@ -84,6 +86,7 @@ MapRed.wizards.SelectBucketCard = Ext
 					    defaults : {
 						labelStyle : 'font-size:11px'
 					    },
+					    folder: this.folder,
 					    items : [
 						    {
 							border : false,
@@ -104,7 +107,8 @@ MapRed.wizards.SelectBucketCard = Ext
 								{
 								    id : 'path',
 								    fieldLabel : 'Folder Name',
-								    allowBlank : false
+								    allowBlank : false,
+								    value: this.folder
 								}) ]
 						    },
 

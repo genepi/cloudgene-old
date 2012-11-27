@@ -24,6 +24,9 @@ import cloudgene.mapred.resources.data.GetFormatsList;
 import cloudgene.mapred.resources.data.GetLocalFiles;
 import cloudgene.mapred.resources.data.GetMyBuckets;
 import cloudgene.mapred.resources.data.ImportFiles;
+import cloudgene.mapred.resources.data.NewFolder;
+import cloudgene.mapred.resources.data.RemoveFiles;
+import cloudgene.mapred.resources.data.RenameFile;
 import cloudgene.mapred.resources.jobs.CancelJob;
 import cloudgene.mapred.resources.jobs.DeleteJob;
 import cloudgene.mapred.resources.jobs.DownloadResults;
@@ -90,7 +93,10 @@ public class WebApp extends Application {
 		router.attach("/hdfs/folders", GetFolderList.class);
 		router.attach("/hdfs/import", ImportFiles.class);
 		router.attach("/hdfs/upload", FileUploadRessource.class);
-
+		router.attach("/hdfs/delete", RemoveFiles.class);
+		router.attach("/hdfs/new", NewFolder.class);
+		router.attach("/hdfs/rename", RenameFile.class);
+		
 		router.attach("/local/files", GetLocalFiles.class);
 
 		router.attach("/buckets/public", GetBucketsPublic.class);

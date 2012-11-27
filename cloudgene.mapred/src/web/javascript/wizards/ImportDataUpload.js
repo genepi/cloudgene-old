@@ -21,6 +21,8 @@ Ext.ns('MapRed.wizards');
 
 MapRed.wizards.ImportDataUpload = Ext.extend(Ext.ux.Wiz, {
 
+	folder: "",
+
 	initComponent : function() {
 		Ext.apply(this, {
 
@@ -45,7 +47,7 @@ MapRed.wizards.ImportDataUpload = Ext.extend(Ext.ux.Wiz, {
 			},
 			width : 480,
 			height : 500,
-			cards : [ new MapRed.wizards.ImportDataUploadCard() ],
+			cards : [ new MapRed.wizards.ImportDataUploadCard({folder: this.folder}) ],
 			listeners : {
 				finish : this.onFinish
 			}
@@ -135,6 +137,8 @@ MapRed.wizards.ImportDataUploadCard = Ext
 				Ext.ux.Wiz.Card,
 				{
 
+					folder: "",
+
 					initComponent : function() {
 
 						Ext
@@ -152,6 +156,7 @@ MapRed.wizards.ImportDataUploadCard = Ext
 											defaults : {
 												labelStyle : 'font-size:11px'
 											},
+											folder: this.folder,
 											items : [
 													{
 														border : false,
@@ -172,7 +177,8 @@ MapRed.wizards.ImportDataUploadCard = Ext
 																{
 																	id : 'path',
 																	fieldLabel : 'Folder Name',
-																	allowBlank : false
+																	allowBlank : false,
+																	value: this.folder
 																}) ]
 													},
 													{
@@ -182,7 +188,7 @@ MapRed.wizards.ImportDataUploadCard = Ext
 														autoHeight : true,
 														defaults : {
 															width : 210,
-															labelStyle : 'font-size:11px'
+															labelStyle : 'font-size:11px',
 														},
 														defaultType : 'textfield',
 														items : [

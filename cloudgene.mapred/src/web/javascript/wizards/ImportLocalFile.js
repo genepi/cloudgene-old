@@ -23,6 +23,8 @@ MapRed.wizards.ImportLocalFile = Ext.extend(Ext.ux.Wiz, {
 
 	initComponent : function() {
 
+		folder: "",
+
 		Ext.apply(this, {
 
 			id : 'wizard',
@@ -46,7 +48,7 @@ MapRed.wizards.ImportLocalFile = Ext.extend(Ext.ux.Wiz, {
 			},
 			width : 480,
 			height : 500,
-			cards : [ new MapRed.wizards.ImportLocalFileCard() ],
+			cards : [ new MapRed.wizards.ImportLocalFileCard({folder: this.folder}) ],
 			listeners : {
 				// defined in addSessionHandler
 				finish : this.onFinish
@@ -114,6 +116,8 @@ MapRed.wizards.ImportLocalFileCard = Ext.extend(Ext.ux.Wiz.Card, {
 
 	infoText : null,
 
+	folder: "",
+
 	initComponent : function() {
 
 		Ext.apply(this, {
@@ -125,6 +129,7 @@ MapRed.wizards.ImportLocalFileCard = Ext.extend(Ext.ux.Wiz.Card, {
 			fileUpload : true,
 			border : false,
 			height : '100%',
+			folder: this.folder,
 			defaults : {
 				labelStyle : 'font-size:11px'
 			},
@@ -141,7 +146,8 @@ MapRed.wizards.ImportLocalFileCard = Ext.extend(Ext.ux.Wiz.Card, {
 				items : [ new Ext.form.TextField({
 					id : 'path',
 					fieldLabel : 'Folder Name',
-					allowBlank : false
+					allowBlank : false,
+					value: this.folder
 				}) ]
 			}, {
 				title : 'Local Filesystem',

@@ -1,7 +1,9 @@
 package cloudgene.mapred.util;
 
 import java.io.IOException;
+import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -9,7 +11,8 @@ import org.apache.hadoop.fs.Path;
 
 public class HdfsTree {
 
-	public static HdfsItem[] getFileTree(String workspace, String name) {
+	public static HdfsItem[] getFileTree(String workspace, String name,
+			boolean details) {
 
 		Configuration conf = new Configuration();
 		HdfsItem[] results = null;
@@ -18,8 +21,24 @@ public class HdfsTree {
 
 			FileStatus[] files = fileSystem.listStatus(new Path(HdfsUtil.path(
 					workspace, name)));
-			results = new HdfsItem[files.length];
+
 			int count = 0;
+			if (details && !name.equals("")) {
+				results = new HdfsItem[files.length + 1];
+
+				String[] tiles = name.replaceFirst("/","").split("/", 2);
+
+				String parent = name.substring(0, name.lastIndexOf("/"));
+
+				results[count] = new HdfsItem();
+				results[count].setText("..");
+				results[count].setPath(parent);
+				results[count].setId(name+"...");
+				results[count].setLeaf(false);
+				count++;
+			} else {
+				results = new HdfsItem[files.length];
+			}
 
 			// folders
 			for (int i = 0; i < files.length; i++) {
@@ -45,6 +64,12 @@ public class HdfsTree {
 					results[count].setId(name + "/"
 							+ files[i].getPath().getName());
 					results[count].setLeaf(!files[i].isDir());
+					if (details) {
+						results[count].setSize(FileUtils
+								.byteCountToDisplaySize(files[i].getLen()));
+						results[count].setModificationTime(new Date(files[i]
+								.getModificationTime()).toString());
+					}
 					count++;
 				}
 			}

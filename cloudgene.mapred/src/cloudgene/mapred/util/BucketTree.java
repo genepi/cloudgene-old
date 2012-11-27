@@ -114,7 +114,11 @@ public class BucketTree {
 				for (StorageBucket bucket : buckets) {
 					results[count] = new BucketItem();
 					results[count].setId(bucket.getName());
-					results[count].setText(bucket.getName());
+					String temp = "";
+					for (String key2 : bucket.getMetadataMap().keySet()){
+						temp += " " + key2;
+					}
+					results[count].setText(temp);
 					results[count].setPath("");
 					results[count].setLeaf(false);
 					count++;

@@ -21,6 +21,8 @@ Ext.ns('MapRed.wizards');
 
 MapRed.wizards.ImportDataFtp = Ext.extend(Ext.ux.Wiz, {
 
+    folder: "",
+
 	initComponent : function() {
 
 		Ext.apply(this, {
@@ -46,7 +48,7 @@ MapRed.wizards.ImportDataFtp = Ext.extend(Ext.ux.Wiz, {
 			},
 			width : 480,
 			height : 500,
-			cards : [ new MapRed.wizards.ImportDataFtpCard() ],
+			cards : [ new MapRed.wizards.ImportDataFtpCard({folder: this.folder}) ],
 			listeners : {
 				// defined in addSessionHandler
 				finish : this.onFinish
@@ -118,6 +120,8 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 	passwordField : null,
 
 	ftpModeBox : null,
+
+    folder: "",
 
 	initComponent : function() {
 
@@ -194,6 +198,7 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 			fileUpload : true,
 			border : false,
 			height : '100%',
+			folder: this.folder,
 			defaults : {
 				labelStyle : 'font-size:11px'
 			},
@@ -216,7 +221,8 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 						items : [ new Ext.form.TextField({
 							id : 'path',
 							fieldLabel : 'Folder Name',
-							allowBlank : false
+							allowBlank : false,
+							value: this.folder
 						}) ]
 					},
 					{

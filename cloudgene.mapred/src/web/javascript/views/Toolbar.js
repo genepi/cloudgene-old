@@ -45,80 +45,14 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		    wizard.show();
 
 		}
-	    }, {
-		text : 'Import Data',
-		tooltip : 'Import Data',
-		xtype : 'tbbutton',
-		icon : '../images/import-data.png',
-		iconAlign : 'top',
-		cls : 'x-btn-text-icon',
-		scale : 'large',
-
-		menu : [ {
-		    text : 'File Upload...',
-		    handler : function(btn) {
-
-			var wizard = new MapRed.wizards.ImportDataUpload();
-			wizard.show();
-
-		    }
-		}, {
-		    text : 'From URL...',
-		    handler : function(btn) {
-
-			var wizard = new MapRed.wizards.ImportDataHttp();
-			wizard.show();
-
-		    }
-		}, {
-		    text : 'From FTP Server...',
-		    handler : function(btn) {
-
-			var wizard = new MapRed.wizards.ImportDataFtp();
-			wizard.show();
-
-		    }
-		}, {
-		    text : 'From S3 Bucket...',
-		    handler : function(btn) {
-
-			var wizard = new MapRed.wizards.ImportDataS3();
-			wizard.show();
-
-		    }
-		}, {
-		    text : 'From Local Filesystem...',
-		    handler : function(btn) {
-
-			var wizard = new MapRed.wizards.ImportLocalFile();
-			wizard.show();
-
-		    }
-		} ]
-
-	    }, /*{
-		text : 'Install App',
-		tooltip : 'Install App',
-		xtype : 'tbbutton',
-		icon : '../images/settings.png',
-		iconAlign : 'top',
-		cls : 'x-btn-text-icon',
-		scale : 'large',
-		handler : function(btn) {
-
-		    var wizard = new MapRed.wizards.ImportApp();
-		    wizard.show();
-
-		}
-	    },*/
-
+	    },
 	    {
 		xtype : 'tbfill'
 	    }, {
 		text : 'My Account',
 		tooltip : 'My Account Settings',
 		xtype : 'tbbutton',
-		icon : '../images/favorite.png',
+		icon : '../images/user.png',
 		iconAlign : 'top',
 		cls : 'x-btn-text-icon',
 		scale : 'large',
@@ -132,7 +66,7 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		text : 'My Cluster',
 		tooltip : 'My Cluster Information',
 		xtype : 'tbbutton',
-		icon : '../images/info.png',
+		icon : '../images/gear.png',
 		iconAlign : 'top',
 		cls : 'x-btn-text-icon',
 		scale : 'large',
