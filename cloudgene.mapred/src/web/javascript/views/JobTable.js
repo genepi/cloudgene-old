@@ -153,6 +153,117 @@ MapRed.view.JobTable = Ext.extend(Ext.grid.GridPanel, {
 	Ext.apply(this, {
 	    title : 'Jobs',
 	    height: 300,
+	    tbar: [{
+		text : 'Submit Job',
+		tooltip : 'Submit a new Job',
+		xtype : 'tbbutton',
+		icon : '../images/icons/submit.png',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.SubmitJob();
+		    wizard.show();
+
+		}
+	    },{
+		text : 'Rerun',
+		tooltip : 'Rerun the Job',
+		xtype : 'tbbutton',
+				icon : '../images/icons/refresh.png',
+		handler : function(btn) {
+
+
+		    var jobTable = Ext.getCmp('jobtable');
+		    var storeJobs = jobTable.getStore();
+if ( jobTable.selModel.getCount() > 0){
+		id = jobTable.selModel.getSelected().data.id;
+
+    Ext.Msg.confirm('Rerun Jobs', 'Really?', function(btn, text) {
+	if (btn == 'yes') {
+	    Ext.Ajax.request({
+		url : '../jobs/rerun',
+		params : {
+		    id : id
+		},
+
+		failure : function(response, request) {
+
+		    var obj = Ext.util.JSON.decode(response.responseText);
+
+		    // error
+		    Ext.Msg.show({
+			title : 'Exception',
+			msg : obj.message,
+			buttons : Ext.Msg.OK
+		    });
+
+		},
+
+		success : function(response, request) {
+
+		    var obj = Ext.util.JSON.decode(response.responseText);
+
+		    // successfully added
+		    Ext.Msg.show({
+			title : 'Submitting Job',
+			msg : obj.message,
+			buttons : Ext.Msg.OK
+		    });
+
+		    storeJobs.reload();
+
+		}
+
+	    });
+	}
+
+    })
+}
+
+  }
+		
+	    },
+	    {
+		text : 'Delete',
+		tooltip : 'Delete the Job',
+		xtype : 'tbbutton',
+				icon : '../images/icons/delete-job.png',
+		handler : function(btn) {
+
+		    var jobTable = Ext.getCmp('jobtable');
+		    var storeJobs = jobTable.getStore();
+if ( jobTable.selModel.getCount() > 0){
+		id = jobTable.selModel.getSelected().data.id;
+
+
+    Ext.Msg.confirm('Delete Jobs', 'Really?', function(btn, text) {
+	if (btn == 'yes') {
+	    Ext.Ajax.request({
+		url : '../jobs/delete',
+		params : {
+		    id : id
+		},
+		success : function(response) {
+
+		    storeJobs.reload();
+
+		    var detailsPanel = Ext.getCmp('detailspanel');
+		    var detailsStore = detailsPanel.getStore();
+		    detailsStore.load({
+			params : {
+			    'id' : -1
+			}
+		    });
+
+		}
+	    });
+	}
+    });
+}
+
+		}
+	    }
+	    
+	    ],
 	    columns : [ {
 		id : 'icon',
 		header : "",

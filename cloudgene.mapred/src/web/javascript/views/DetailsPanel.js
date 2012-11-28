@@ -171,7 +171,6 @@ MapRed.view.DetailsPanel = Ext
 			    '<tr><td class="key">{description}</td><td class="value">{value}</td></tr>',
 			    '</tpl>',
 			    '</table>',
-			    '<p style=\"text-align: right\"><a href=\"javascript:rerunItem(\'{id}\')\"><img src=\"images/rerun.png\" hint=\"Rerun this job\"/></a> <a href=\"javascript:deleteItem(\'{id}\')\"><img src=\"images/delete.png\" hint=\"Delete this job and all output files\"/></a></p>',
 			    '</div></tpl>',
 			    {
 				formatState : function(value) {
@@ -235,79 +234,4 @@ showConsole = function(file){
     var temp = new MapRed.dialogs.consoleWindow({logFile: file});
     temp.show();
     
-}
-
-deleteItem = function(id) {
-
-    Ext.Msg.confirm('Kill Jobs', 'Really?', function(btn, text) {
-	if (btn == 'yes') {
-	    Ext.Ajax.request({
-		url : '../jobs/delete',
-		params : {
-		    id : id
-		},
-		success : function(response) {
-
-		    var jobTable = Ext.getCmp('jobtable');
-		    var storeJobs = jobTable.getStore();
-		    storeJobs.reload();
-
-		    var detailsPanel = Ext.getCmp('detailspanel');
-		    var detailsStore = detailsPanel.getStore();
-		    detailsStore.load({
-			params : {
-			    'id' : -1
-			}
-		    });
-
-		}
-	    });
-	}
-    });
-}
-rerunItem = function(id) {
-
-    Ext.Msg.confirm('Rerun Jobs', 'Really?', function(btn, text) {
-	if (btn == 'yes') {
-	    Ext.Ajax.request({
-		url : '../jobs/rerun',
-		params : {
-		    id : id
-		},
-
-		failure : function(response, request) {
-
-		    var obj = Ext.util.JSON.decode(response.responseText);
-
-		    // error
-		    Ext.Msg.show({
-			title : 'Exception',
-			msg : obj.message,
-			buttons : Ext.Msg.OK
-		    });
-
-		},
-
-		success : function(response, request) {
-
-		    var obj = Ext.util.JSON.decode(response.responseText);
-
-		    // successfully added
-		    Ext.Msg.show({
-			title : 'Submitting Job',
-			msg : obj.message,
-			buttons : Ext.Msg.OK
-		    });
-
-		    // reload tasks
-		    var jobTable = Ext.getCmp('jobtable');
-		    var storeJobs = jobTable.getStore();
-		    storeJobs.reload();
-
-		}
-
-	    });
-	}
-
-    })
 }

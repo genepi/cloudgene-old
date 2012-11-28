@@ -31,22 +31,7 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 	    bodyStyle : 'background-color: #ffffff',
 	    items : [ {
 		xtype : 'tbspacer'
-	    }, {
-		text : 'Submit Job',
-		tooltip : 'Submit a new Job',
-		xtype : 'tbbutton',
-		icon : '../images/submit-job.png',
-		iconAlign : 'top',
-		cls : 'x-btn-text-icon',
-		scale : 'large',
-		handler : function(btn) {
-
-		    var wizard = new MapRed.wizards.SubmitJob();
-		    wizard.show();
-
-		}
-	    },
-	    {
+	    },	    {
 		xtype : 'tbfill'
 	    }, {
 		text : 'My Account',
