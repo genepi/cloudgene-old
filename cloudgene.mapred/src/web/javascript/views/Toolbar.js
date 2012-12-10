@@ -38,9 +38,7 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		tooltip : 'My Account Settings',
 		xtype : 'tbbutton',
 		icon : '../images/user.png',
-		iconAlign : 'top',
 		cls : 'x-btn-text-icon',
-		scale : 'large',
 		handler : function(btn) {
 
 		    var wizard = new MapRed.wizards.AccountSettings();
@@ -52,9 +50,7 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		tooltip : 'My Cluster Information',
 		xtype : 'tbbutton',
 		icon : '../images/gear.png',
-		iconAlign : 'top',
 		cls : 'x-btn-text-icon',
-		scale : 'large',
 		handler : function(btn) {
 
 		    var wizard = new MapRed.wizards.Cluster();
@@ -67,10 +63,8 @@ MapRed.view.Toolbar = Ext.extend(Ext.Toolbar, {
 		text : 'Admin',
 		tooltip : 'Users',		
 		xtype : 'tbbutton',
-		icon : '../images/settings.png',
-		iconAlign : 'top',
+		icon : '../images/icons/cog.png',
 		cls : 'x-btn-text-icon',
-		scale : 'large',
 		hidden : true,
 		handler : function(btn) {
 

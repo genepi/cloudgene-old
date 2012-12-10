@@ -153,6 +153,8 @@ MapRed.view.JobTable = Ext.extend(Ext.grid.GridPanel, {
 	Ext.apply(this, {
 	    title : 'Jobs',
 	    height: 300,
+	    autoScroll: true,
+	    layout: 'fit',
 	    tbar: [{
 		text : 'Submit Job',
 		tooltip : 'Submit a new Job',
@@ -177,7 +179,7 @@ MapRed.view.JobTable = Ext.extend(Ext.grid.GridPanel, {
 if ( jobTable.selModel.getCount() > 0){
 		id = jobTable.selModel.getSelected().data.id;
 
-    Ext.Msg.confirm('Rerun Jobs', 'Really?', function(btn, text) {
+    Ext.Msg.confirm('Rerun Jobs', 'Are you sure you want to rerun the selected job?', function(btn, text) {
 	if (btn == 'yes') {
 	    Ext.Ajax.request({
 		url : '../jobs/rerun',
@@ -235,7 +237,7 @@ if ( jobTable.selModel.getCount() > 0){
 		id = jobTable.selModel.getSelected().data.id;
 
 
-    Ext.Msg.confirm('Delete Jobs', 'Really?', function(btn, text) {
+    Ext.Msg.confirm('Delete Jobs', 'Are you sure you want to delete the selected job? All created results will be deleted!', function(btn, text) {
 	if (btn == 'yes') {
 	    Ext.Ajax.request({
 		url : '../jobs/delete',
@@ -260,6 +262,60 @@ if ( jobTable.selModel.getCount() > 0){
     });
 }
 
+		}
+	    },
+	    {
+		xtype : 'tbfill'
+	    }, {
+		text : 'My Account',
+		tooltip : 'My Account Settings',
+		xtype : 'tbbutton',
+		icon : '../images/icons/user.png',
+		cls : 'x-btn-text-icon',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.AccountSettings();
+		    wizard.show();
+
+		}
+	    }, {
+		text : 'My Cluster',
+		tooltip : 'My Cluster Information',
+		xtype : 'tbbutton',
+		icon : '../images/icons/cog.png',
+		cls : 'x-btn-text-icon',
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.Cluster();
+		    wizard.show();
+
+		}
+
+	    }, {
+		id: 'admin-button',
+		text : 'Admin',
+		tooltip : 'Users',		
+		xtype : 'tbbutton',
+		icon : '../images/icons/cog.png',
+		cls : 'x-btn-text-icon',
+		hidden : true,
+		handler : function(btn) {
+
+		    var wizard = new MapRed.wizards.Users();
+		    wizard.show();
+
+		}
+	    }, {
+		text : 'Logout',
+		xtype : 'tbbutton',
+		icon : '../images/icons/logout.png',
+		cls : 'x-btn-text-icon',
+		handler : function(btn) {
+		    Ext.Msg.confirm('Logout', 'Really?', function(btn, text) {
+			if (btn == 'yes') {
+			    window.location = "logout";
+			}
+		    });
 		}
 	    }
 	    
