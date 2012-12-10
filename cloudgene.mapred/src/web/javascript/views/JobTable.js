@@ -236,6 +236,13 @@ if ( jobTable.selModel.getCount() > 0){
 if ( jobTable.selModel.getCount() > 0){
 		id = jobTable.selModel.getSelected().data.id;
 
+		if(jobTable.selModel.getSelected().data.state == 1 || jobTable.selModel.getSelected().data.state == 2 || jobTable.selModel.getSelected().data.state == 3){ 
+
+			cancelJob(id)
+			return;
+			
+		}
+
 
     Ext.Msg.confirm('Delete Jobs', 'Are you sure you want to delete the selected job? All created results will be deleted!', function(btn, text) {
 	if (btn == 'yes') {
