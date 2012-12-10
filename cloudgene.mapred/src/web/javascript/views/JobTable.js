@@ -331,7 +331,7 @@ if ( jobTable.selModel.getCount() > 0){
 	    }, {
 		id : 'name',
 		header : "Job Name",
-		width : 600,
+		width : 500,
 		flex : 1,
 		renderer : this.jobTitleRenderer,
 		dataIndex : 'name'
