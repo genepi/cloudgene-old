@@ -1,0 +1,5 @@
+cloudUser: cloudgene
+appsPath: apps/
+mapRed: http://cloudgene.uibk.ac.at/downloads/cloudgene-0.3.0.zip
+cloudFolder: apps
+tempPath: tmp
