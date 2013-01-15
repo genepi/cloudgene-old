@@ -1,9 +1,9 @@
-package cloudgene.core.programs;
+/*package cloudgene.core.programs;
 
-/**
+*//**
  * @author seppinho
  *
- */
+ *//*
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -236,11 +236,11 @@ public class ClusterYaml {
 
 	public void install(EC2Communication communication)
 			throws FileNotFoundException, JSchException, SftpException {
-		/*FileFilter fileFilter = new FileFilter() {
+		FileFilter fileFilter = new FileFilter() {
 			public boolean accept(File file) {
 				return !file.getName().toLowerCase().startsWith(".");
 			}
-		};*/
+		};
 		// copy program and sample data
 		System.out.println("name: " + folder.getName());
 		String path = cloudFolder + "/" + folder.getName();
@@ -259,7 +259,7 @@ public class ClusterYaml {
 				+ zipFile.getName());
 		communication.executeCmd("unzip " + path + "/" + zipFile.getName() + " -d " + path);
 		
-		/*for (int i = 0; i < files.length; i++) {
+		for (int i = 0; i < files.length; i++) {
 			if (files[i].isDirectory()) {
 			} else {
 				communication.copyData(files[i].getPath(), path + "/"
@@ -271,7 +271,7 @@ public class ClusterYaml {
 				}
 			}
 
-		}*/
+		}
 	}
 
 	public void startbyScript(EC2Communication communication, int clusterPK,
@@ -287,3 +287,4 @@ public class ClusterYaml {
 	}
 
 }
+*/

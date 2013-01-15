@@ -225,7 +225,7 @@ public class ClusterConfiguration {
 		}
 		/** user defined variables */
 		 conf.addProperty("whirr.max-startup-retries", 2);
-		 if(getAmount()>6)
+		 if(getAmount()>1)
 		 conf.addProperty("whirr.instance-templates-max-percent-failures", "100 nn+jt,60 dn+tt");
 		 conf.addProperty("whirr.client-cidrs", program.getCidrs());
 		 conf.addProperty("whirr.env.repo", program.getHadoopVersion());

@@ -225,10 +225,8 @@ public class ClusterSetup {
 	public void setup(EC2Communication communication)
 			throws FileNotFoundException, JSchException, SftpException {
 		communication.executeCmd("mkdir " + cloudFolder);
-		System.out.println("first command finished");
 		communication.executeCmd("mkdir " + cloudFolder + "/"
 				+ folder.getName());
-		System.out.println("second command finished");
 		communication
 				.executeCmd("sudo rm /usr/lib/hadoop/lib/jets3t-0.6.1.jar");
 		communication.executeCmd("sudo apt-get install unzip");
@@ -241,23 +239,24 @@ public class ClusterSetup {
 				return !file.getName().toLowerCase().startsWith(".");
 			}
 		};*/
-		// copy program and sample data
-		System.out.println("name: " + folder.getName());
-		String path = cloudFolder + "/" + folder.getName();
-		File zipFile= new File(Settings.getInstance().getAppsPath()+"/"+folder.getName()+".zip");
-		System.out.println("ZIP FILE IS " +zipFile.getAbsolutePath());
-		System.out.println("ZIP FILE IS " +zipFile.getPath());
 		
+		String path = cloudFolder + "/" + folder.getName();
+		File fileToUpload= new File(Settings.getInstance().getAppsPath()+"/"+folder.getName()+".zip");
+		
+		/** copy data to cloud */
 		try {
-			Utils4J.zipDir(folder, "", zipFile);
+			Utils4J.zipDir(folder, "", fileToUpload);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		communication.copyData(zipFile.getPath(), path + "/"
-				+ zipFile.getName());
-		communication.executeCmd("unzip " + path + "/" + zipFile.getName() + " -d " + path);
+		/** copy data to cloud */
+		communication.copyData(fileToUpload.getPath(), path + "/"
+				+ fileToUpload.getName());
+		
+		/** unzip data */ 
+		communication.executeCmd("unzip " + path + "/" + fileToUpload.getName() + " -d " + path);
 		
 		/*for (int i = 0; i < files.length; i++) {
 			if (files[i].isDirectory()) {

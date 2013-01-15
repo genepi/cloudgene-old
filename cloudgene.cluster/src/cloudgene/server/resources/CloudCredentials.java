@@ -3,19 +3,13 @@ package cloudgene.server.resources;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
-import org.jets3t.service.S3ServiceException;
-import org.restlet.data.Form;
 import org.restlet.data.MediaType;
-import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-
-import cloudgene.database.Dao;
 import cloudgene.database.UserDao;
 import cloudgene.user.User;
 import cloudgene.user.UserSessions;
