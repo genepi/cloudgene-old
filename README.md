@@ -8,13 +8,13 @@ Cloudgene is an open-source platform to improve the usability of MapReduce progr
 
 Two Cloudgene modes are available:
 
-1) The public mode provides a web interface to launch a cluster on Amazon EC2, setups the necessary configuration (upload MapReduce program, Hadoop environment, etc.) and installs the Cloudgene MapReduce interface (same as in point 2). The public mode can be started on every Windows / Linux machine having Java installed.
+1) The public mode provides a web interface to launch a cluster on Amazon EC2, setups the necessary configuration (upload MapReduce program, Hadoop environment, etc.) and installs the Cloudgene MapReduce interface (same as in point 2). 
 
 2) The private mode provides a graphical user interface (GUI) to execute/monitor MapReduce programs and import/export data on your private cluster. The private mode requires a working Hadoop MapReduce cluster as a prerequisite.
 
 **Public Mode**
 ***
-Cloudgene's public mode supports scientists by launching a cluster in the cloud (currently Amazon EC2) and set ups a ready-to-use environment for a specific use case. It installs the MapReduce framework and necessary variables (instance type, amount of instances, firewall rules) as defined in the configuration file and launches Cloudgene-MapRed on it (see below). All complicated set-ups through the command line are elimnated.
+Cloudgene's public mode supports scientists by launching a cluster in the cloud (currently Amazon EC2) and set ups a ready-to-use environment for a specific use case. It installs the MapReduce framework and necessary variables (instance type, amount of instances, firewall rules) as defined in the configuration file and launches the same web interface as in point 2 (see below). All complicated set-ups through the command line are elimnated.
 
 **Private Mode**
 ***
