@@ -8,7 +8,7 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 
 public class Settings {
 	
-	public static String configLocation ="config/settings.yaml";
+	public static String configLocation ="files/config/settings.yaml";
 
 	private String cloudUser;
 
