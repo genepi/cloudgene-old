@@ -1,6 +1,8 @@
 package cloudgene.mapred.util;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
@@ -10,9 +12,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.util.LineReader;
 
@@ -416,9 +420,17 @@ public class HdfsUtil {
 		Configuration conf = new Configuration();
 		FileSystem fileSystem;
 
+		
 		try {
 			fileSystem = FileSystem.get(conf);
+
+			System.out.println("path: " + path);
+			System.out.println("my home: " + fileSystem.getHomeDirectory().toString());
+
+			
+			//String temp = path;
 			String temp = fileSystem.getHomeDirectory().toString() + "/" + path;
+
 			temp = temp.replaceFirst("//([a-zA-Z\\-.\\d]*)(:(\\d*))?/", "///");
 			return temp;
 		} catch (Exception e) {
@@ -486,5 +498,44 @@ public class HdfsUtil {
 
 		}
 
+	}
+	
+	public static void put(String filename, String target, Configuration conf) {
+		try {
+
+			File file = new File(filename);
+
+			if (file.isDirectory()) {
+
+				File[] files = file.listFiles();
+				for (File subFile : files) {
+					put(subFile.getPath(),
+							HdfsUtil.path(target, subFile.getName()));
+				}
+
+			} else {
+
+				FileInputStream in = new FileInputStream(filename);
+
+				FileSystem fileSystem = FileSystem.get(conf);
+				FSDataOutputStream out = fileSystem.create(new Path(target));
+
+				IOUtils.copyBytes(in, out, fileSystem.getConf());
+
+				System.out.println("Import file " + filename + " done...("
+						+ out.size() + " bytes)");
+
+				IOUtils.closeStream(in);
+				IOUtils.closeStream(out);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void put(String filename, String target) {
+		Configuration configuration = new Configuration();
+		put(filename, target, configuration);
 	}
 }

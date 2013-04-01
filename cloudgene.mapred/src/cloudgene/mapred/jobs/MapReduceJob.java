@@ -8,6 +8,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +75,7 @@ public class MapReduceJob extends Job {
 		String streamingJar = Settings.getInstance().getStreamingJar();
 
 		for (Step step : config.getSteps()) {
-
+			step.setMyJob(this);
 			// other MapReduce Job
 			if (step.getJob() != null) {
 
@@ -102,6 +105,11 @@ public class MapReduceJob extends Job {
 				}
 
 				commands.add(command);
+
+			} else if (step.getClassname() != null) {
+
+				// no command needed!
+				commands.add(null);
 
 			} else if (step.getExec() != null) {
 
@@ -277,6 +285,11 @@ public class MapReduceJob extends Job {
 
 			FileUtil.createDirectory(localOutputDirectory);
 
+			String localTempDirectory = new File(FileUtil.path(localWorkspace,
+					"output", getId(), "temp")).getAbsolutePath();
+
+			FileUtil.createDirectory(localTempDirectory);
+
 			// create output directories
 			for (int i = 0; i < config.getOutputs().size(); i++) {
 
@@ -358,6 +371,8 @@ public class MapReduceJob extends Job {
 					setCurrentStep("Step " + step + " (" + step + "/" + steps
 							+ ")");
 				}
+				// config.getSteps().get(k).setMapReduceJob(this);
+				getSteps().add(config.getSteps().get(k));
 				dao.update(this);
 
 				log.info("job " + getId() + " submitted...");
@@ -369,32 +384,109 @@ public class MapReduceJob extends Job {
 
 				// normal command
 
-				if (config.getSteps().get(k).getMapReduceJob() != null) {
+				// set output directory, temp directory & jobname
+				String workspace = Settings.getInstance().getHdfsWorkspace(
+						getUser().getUsername());
 
-					MapReduceJob job = config.getSteps().get(k)
-							.getMapReduceJob();
-					boolean successful = executeJob(job,
-							config.getSteps().get(k));
-					if (!successful) {
+				// find the right id
+				String id = getId();
+				Job myParent = parent;
+				if (parent != null) {
+					while (myParent.parent != null) {
+						myParent = myParent.parent;
+					}
+					id = myParent.getId();
+				}
+
+				String tempDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
+						workspace, "output", id, "temp"));
+				String outputDirectory = HdfsUtil.makeAbsolute(HdfsUtil.path(
+						workspace, "output", id));
+
+				String localWorkspace = new File(Settings.getInstance()
+						.getLocalWorkspace(getUser().getUsername()))
+						.getAbsolutePath();
+
+				String localOutputDirectory = new File(FileUtil.path(
+						localWorkspace, "output", getId())).getAbsolutePath();
+
+				String localTemp = new File(FileUtil.path(localWorkspace,
+						"output", getId(), "temp")).getAbsolutePath();
+
+				CloudgeneContext context = new CloudgeneContext(config,
+						inputValues, config.getSteps().get(k));
+				context.setHdfsTemp(tempDirectory);
+				context.setHdfsOutput(outputDirectory);
+				context.setLocalTemp(localTemp);
+				context.setLocalOutput(localOutputDirectory);
+
+				if (config.getSteps().get(k).getClassname() != null) {
+
+					try {
+						String jar = FileUtil.path(new File(getConfig()
+								.getPath()).getAbsolutePath(), config
+								.getSteps().get(k).getJar());
+
+						URL url = new File(jar).toURL();
+						URLClassLoader urlCl = new URLClassLoader(
+								new URL[] { url },
+								MapReduceJob.class.getClassLoader());
+						Class myClass = urlCl.loadClass(config.getSteps()
+								.get(k).getClassname());
+						Object instance = myClass.newInstance();
+						Method method = instance.getClass().getMethod("run",
+								CloudgeneContext.class);
+						Boolean successful = (Boolean) method.invoke(instance,
+								context);
+						if (!successful) {
+							return false;
+						}
+					} catch (Exception e) {
+						log.error("Running extern job failed!", e);
 						return false;
 					}
 
 				} else {
 
-					List<String> command = commands.get(k);
-					boolean successful = executeCommand(command);
-					if (!successful) {
-						return false;
+					if (config.getSteps().get(k).getMapReduceJob() != null) {
+
+						MapReduceJob job = config.getSteps().get(k)
+								.getMapReduceJob();
+						boolean successful = executeJob(job, config.getSteps()
+								.get(k));
+						if (!successful) {
+							context.start("");
+							context.done(
+									"Execution failed. Please have a look at the logfile for details.",
+									LogMessage.ERROR);
+							return false;
+						} else {
+							context.start("");
+							context.done("Execution successful.", LogMessage.OK);
+						}
+
+					} else {
+
+						List<String> command = commands.get(k);
+						boolean successful = executeCommand(command);
+						if (!successful) {
+							context.start("");
+							context.done(
+									"Execution failed. Please have a look at the logfile for details.",
+									LogMessage.ERROR);
+							return false;
+						} else {
+							context.start("");
+							context.done("Execution successful.", LogMessage.OK);
+						}
+
 					}
-
 				}
-
 				if (jobId != null) {
 					writeJobStats(jobId);
 				}
-				
-			}
 
+			}
 
 			closeJobState();
 
@@ -635,14 +727,17 @@ public class MapReduceJob extends Job {
 
 						String filename = out.getValue();
 						String hdfsPath = null;
-						if (filename.startsWith("hdfs://")
-								|| filename.startsWith("file:/")) {
-							hdfsPath = filename;
-						} else {
+						 if (filename.startsWith("hdfs://")
+						 || filename.startsWith("file:/")) {
+						hdfsPath = filename;
+						
+						 } else {
+						 
+						  hdfsPath = HdfsUtil.makeAbsolute(HdfsUtil.path(
+						  workspace, filename)); }
+						 
 
-							hdfsPath = HdfsUtil.makeAbsolute(HdfsUtil.path(
-									workspace, filename));
-						}
+						System.out.println("Export Path: " + hdfsPath);
 
 						if (out.isZip()) {
 
@@ -999,7 +1094,7 @@ public class MapReduceJob extends Job {
 				reportStream.write(line.getBytes());
 
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

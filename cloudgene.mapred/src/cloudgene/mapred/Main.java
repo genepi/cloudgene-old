@@ -11,6 +11,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.restlet.data.LocalReference;
 
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.database.H2Connector;
@@ -158,7 +159,10 @@ public class Main {
 
 			int port = Integer.parseInt(line.getOptionValue("port", "8082"));
 
-			new WebServer(port).start();
+			LocalReference webroot = new LocalReference(
+					"clap://thread/web");
+
+			new WebServer(webroot, port).start();
 
 		} catch (Exception e) {
 

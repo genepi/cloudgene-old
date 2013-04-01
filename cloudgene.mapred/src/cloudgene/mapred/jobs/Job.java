@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.LogFactory;
 
 import cloudgene.mapred.apps.Parameter;
+import cloudgene.mapred.apps.Step;
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.S3Util;
@@ -69,6 +70,8 @@ abstract public class Job implements Runnable {
 	protected List<Parameter> inputParams = new Vector<Parameter>();
 
 	protected List<Parameter> outputParams = new Vector<Parameter>();
+
+	protected List<Step> steps = new Vector<Step>();
 
 	private BufferedOutputStream stdOutStream;
 
@@ -427,7 +430,7 @@ abstract public class Job implements Runnable {
 
 		if (parent != null) {
 
-			//parent.writeLog("    " + line);
+			// parent.writeLog("    " + line);
 
 		} else {
 
@@ -456,6 +459,14 @@ abstract public class Job implements Runnable {
 					getUser().getS3Bucket(), getId(), getStdOutFile());
 		}
 
+	}
+
+	public List<Step> getSteps() {
+		return steps;
+	}
+
+	public void setSteps(List<Step> steps) {
+		this.steps = steps;
 	}
 
 	abstract public boolean execute();

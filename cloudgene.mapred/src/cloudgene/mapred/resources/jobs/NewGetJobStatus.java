@@ -1,13 +1,17 @@
 package cloudgene.mapred.resources.jobs;
 
 import java.util.List;
+import java.util.Vector;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
+import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Get;
+import org.restlet.representation.Variant;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import cloudgene.mapred.core.User;
@@ -17,27 +21,29 @@ import cloudgene.mapred.jobs.Job;
 import cloudgene.mapred.jobs.JobQueue;
 import cloudgene.mapred.jobs.MapReduceJob;
 import cloudgene.mapred.representations.LoginPageRepresentation;
-import cloudgene.mapred.util.Timer;
 
-public class GetJobs extends ServerResource {
+public class NewGetJobStatus extends ServerResource {
 
-	/**
-	 * Resource to get job status information
-	 */
+	@Post
+	protected Representation post(Representation entity, Variant variant) {
 
-	@Get
-	public Representation getJobs() {
+		Form form = new Form(entity);
 
 		UserSessions sessions = UserSessions.getInstance();
 		User user = sessions.getUserByRequest(getRequest());
 
 		if (user != null) {
 
-			JobDao dao = new JobDao();
+			String jobId = form.getFirstValue("job_id");
 
-			// jobs in queue
-			List<Job> jobs = JobQueue.getInstance().getJobsByUser(user);
-			for (Job job : jobs) {
+			Job job = JobQueue.getInstance().getJobById(jobId);
+
+			if (job == null) {
+
+				JobDao dao = new JobDao();
+				job = dao.findById(jobId, false);
+
+			} else {
 
 				if (job instanceof MapReduceJob) {
 
@@ -47,19 +53,16 @@ public class GetJobs extends ServerResource {
 
 			}
 
-			// finished jobs
-			Timer.start();
-			List<Job> oldJobs = dao.findAllByUser(user, false);
-			Timer.stop();
-			jobs.addAll(oldJobs);
+			List<Job> jobs = new Vector<Job>();
+			jobs.add(job);
 
 			JsonConfig config = new JsonConfig();
 			config.setExcludes(new String[] { "user", "outputParams",
 					"inputParams", "output", "endTime", "startTime", "error",
 					"s3Url", "task", "config","mapReduceJob","myJob","step" });
-			JSONArray jsonArray = JSONArray.fromObject(jobs, config);
+			JSONObject object = JSONObject.fromObject(job, config);
 
-			return new StringRepresentation(jsonArray.toString());
+			return new StringRepresentation(object.toString());
 
 		} else {
 

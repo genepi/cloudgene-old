@@ -1,0 +1,5 @@
+library(knitr)
+opts_chunk$set(fig.path='/home/lukas/workspace/cloudgene/cloudgene.mapred/workspace/local/luki/output/minimac/new-simple-20130318-145857/figures-temp/')
+library(markdown)
+knit("job-report.Rmd", "/home/lukas/workspace/cloudgene/cloudgene.mapred/workspace/local/luki/output/minimac/new-simple-20130318-145857/statistics.html.md")
+markdownToHTML("/home/lukas/workspace/cloudgene/cloudgene.mapred/workspace/local/luki/output/minimac/new-simple-20130318-145857/statistics.html.md", "/home/lukas/workspace/cloudgene/cloudgene.mapred/workspace/local/luki/output/minimac/new-simple-20130318-145857/statistics.html")

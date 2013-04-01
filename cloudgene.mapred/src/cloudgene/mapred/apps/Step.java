@@ -1,7 +1,10 @@
 package cloudgene.mapred.apps;
 
+import java.util.List;
 import java.util.Map;
 
+import cloudgene.mapred.jobs.Job;
+import cloudgene.mapred.jobs.LogMessage;
 import cloudgene.mapred.jobs.MapReduceJob;
 
 public class Step {
@@ -22,11 +25,19 @@ public class Step {
 
 	private String job;
 
+	private String classname;
+
 	private Map<String, String> jobInputs;
 
 	private Map<String, String> jobOutputs;
 
 	private MapReduceJob mapReduceJob;
+
+	private Job myJob;
+
+	private int id;
+
+	private List<LogMessage> logMessages;
 
 	public String getJar() {
 		return jar;
@@ -114,6 +125,38 @@ public class Step {
 
 	public void setMapReduceJob(MapReduceJob mapReduceJob) {
 		this.mapReduceJob = mapReduceJob;
+	}
+
+	public String getClassname() {
+		return classname;
+	}
+
+	public Job getMyJob() {
+		return myJob;
+	}
+
+	public void setMyJob(Job myJob) {
+		this.myJob = myJob;
+	}
+
+	public void setClassname(String classname) {
+		this.classname = classname;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public List<LogMessage> getLogMessages() {
+		return logMessages;
+	}
+
+	public void setLogMessages(List<LogMessage> logMessages) {
+		this.logMessages = logMessages;
 	}
 
 }

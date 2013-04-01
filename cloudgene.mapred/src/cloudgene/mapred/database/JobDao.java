@@ -10,10 +10,12 @@ import org.apache.commons.logging.LogFactory;
 
 import cloudgene.mapred.apps.InputParameter;
 import cloudgene.mapred.apps.Parameter;
+import cloudgene.mapred.apps.Step;
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.jobs.Job;
 import cloudgene.mapred.jobs.JobFactory;
 import cloudgene.mapred.jobs.MapReduceJob;
+import cloudgene.mapred.jobs.LogMessage;
 
 public class JobDao extends Dao {
 
@@ -50,6 +52,14 @@ public class JobDao extends Dao {
 				parameter.setJobId(job.getId());
 				dao.insert(parameter);
 			}
+
+			if (job.getSteps() != null) {
+				StepDao dao2 = new StepDao();
+				for (Step step : job.getSteps()) {
+					dao2.insert(step);
+				}
+			}
+
 			connection.commit();
 			log.info("insert job '" + job.getId() + "' successful.");
 
@@ -153,6 +163,14 @@ public class JobDao extends Dao {
 					List<Parameter> outputParams = dao.findAllOutputByJob(job);
 					job.setInputParams(inputParams);
 					job.setOutputParams(outputParams);
+
+				}
+
+				if (job instanceof MapReduceJob) {
+
+					StepDao stepDao = new StepDao();
+					List<Step> steps = stepDao.findAllByJob((MapReduceJob) job);
+					job.setSteps(steps);
 
 				}
 
@@ -262,6 +280,14 @@ public class JobDao extends Dao {
 					List<Parameter> outputParams = dao.findAllOutputByJob(job);
 					job.setInputParams(inputParams);
 					job.setOutputParams(outputParams);
+				}
+
+				if (job instanceof MapReduceJob) {
+
+					StepDao stepDao = new StepDao();
+					List<Step> steps = stepDao.findAllByJob((MapReduceJob) job);
+					job.setSteps(steps);
+
 				}
 
 			}

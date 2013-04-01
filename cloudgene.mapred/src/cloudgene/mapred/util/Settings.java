@@ -18,6 +18,8 @@ public class Settings {
 
 	private String appsPath = "../cloudgene.tools";
 
+	private String app = null;
+
 	private String outputPath = "output";
 
 	private String tempPath = "tmp";
@@ -67,9 +69,10 @@ public class Settings {
 
 				log.info("Found streamingJar at " + instance.streamingJar + "");
 				instance.streaming = true;
+
 			} else {
 
-				log.error("Streaming Jar could not be found automatically. Please specify it in config/settings.yaml. Streaming mode is disabled.");
+				log.warn("Streaming Jar could not be found automatically. Please specify it in config/settings.yaml. Streaming mode is disabled.");
 				instance.streaming = false;
 			}
 
@@ -102,6 +105,14 @@ public class Settings {
 
 	public String getAppsPath() {
 		return appsPath;
+	}
+
+	public String getApp() {
+		return app;
+	}
+
+	public void setApp(String app) {
+		this.app = app;
 	}
 
 	public void setAppsPath(String appsPath) {
@@ -166,25 +177,30 @@ public class Settings {
 
 	public boolean testPaths() {
 
+		if (!new File(appsPath).exists()) {
+
+			if (!new File(app).exists()) {
+
+				log.error("appsPath '" + appsPath + "' does not exist.");
+
+				return false;
+			} else {
+
+				log.info("Using application " + app);
+
+			}
+		}
+
+		String hadoop = FileUtil.path(hadoopPath, "bin", "hadoop");
+
+		if (!new File(hadoop).exists()) {
+
+			log.error("hadoop '" + hadoop + "' does not exist.");
+
+			return false;
+
+		}
 		/*
-		 * if (!new File(appsPath).exists()) {
-		 * 
-		 * log.error("appsPath '" + appsPath + "' does not exist.");
-		 * 
-		 * return false;
-		 * 
-		 * }
-		 * 
-		 * String hadoop = FileUtil.path(hadoopPath, "hadoop");
-		 * 
-		 * if (!new File(hadoop).exists()) {
-		 * 
-		 * log.error("hadoop '" + hadoop + "' does not exist.");
-		 * 
-		 * return false;
-		 * 
-		 * }
-		 * 
 		 * if (!new File(streamingJar).exists()) {
 		 * 
 		 * log.error("streamingJar '" + streamingJar + "' does not exist.");
