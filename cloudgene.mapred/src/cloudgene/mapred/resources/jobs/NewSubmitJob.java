@@ -94,6 +94,8 @@ public class NewSubmitJob extends ServerResource {
 
 							System.out.println(target);
 
+							//TODO: put only hdfs-folder/hdfs-file into hdfs, local files not
+							
 							HdfsUtil.put(tmpFile, target);
 
 							if (props.containsKey(item.getFieldName())) {

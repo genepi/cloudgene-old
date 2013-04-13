@@ -452,31 +452,29 @@ public class MapReduceJob extends Job {
 
 						MapReduceJob job = config.getSteps().get(k)
 								.getMapReduceJob();
+						context.start("Running...");
 						boolean successful = executeJob(job, config.getSteps()
 								.get(k));
 						if (!successful) {
-							context.start("");
 							context.done(
 									"Execution failed. Please have a look at the logfile for details.",
 									LogMessage.ERROR);
 							return false;
 						} else {
-							context.start("");
 							context.done("Execution successful.", LogMessage.OK);
 						}
 
 					} else {
 
 						List<String> command = commands.get(k);
+						context.start("Running...");
 						boolean successful = executeCommand(command);
 						if (!successful) {
-							context.start("");
 							context.done(
 									"Execution failed. Please have a look at the logfile for details.",
 									LogMessage.ERROR);
 							return false;
 						} else {
-							context.start("");
 							context.done("Execution successful.", LogMessage.OK);
 						}
 
