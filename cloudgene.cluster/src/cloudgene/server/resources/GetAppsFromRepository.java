@@ -19,6 +19,7 @@ import com.esotericsoftware.yamlbeans.YamlException;
 
 public class GetAppsFromRepository extends ServerResource {
 
+	final static String repoPath="http://cloudgene.uibk.ac.at/apps";
 	@Get
 	public Representation get() {
 
@@ -27,7 +28,7 @@ public class GetAppsFromRepository extends ServerResource {
 
 		if (user != null) {
 
-			Repository repo = new Repository("http://cloudgene.uibk.ac.at/apps");
+			Repository repo = new Repository(repoPath);
 			try {
 				repo.load();
 			} catch (YamlException e) {

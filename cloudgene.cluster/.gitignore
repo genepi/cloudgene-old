@@ -1,4 +1,3 @@
-/config
 /dist
 /h2_db
 /https
@@ -10,3 +9,4 @@
 /cloudgene-cluster.log.1
 /run-clustinator.xml
 /tmp
+/copyJar.xml
