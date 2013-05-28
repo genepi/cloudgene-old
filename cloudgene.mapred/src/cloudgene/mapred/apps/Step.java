@@ -23,6 +23,10 @@ public class Step {
 
 	private String pig;
 
+	private String rmd;
+
+	private String output;
+
 	private String job;
 
 	private String classname;
@@ -93,6 +97,22 @@ public class Step {
 
 	public String getPig() {
 		return pig;
+	}
+
+	public String getRmd() {
+		return rmd;
+	}
+
+	public void setRmd(String rmd) {
+		this.rmd = rmd;
+	}
+
+	public String getOutput() {
+		return output;
+	}
+
+	public void setOutput(String output) {
+		this.output = output;
 	}
 
 	public void setJob(String job) {

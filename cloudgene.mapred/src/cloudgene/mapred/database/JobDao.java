@@ -15,7 +15,6 @@ import cloudgene.mapred.core.User;
 import cloudgene.mapred.jobs.Job;
 import cloudgene.mapred.jobs.JobFactory;
 import cloudgene.mapred.jobs.MapReduceJob;
-import cloudgene.mapred.jobs.LogMessage;
 
 public class JobDao extends Dao {
 
@@ -127,13 +126,17 @@ public class JobDao extends Dao {
 		return true;
 	}
 
-	public List<Job> findAllByUser(User user, boolean loadParameters) {
+	public List<Job> findAllByUser(User user, boolean loadParameters, int limit) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select * ");
 		sql.append("from job ");
 		sql.append("where user_id = ? ");
 		sql.append("order by start_time desc ");
+
+		if (limit > 0) {
+			sql.append("limit " + limit);
+		}
 
 		Object[] params = new Object[1];
 		params[0] = user.getId();

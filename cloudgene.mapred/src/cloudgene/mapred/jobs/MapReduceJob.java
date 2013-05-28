@@ -3,7 +3,6 @@ package cloudgene.mapred.jobs;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +21,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.mapred.RunningJob;
 import org.apache.hadoop.mapred.TaskReport;
-import org.apache.hadoop.mapred.TaskTracker;
 
 import cloudgene.mapred.apps.App;
 import cloudgene.mapred.apps.MapReduceConfig;
@@ -105,6 +103,13 @@ public class MapReduceJob extends Job {
 				}
 
 				commands.add(command);
+
+			} else if (step.getRmd() != null) {
+
+				step.setClassname("cloudgene.mapred.steps.RScriptStep");
+
+				// no command needed!
+				commands.add(null);
 
 			} else if (step.getClassname() != null) {
 
@@ -414,7 +419,7 @@ public class MapReduceJob extends Job {
 						"output", getId(), "temp")).getAbsolutePath();
 
 				CloudgeneContext context = new CloudgeneContext(config,
-						inputValues, config.getSteps().get(k));
+						inputValues, config.getSteps().get(k), stdOutStream);
 				context.setHdfsTemp(tempDirectory);
 				context.setHdfsOutput(outputDirectory);
 				context.setLocalTemp(localTemp);
@@ -452,30 +457,32 @@ public class MapReduceJob extends Job {
 
 						MapReduceJob job = config.getSteps().get(k)
 								.getMapReduceJob();
-						context.start("Running...");
+						context.beginTask("Running...");
 						boolean successful = executeJob(job, config.getSteps()
 								.get(k));
 						if (!successful) {
-							context.done(
+							context.endTask(
 									"Execution failed. Please have a look at the logfile for details.",
 									LogMessage.ERROR);
 							return false;
 						} else {
-							context.done("Execution successful.", LogMessage.OK);
+							context.endTask("Execution successful.",
+									LogMessage.OK);
 						}
 
 					} else {
 
 						List<String> command = commands.get(k);
-						context.start("Running...");
+						context.beginTask("Running...");
 						boolean successful = executeCommand(command);
 						if (!successful) {
-							context.done(
+							context.endTask(
 									"Execution failed. Please have a look at the logfile for details.",
 									LogMessage.ERROR);
 							return false;
 						} else {
-							context.done("Execution successful.", LogMessage.OK);
+							context.endTask("Execution successful.",
+									LogMessage.OK);
 						}
 
 					}
@@ -725,15 +732,15 @@ public class MapReduceJob extends Job {
 
 						String filename = out.getValue();
 						String hdfsPath = null;
-						 if (filename.startsWith("hdfs://")
-						 || filename.startsWith("file:/")) {
-						hdfsPath = filename;
-						
-						 } else {
-						 
-						  hdfsPath = HdfsUtil.makeAbsolute(HdfsUtil.path(
-						  workspace, filename)); }
-						 
+						if (filename.startsWith("hdfs://")
+								|| filename.startsWith("file:/")) {
+							hdfsPath = filename;
+
+						} else {
+
+							hdfsPath = HdfsUtil.makeAbsolute(HdfsUtil.path(
+									workspace, filename));
+						}
 
 						System.out.println("Export Path: " + hdfsPath);
 

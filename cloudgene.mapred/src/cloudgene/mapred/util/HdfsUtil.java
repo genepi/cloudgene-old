@@ -351,7 +351,7 @@ public class HdfsUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean createDirectory(FileSystem fileSystem,
 			String directory) {
 		Path path = new Path(directory);
@@ -375,8 +375,8 @@ public class HdfsUtil {
 		return false;
 	}
 
-	public static boolean rename(FileSystem fileSystem,
-			String oldPath, String newPath) {
+	public static boolean rename(FileSystem fileSystem, String oldPath,
+			String newPath) {
 		Path old = new Path(oldPath);
 		Path newP = new Path(newPath);
 		try {
@@ -398,8 +398,7 @@ public class HdfsUtil {
 		}
 		return false;
 	}
-	
-	
+
 	public static String path(String... paths) {
 		String result = "";
 		for (int i = 0; i < paths.length; i++) {
@@ -420,16 +419,15 @@ public class HdfsUtil {
 		Configuration conf = new Configuration();
 		FileSystem fileSystem;
 
-		
 		try {
 			fileSystem = FileSystem.get(conf);
 
-			System.out.println("path: " + path);
-			System.out.println("my home: " + fileSystem.getHomeDirectory().toString());
-
-			
-			//String temp = path;
-			String temp = fileSystem.getHomeDirectory().toString() + "/" + path;
+			String temp = "";
+			if (fileSystem.getHomeDirectory().toString().startsWith("file:/")) {
+				temp = path;
+			} else {
+				temp = fileSystem.getHomeDirectory().toString() + "/" + path;
+			}
 
 			temp = temp.replaceFirst("//([a-zA-Z\\-.\\d]*)(:(\\d*))?/", "///");
 			return temp;
@@ -439,13 +437,13 @@ public class HdfsUtil {
 		}
 
 	}
-	
-	public static boolean isAbsolute(String path){
-		
+
+	public static boolean isAbsolute(String path) {
+
 		return path.startsWith("hdfs://");
-		
+
 	}
-	
+
 	public static void checkOut(String hdfs, String filename)
 			throws IOException {
 
@@ -458,10 +456,25 @@ public class HdfsUtil {
 			// merge
 			DataOutputStream fos = new DataOutputStream(new FileOutputStream(
 					filename));
+
+			Path headerPath = new Path(hdfs + "/.pig_header");
+
+			if (fileSystem.exists(headerPath)) {
+				FSDataInputStream is = fileSystem.open(headerPath);
+				LineReader reader = new LineReader(is);
+				Text header = new Text();
+				reader.readLine(header);
+				reader.close();
+				is.close();
+
+				fos.writeBytes(header.toString() + "\n");
+			}
+
 			FileStatus[] files = fileSystem.listStatus(new Path(hdfs));
 
 			for (FileStatus file : files) {
-				if (!file.isDir()) {
+				if (!file.isDir() && !file.getPath().getName().startsWith(".")
+						&& !file.getPath().getName().startsWith("_")) {
 
 					FSDataInputStream is = fileSystem.open(file.getPath());
 					byte[] readData = new byte[1024];
@@ -499,7 +512,7 @@ public class HdfsUtil {
 		}
 
 	}
-	
+
 	public static void put(String filename, String target, Configuration conf) {
 		try {
 

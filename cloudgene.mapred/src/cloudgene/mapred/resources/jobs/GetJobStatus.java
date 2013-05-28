@@ -58,7 +58,7 @@ public class GetJobStatus extends ServerResource {
 			JsonConfig config = new JsonConfig();
 			config.setExcludes(new String[] { "user", "outputParams",
 					"inputParams", "output", "endTime", "startTime", "error",
-					"s3Url", "task", "config" });
+					"s3Url", "task", "config","mapReduceJob","myJob","step" });
 			JSONArray jsonArray = JSONArray.fromObject(jobs, config);
 
 			return new StringRepresentation(jsonArray.toString());

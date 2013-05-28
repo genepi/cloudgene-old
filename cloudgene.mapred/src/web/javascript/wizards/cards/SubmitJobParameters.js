@@ -83,8 +83,17 @@ MapRed.wizards.SubmitJobParameters = Ext.extend(Ext.ux.Wiz.Card,
 	    // build the dynamical interface
 	    buildInterface : function() {
 
-		tool = Ext.getCmp('toolsTree').getSelectionModel()
-			.getSelectedNode().id;
+		if (this.mytool == null){
+
+			tool = Ext.getCmp('toolsTree').getSelectionModel()
+				.getSelectedNode().id;
+			
+		}else{
+		
+			tool = this.mytool;
+			console.log(this.mytool);
+		
+		}
 
 		// general tool informations
 		Ext.Ajax.request({

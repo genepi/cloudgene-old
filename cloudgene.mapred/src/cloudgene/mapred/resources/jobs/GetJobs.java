@@ -35,6 +35,13 @@ public class GetJobs extends ServerResource {
 
 			JobDao dao = new JobDao();
 
+			int limit = 0;
+
+			if (getRequest().getAttributes().get("limit") != null) {
+				limit = Integer.parseInt((String) getRequest().getAttributes()
+						.get("limit"));
+			}
+
 			// jobs in queue
 			List<Job> jobs = JobQueue.getInstance().getJobsByUser(user);
 			for (Job job : jobs) {
@@ -47,16 +54,28 @@ public class GetJobs extends ServerResource {
 
 			}
 
-			// finished jobs
-			Timer.start();
-			List<Job> oldJobs = dao.findAllByUser(user, false);
-			Timer.stop();
-			jobs.addAll(oldJobs);
+			if (limit > 0) {
+				limit = limit - jobs.size();
+
+				// finished jobs
+				Timer.start();
+				List<Job> oldJobs = dao.findAllByUser(user, false, limit);
+				Timer.stop();
+				jobs.addAll(oldJobs);
+
+			} else {
+
+				Timer.start();
+				List<Job> oldJobs = dao.findAllByUser(user, false, 0);
+				Timer.stop();
+				jobs.addAll(oldJobs);
+
+			}
 
 			JsonConfig config = new JsonConfig();
 			config.setExcludes(new String[] { "user", "outputParams",
 					"inputParams", "output", "endTime", "startTime", "error",
-					"s3Url", "task", "config","mapReduceJob","myJob","step" });
+					"s3Url", "task", "config", "mapReduceJob", "myJob", "step" });
 			JSONArray jsonArray = JSONArray.fromObject(jobs, config);
 
 			return new StringRepresentation(jsonArray.toString());

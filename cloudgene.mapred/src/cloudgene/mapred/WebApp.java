@@ -49,6 +49,7 @@ import cloudgene.mapred.resources.users.LogoutUser;
 import cloudgene.mapred.resources.users.NewUser;
 import cloudgene.mapred.resources.users.UpdateCredentials;
 import cloudgene.mapred.resources.users.UpdateUser;
+import cloudgene.mapred.resources.users.UpdateUser2;
 import cloudgene.mapred.resources.users.UpdateUserPassword;
 import cloudgene.mapred.resources.users.UpdateUserSettings;
 import cloudgene.mapred.util.LoginFilter;
@@ -85,6 +86,8 @@ public class WebApp extends Application {
 		router.attach("/jobs/newsubmit", NewSubmitJob.class);
 		router.attach("/jobs/newstate", NewGetJobStatus.class);
 
+		router.attach("/jobs/{limit}", GetJobs.class);
+		
 		router.attach("/cluster", GetClusterDetails.class);
 
 		// router.attach("/killAllJobs", KillAllJobs.class);
@@ -125,6 +128,7 @@ public class WebApp extends Application {
 		router.attach("/users/new", NewUser.class);
 		router.attach("/users/delete", DeleteUser.class);
 		router.attach("/users/update", UpdateUser.class);
+		router.attach("/users/update2", UpdateUser2.class);
 		router.attach("/users/details", GetUserDetails.class);
 		router.attach("/login", LoginUser.class);
 		router.attach("/logout", LogoutUser.class);

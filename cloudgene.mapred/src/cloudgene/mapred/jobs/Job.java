@@ -73,7 +73,7 @@ abstract public class Job implements Runnable {
 
 	protected List<Step> steps = new Vector<Step>();
 
-	private BufferedOutputStream stdOutStream;
+	protected BufferedOutputStream stdOutStream;
 
 	private BufferedOutputStream logStream;
 

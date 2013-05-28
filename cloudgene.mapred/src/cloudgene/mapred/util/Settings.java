@@ -16,6 +16,8 @@ public class Settings {
 
 	private String pigPath = "/home/hadoop/pig-0.10.0/";
 
+	private String rPath = "/usr/";
+
 	private String appsPath = "../cloudgene.tools";
 
 	private String app = null;
@@ -175,13 +177,21 @@ public class Settings {
 		this.streaming = streaming;
 	}
 
+	public String getRPath() {
+		return rPath;
+	}
+
+	public void setRPath(String rPath) {
+		this.rPath = rPath;
+	}
+
 	public boolean testPaths() {
 
 		if (!new File(appsPath).exists()) {
 
 			if (!new File(app).exists()) {
 
-				log.error("appsPath '" + appsPath + "' does not exist.");
+				log.error("appsPath '" + app + "' does not exist.");
 
 				return false;
 			} else {

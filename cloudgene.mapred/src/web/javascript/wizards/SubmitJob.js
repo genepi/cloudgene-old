@@ -44,8 +44,8 @@ MapRed.wizards.SubmitJob = Ext.extend(Ext.ux.Wiz, {
 	    },
 	    width : 550,
 	    height : 500,
-	    cards : [ new MapRed.wizards.SubmitJobTool(),
-		    new MapRed.wizards.SubmitJobParameters() ],
+	    cards : (this.tool == null ?[ new MapRed.wizards.SubmitJobTool(),
+		    new MapRed.wizards.SubmitJobParameters() ] :[new MapRed.wizards.SubmitJobParameters({mytool: this.tool}) ]),
 
 	    listeners : {
 		finish : this.onFinish
@@ -55,7 +55,9 @@ MapRed.wizards.SubmitJob = Ext.extend(Ext.ux.Wiz, {
 	MapRed.wizards.SubmitJob.superclass.initComponent
 		.apply(this, arguments);
 
-	Ext.getCmp('toolsTree').getLoader().load(Ext.getCmp('toolsTree').root);
+	if(this.tool == null){
+		Ext.getCmp('toolsTree').getLoader().load(Ext.getCmp('toolsTree').root);
+	}
 
     },
 
@@ -92,9 +94,13 @@ MapRed.wizards.SubmitJob = Ext.extend(Ext.ux.Wiz, {
 	}
 
 	// set used tool
-	var tree = Ext.getCmp('toolsTree');
-	var tool = tree.getSelectionModel().getSelectedNode().id;
-	values['tool'] = tool;
+	if(this.tool == null){
+		var tree = Ext.getCmp('toolsTree');
+		var tool = tree.getSelectionModel().getSelectedNode().id;
+		values['tool'] = tool;
+	}else{
+		values['tool'] = this.tool;
+	}
 
 	// submit job
 	Ext.Ajax.request({
