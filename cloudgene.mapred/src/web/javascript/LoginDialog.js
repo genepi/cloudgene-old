@@ -72,7 +72,8 @@ Ext.onReady(function(){
                         if (obj.success) {
                         
                             var redirect = 'start.html';
-                            window.location = redirect;
+                            window.location = redirect + window.location.hash;
+                            console.log(redirect + window.location.hash);
                         }
                         else {
                             Ext.Msg.alert('Login Failed', obj.message);
@@ -103,7 +104,8 @@ Ext.onReady(function(){
                         if (obj.success) {
                         
                             var redirect = 'start.html';
-                            window.location = redirect;
+                            window.location = redirect + window.location.hash;
+                            console.log(redirect + window.location.hash);
                         }
                         else {
                             Ext.Msg.alert('Login Failed', obj.message);
