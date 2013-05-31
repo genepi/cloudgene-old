@@ -11,4 +11,20 @@ public abstract class CloudgeneStep {
 
 	abstract public boolean run(CloudgeneContext context);
 
+	public int getMapProgress(){
+		return 0;
+	}
+
+	public int getReduceProgress(){
+		return 0;
+	}
+	
+	public void updateProgress(){
+		
+	}
+	
+	public void kill(){
+		
+	}
+
 }

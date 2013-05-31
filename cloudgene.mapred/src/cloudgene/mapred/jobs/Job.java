@@ -77,8 +77,6 @@ abstract public class Job implements Runnable {
 
 	private BufferedOutputStream logStream;
 
-	protected Job parent;
-
 	public String getId() {
 		return id;
 	}
@@ -389,62 +387,39 @@ abstract public class Job implements Runnable {
 
 	public void writeOutput(String line) {
 
-		if (parent != null) {
-
-			parent.writeOutput("    " + line);
-
-		} else {
-
-			try {
-				stdOutStream.write(line.getBytes());
-				stdOutStream.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		try {
+			stdOutStream.write(line.getBytes());
+			stdOutStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
 
 	public void writeOutputln(String line) {
 
-		if (parent != null) {
-
-			parent.writeOutputln("    " + line);
-
-		} else {
-
-			try {
-				stdOutStream.write((formatter.format(new Date()) + " ")
-						.getBytes());
-				stdOutStream.write(line.getBytes());
-				stdOutStream.write("\n".getBytes());
-				stdOutStream.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			stdOutStream.write((formatter.format(new Date()) + " ").getBytes());
+			stdOutStream.write(line.getBytes());
+			stdOutStream.write("\n".getBytes());
+			stdOutStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	public void writeLog(String line) {
 
-		if (parent != null) {
-
-			// parent.writeLog("    " + line);
-
-		} else {
-
-			try {
-				logStream
-						.write((formatter.format(new Date()) + " ").getBytes());
-				logStream.write(line.getBytes());
-				logStream.write("\n".getBytes());
-				logStream.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		try {
+			logStream.write((formatter.format(new Date()) + " ").getBytes());
+			logStream.write(line.getBytes());
+			logStream.write("\n".getBytes());
+			logStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	private void exportStdOutToS3() {
@@ -476,4 +451,8 @@ abstract public class Job implements Runnable {
 	abstract public boolean after();
 
 	abstract public int getType();
+
+	public void kill() {
+
+	}
 }

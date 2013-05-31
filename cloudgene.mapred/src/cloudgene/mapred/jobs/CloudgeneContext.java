@@ -23,6 +23,8 @@ public class CloudgeneContext {
 	private String hdfsOutput;
 	private String localOutput;
 
+	private String jobId;
+
 	private MapReduceConfig config;
 
 	private DateFormat formatter = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
@@ -93,6 +95,14 @@ public class CloudgeneContext {
 
 	public MapReduceConfig getConfig() {
 		return config;
+	}
+
+	public String getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
 	}
 
 	public Step getStep() {

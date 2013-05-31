@@ -7,11 +7,10 @@ import cloudgene.mapred.jobs.CloudgeneContext;
 import cloudgene.mapred.jobs.CloudgeneStep;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.HdfsUtil;
-import cloudgene.mapred.util.RMarkdown;
 import cloudgene.mapred.util.rscript.MyRScript;
 import cloudgene.mapred.util.rscript.RScript;
 
-public class RScriptStep extends CloudgeneStep {
+public class RMarkdown extends CloudgeneStep {
 
 	@Override
 	public boolean run(CloudgeneContext context) {
@@ -32,17 +31,17 @@ public class RScriptStep extends CloudgeneStep {
 			context.println("  " + param);
 		}
 
-		convert(FileUtil.path(wd, rmd), output, params, context);
-		return true;
+		int result = convert(FileUtil.path(wd, rmd), output, params, context);
+		return (result == 0);
 
 	}
 
-	public int convert(String rdmScript, String outputHtml, String[] args,
+	public int convert(String rmdScript, String outputHtml, String[] args,
 			CloudgeneContext context) {
 
-		context.println("Creating RMarkdown report from " + rdmScript + "...");
+		context.println("Creating RMarkdown report from " + rmdScript + "...");
 
-		String name = rdmScript.replace(".Rmd", "");
+		String name = rmdScript.replace(".Rmd", "");
 
 		outputHtml = new File(outputHtml).getAbsolutePath();
 
@@ -53,7 +52,7 @@ public class RScriptStep extends CloudgeneStep {
 		script.append("library(knitr)");
 		script.append("opts_chunk$set(fig.path='" + folder + "')");
 		script.append("library(markdown)");
-		script.append("knit(\"" + rdmScript + "\", \"" + outputHtml + ".md\")");
+		script.append("knit(\"" + rmdScript + "\", \"" + outputHtml + ".md\")");
 		script.append("markdownToHTML(\"" + outputHtml + ".md\", \""
 				+ outputHtml + "\")");
 		script.save();
@@ -63,7 +62,7 @@ public class RScriptStep extends CloudgeneStep {
 
 		String[] argsForScript = new String[args.length + 1];
 		argsForScript[0] = "convert.R";
-		//argsForScript[1] = "--args";
+		// argsForScript[1] = "--args";
 		for (int i = 0; i < args.length; i++) {
 
 			// checkout hdfs file

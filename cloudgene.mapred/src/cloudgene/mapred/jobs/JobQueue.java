@@ -54,22 +54,7 @@ public class JobQueue implements Runnable {
 
 			thread.stop();
 
-			if (job instanceof MapReduceJob) {
-
-				try {
-
-					MapReduceJob mrJob = ((MapReduceJob) job);
-
-					log.info(" Cancel Job " + mrJob.getHadoopJobId());
-
-					HadoopUtil.getInstance().kill(mrJob.getHadoopJobId());
-
-				} catch (IOException e) {
-
-					log.error(" Cancel Job failed: ", e);
-
-				}
-			}
+			job.kill();
 
 		}
 
