@@ -84,5 +84,13 @@ Ext
 	    }
 
 	    refreshJobs();
-
+ 		Ext.History.init(function(token){
+			
+			if (Ext.History.getToken() != null && Ext.History.getToken() != 'null' ){
+			
+				var wizard = new MapRed.wizards.SubmitJob({tool: Ext.History.getToken()});
+		    	wizard.show(); 
+		    }       
+        
+    	});
 	});

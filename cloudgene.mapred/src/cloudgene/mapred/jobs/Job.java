@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.LogFactory;
 
 import cloudgene.mapred.apps.Parameter;
+import cloudgene.mapred.apps.Step;
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.S3Util;
@@ -70,11 +71,11 @@ abstract public class Job implements Runnable {
 
 	protected List<Parameter> outputParams = new Vector<Parameter>();
 
-	private BufferedOutputStream stdOutStream;
+	protected List<Step> steps = new Vector<Step>();
+
+	protected BufferedOutputStream stdOutStream;
 
 	private BufferedOutputStream logStream;
-
-	protected Job parent;
 
 	public String getId() {
 		return id;
@@ -386,62 +387,39 @@ abstract public class Job implements Runnable {
 
 	public void writeOutput(String line) {
 
-		if (parent != null) {
-
-			parent.writeOutput("    " + line);
-
-		} else {
-
-			try {
-				stdOutStream.write(line.getBytes());
-				stdOutStream.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		try {
+			stdOutStream.write(line.getBytes());
+			stdOutStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
 
 	public void writeOutputln(String line) {
 
-		if (parent != null) {
-
-			parent.writeOutputln("    " + line);
-
-		} else {
-
-			try {
-				stdOutStream.write((formatter.format(new Date()) + " ")
-						.getBytes());
-				stdOutStream.write(line.getBytes());
-				stdOutStream.write("\n".getBytes());
-				stdOutStream.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			stdOutStream.write((formatter.format(new Date()) + " ").getBytes());
+			stdOutStream.write(line.getBytes());
+			stdOutStream.write("\n".getBytes());
+			stdOutStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	public void writeLog(String line) {
 
-		if (parent != null) {
-
-			//parent.writeLog("    " + line);
-
-		} else {
-
-			try {
-				logStream
-						.write((formatter.format(new Date()) + " ").getBytes());
-				logStream.write(line.getBytes());
-				logStream.write("\n".getBytes());
-				logStream.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		try {
+			logStream.write((formatter.format(new Date()) + " ").getBytes());
+			logStream.write(line.getBytes());
+			logStream.write("\n".getBytes());
+			logStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	private void exportStdOutToS3() {
@@ -458,6 +436,14 @@ abstract public class Job implements Runnable {
 
 	}
 
+	public List<Step> getSteps() {
+		return steps;
+	}
+
+	public void setSteps(List<Step> steps) {
+		this.steps = steps;
+	}
+
 	abstract public boolean execute();
 
 	abstract public boolean before();
@@ -465,4 +451,8 @@ abstract public class Job implements Runnable {
 	abstract public boolean after();
 
 	abstract public int getType();
+
+	public void kill() {
+
+	}
 }

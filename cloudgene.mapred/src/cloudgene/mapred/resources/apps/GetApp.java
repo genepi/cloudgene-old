@@ -1,54 +1,31 @@
 package cloudgene.mapred.resources.apps;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
-import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 import cloudgene.mapred.apps.App;
-import cloudgene.mapred.apps.Parameter;
+import cloudgene.mapred.apps.AppMetaData;
+import cloudgene.mapred.apps.Category;
 import cloudgene.mapred.apps.YamlLoader;
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.core.UserSessions;
 import cloudgene.mapred.representations.LoginPageRepresentation;
 import cloudgene.mapred.util.Settings;
 
-public class GetAppParams extends ServerResource {
-
-	@Post
-	public Representation post(Representation entity) {
-		UserSessions sessions = UserSessions.getInstance();
-		User user = sessions.getUserByRequest(getRequest());
-
-		Form form = new Form(entity);
-
-		if (user != null) {
-
-			App app = YamlLoader.loadApp(form.getFirstValue("tool"));
-
-			List<Parameter> params = app.getMapred().getInputs();
-
-			JSONArray jsonArray = JSONArray.fromObject(params);
-
-			return new StringRepresentation(jsonArray.toString());
-
-		} else {
-
-			return new LoginPageRepresentation();
-
-		}
-	}
+public class GetApp extends ServerResource {
 
 	@Get
-	public Representation get(Representation entity) {
+	public Representation get() {
+
 		UserSessions sessions = UserSessions.getInstance();
 		User user = sessions.getUserByRequest(getRequest());
 
@@ -59,22 +36,25 @@ public class GetAppParams extends ServerResource {
 			App app;
 			try {
 				app = YamlLoader.loadAppFromFile(filename);
+				AppMetaData meta = (AppMetaData) app;
+
+				JsonConfig config = new JsonConfig();
+				config.setExcludes(new String[] { "mapred", "installed",
+						"cluster" });
+				JSONObject jsonObject = JSONObject.fromObject(meta, config);
+
+				return new StringRepresentation(jsonObject.toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 				return new StringRepresentation("Error");
 			}
-
-			List<Parameter> params = app.getMapred().getInputs();
-
-			JSONArray jsonArray = JSONArray.fromObject(params);
-
-			return new StringRepresentation(jsonArray.toString());
 
 		} else {
 
 			return new LoginPageRepresentation();
 
 		}
+
 	}
 
 }

@@ -11,6 +11,7 @@ import org.restlet.resource.ServerResource;
 
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.core.UserSessions;
+import cloudgene.mapred.database.UserDao;
 import cloudgene.mapred.representations.LoginPageRepresentation;
 
 public class GetUserDetails extends ServerResource {
@@ -23,10 +24,13 @@ public class GetUserDetails extends ServerResource {
 
 		if (user != null) {
 
+			UserDao dao = new UserDao();
+			User updatedUser = dao.findByUsername(user.getUsername());
+
 			JsonConfig config = new JsonConfig();
 			config.setExcludes(new String[] { "password" });
 
-			JSONObject object = JSONObject.fromObject(user, config);
+			JSONObject object = JSONObject.fromObject(updatedUser, config);
 
 			StringRepresentation representation = new StringRepresentation(
 					object.toString(), MediaType.APPLICATION_JSON);

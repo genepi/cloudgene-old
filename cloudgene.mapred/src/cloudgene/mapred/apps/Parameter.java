@@ -39,6 +39,8 @@ public abstract class Parameter {
 	public static final String HDFS_FOLDER = "hdfs-folder";
 
 	public static final String HDFS_FILE = "hdfs-file";
+	
+	public static final String LABEL = "label";
 
 	public Map<String, String> values;
 

@@ -8,8 +8,7 @@ import cloudgene.mapred.util.rscript.RScript;
 
 public class RMarkdown {
 
-	public static int convert(String rdmScript, String outputHtml,
-			String[] args) {
+	public static int convert(String rdmScript, String outputHtml, String[] args) {
 
 		System.out.println("Creating RMarkdown report from " + rdmScript
 				+ "...");
@@ -17,8 +16,9 @@ public class RMarkdown {
 		String name = rdmScript.replace(".Rmd", "");
 
 		outputHtml = new File(outputHtml).getAbsolutePath();
-		
-		String folder = new File(outputHtml).getParentFile().getAbsolutePath()+ "/figures-temp/";
+
+		String folder = new File(outputHtml).getParentFile().getAbsolutePath()
+				+ "/figures-temp/";
 
 		MyRScript script = new MyRScript("convert.R");
 		script.append("library(knitr)");
@@ -30,6 +30,7 @@ public class RMarkdown {
 		script.save();
 
 		RScript rScript = new RScript();
+		rScript.setSilent(false);
 
 		String[] argsForScript = new String[args.length + 2];
 		argsForScript[0] = "convert.R";
@@ -39,7 +40,8 @@ public class RMarkdown {
 			// checkout hdfs file
 			if (args[i].startsWith("hdfs://")) {
 
-				String localFile = "local_file_" + i;
+				String localFile = new File(outputHtml).getParentFile()
+						.getAbsolutePath() + "/local_file_" + i;
 				try {
 					HdfsUtil.checkOut(args[i], localFile);
 					argsForScript[i + 2] = localFile;
@@ -58,8 +60,8 @@ public class RMarkdown {
 		rScript.setParams(argsForScript);
 		int result = rScript.execute();
 
-		//new File(outputHtml + ".md").delete();
-		//new File("convert.R").delete();
+		new File(outputHtml + ".md").delete();
+		new File("convert.R").delete();
 		RMarkdown.deleteFolder(new File(folder));
 
 		return result;

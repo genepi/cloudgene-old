@@ -1,5 +1,6 @@
 package cloudgene.mapred;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -11,6 +12,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.restlet.data.LocalReference;
 
 import cloudgene.mapred.core.User;
 import cloudgene.mapred.database.H2Connector;
@@ -140,6 +142,12 @@ public class Main {
 
 			// init config
 
+			if (!new File("config/settings.yaml").exists()) {
+				H2Connector.getInstance().disconnect();
+				log.error("Config file not found. (config/settings.yaml)");
+				System.exit(1);
+			}
+
 			Settings settings = Settings.getInstance();
 			settings.load("config/settings.yaml");
 			// reload!
@@ -158,7 +166,9 @@ public class Main {
 
 			int port = Integer.parseInt(line.getOptionValue("port", "8082"));
 
-			new WebServer(port).start();
+			LocalReference webroot = new LocalReference("clap://thread/web");
+
+			new WebServer(webroot, port).start();
 
 		} catch (Exception e) {
 
