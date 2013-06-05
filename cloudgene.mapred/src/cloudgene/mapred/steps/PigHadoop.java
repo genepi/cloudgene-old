@@ -30,8 +30,7 @@ public class PigHadoop extends Hadoop {
 		command.add(step.getPig());
 
 		// params
-		String[] tiles1 = step.getParams().split(" ");
-		for (String tile : tiles1) {
+		for (String tile : params) {
 			command.add(tile.trim());
 		}
 
