@@ -17,12 +17,12 @@ public class UserDao extends Dao {
 
 	public boolean insert(User user) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("insert into user (username, password, full_name, aws_key, aws_secret_key, save_keys, export_to_s3, s3_bucket, mail, role, export_input_to_s3) ");
-		sql.append("values (?,?,?,?,?,?,?,?,?,?,?)");
+		sql.append("insert into user (username, password, full_name, aws_key, aws_secret_key, save_keys, export_to_s3, s3_bucket, mail, role, export_input_to_s3, activation_code, active) ");
+		sql.append("values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 		try {
 
-			Object[] params = new Object[11];
+			Object[] params = new Object[13];
 			params[0] = user.getUsername();
 			params[1] = user.getPassword();
 			params[2] = user.getFullName();
@@ -39,6 +39,8 @@ public class UserDao extends Dao {
 			params[8] = user.getMail();
 			params[9] = user.getRole();
 			params[10] = user.isExportInputToS3();
+			params[11] = user.getActivationCode();
+			params[12] = user.isActive();
 
 			int id = updateAndGetKey(sql.toString(), params);
 
@@ -58,12 +60,12 @@ public class UserDao extends Dao {
 
 	public boolean update(User user) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("update user set username = ?, password = ?, full_name = ?, aws_key = ?, aws_secret_key = ?, save_keys = ? , export_to_s3 = ?, s3_bucket = ?, mail = ?, role = ?, export_input_to_s3 = ?");
+		sql.append("update user set username = ?, password = ?, full_name = ?, aws_key = ?, aws_secret_key = ?, save_keys = ? , export_to_s3 = ?, s3_bucket = ?, mail = ?, role = ?, export_input_to_s3 = ?, active = ?");
 		sql.append("where id = ?");
 
 		try {
 
-			Object[] params = new Object[12];
+			Object[] params = new Object[13];
 			params[0] = user.getUsername();
 			params[1] = user.getPassword();
 			params[2] = user.getFullName();
@@ -80,7 +82,8 @@ public class UserDao extends Dao {
 			params[8] = user.getMail();
 			params[9] = user.getRole();
 			params[10] = user.isExportInputToS3();
-			params[11] = user.getId();
+			params[11] = user.isActive();
+			params[12] = user.getId();
 
 			update(sql.toString(), params);
 
@@ -131,6 +134,8 @@ public class UserDao extends Dao {
 				result.setMail(rs.getString("mail"));
 				result.setRole(rs.getString("role"));
 				result.setExportInputToS3(rs.getBoolean("export_input_to_s3"));
+				result.setActivationCode(rs.getString("activation_code"));
+				result.setActive(rs.getBoolean("active"));
 			}
 			rs.close();
 
@@ -179,6 +184,8 @@ public class UserDao extends Dao {
 				result.setMail(rs.getString("mail"));
 				result.setRole(rs.getString("role"));
 				result.setExportInputToS3(rs.getBoolean("export_input_to_s3"));
+				result.setActivationCode(rs.getString("activation_code"));
+				result.setActive(rs.getBoolean("active"));
 			}
 			rs.close();
 
@@ -222,7 +229,8 @@ public class UserDao extends Dao {
 				user.setMail(rs.getString("mail"));
 				user.setRole(rs.getString("role"));
 				user.setExportInputToS3(rs.getBoolean("export_input_to_s3"));
-
+				user.setActivationCode(rs.getString("activation_code"));
+				user.setActive(rs.getBoolean("active"));
 				result.add(user);
 
 			}

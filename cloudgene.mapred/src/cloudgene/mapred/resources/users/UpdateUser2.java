@@ -35,7 +35,6 @@ public class UpdateUser2 extends ServerResource {
 
 				UserDao dao = new UserDao();
 				User newUser = dao.findByUsername(username);
-				newUser.setUsername(username);
 				newUser.setFullName(fullname);
 				newUser.setMail(mail);
 				

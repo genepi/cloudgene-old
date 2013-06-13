@@ -26,7 +26,7 @@ public class LoginUser extends ServerResource {
 		User user = dao.findByUsername(username);
 
 		if (user != null) {
-			if (user.getPassword().equals(password)) {
+			if (user.getPassword().equals(password) && user.isActive()) {
 
 				// create session
 				UserSessions sessions = UserSessions.getInstance();

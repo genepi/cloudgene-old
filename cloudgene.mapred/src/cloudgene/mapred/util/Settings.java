@@ -3,6 +3,7 @@ package cloudgene.mapred.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +40,8 @@ public class Settings {
 	private String cloudFolder;
 
 	private String version;
+
+	private Map<String, String> mail;
 
 	private static Settings instance = null;
 
@@ -254,6 +257,14 @@ public class Settings {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public Map<String, String> getMail() {
+		return mail;
+	}
+
+	public void setMail(Map<String, String> mail) {
+		this.mail = mail;
 	}
 
 }

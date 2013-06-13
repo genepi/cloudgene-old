@@ -13,6 +13,8 @@ public class User {
 	private boolean exportToS3 = false;
 	private boolean exportInputToS3 = false;
 	private String s3Bucket = null;
+	private boolean active = true;
+	private String activationKey = null;
 
 	public void setUsername(String username) {
 		this.username = username;
@@ -108,6 +110,22 @@ public class User {
 
 	public String getRole() {
 		return role;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getActivationCode() {
+		return activationKey;
+	}
+
+	public void setActivationCode(String activationKey) {
+		this.activationKey = activationKey;
 	}
 
 	@Override
