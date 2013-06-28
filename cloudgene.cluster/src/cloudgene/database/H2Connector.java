@@ -85,7 +85,7 @@ public class H2Connector {
 
 	private void createSchema() {
 		try {
-			// log.debug("Creating tables...");
+			//log.debug("Creating tables...");
 			executeSqlFromFile("create-tables.sql");
 
 		} catch (Exception e) {
@@ -95,7 +95,6 @@ public class H2Connector {
 
 	private void createUser() {
 		try {
-			// log.debug("Creating tables...");
 			executeSqlFromFile("create-user.sql");
 
 		} catch (Exception e) {

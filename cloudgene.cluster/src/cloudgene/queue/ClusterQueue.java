@@ -54,10 +54,8 @@ public class ClusterQueue {
 
 	public List<ClusterDetails> getJobsByUser(User user) {
 		List<ClusterDetails> result = new Vector<ClusterDetails>();
-		System.out.println(user.getId());
 		// get working jobs from queue
 		for (ClusterConfiguration running : queue) {
-			System.out.println("ID is "+running.getCloudgeneUser().getId());
 			if (running.getCloudgeneUser().getId() == user.getId()) {
 				ClusterDetails info = new ClusterDetails(running);
 				result.add(info);
@@ -65,11 +63,9 @@ public class ClusterQueue {
 		}
 		// get finalized jobs from db
 		ClusterDao dao = new ClusterDao();
-		System.out.println(user.getId());
 		List<ClusterConfiguration> dbObjects = dao.findAllClustersDone(user
 				.getId());
 		for (ClusterConfiguration finished : dbObjects) {
-			System.out.println("FIN "+finished.getName());
 			ClusterDetails info = new ClusterDetails(finished);
 			result.add(info);
 		}

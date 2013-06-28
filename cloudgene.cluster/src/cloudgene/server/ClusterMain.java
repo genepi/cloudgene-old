@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 public class ClusterMain {
 	private static final Log logger = LogFactory.getLog(ClusterMain.class);
 	public static void main(String[] args) throws IOException {
-		System.out.println("Cloudgene-Cluster 0.2.0-120424\n");
+		System.out.println("Cloudgene-Cluster 0.3.0-130117\n");
 
 		// create the command line parser
 		CommandLineParser parser = new PosixParser();
@@ -37,6 +37,7 @@ public class ClusterMain {
 		portOptionSecure.setArgName("HTTPS-PORT");
 		options.addOption(portOptionSecure);
 		
+		System.out.println("####"+System.getProperty("user.dir"));
 		// parse the command line arguments
 		CommandLine line = null;
 		try {

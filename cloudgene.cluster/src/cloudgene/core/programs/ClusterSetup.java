@@ -30,7 +30,7 @@ public class ClusterSetup {
 	
 	private String cidrs = "0.0.0.0/0";
 	
-	private String hadoopVersion = "cdh3u5";
+	private String hadoopVersion = "cdh3";
 	
 	private String location = "us-east-1";
 
@@ -53,6 +53,8 @@ public class ClusterSetup {
 	private String jarFile;
 
 	private String ports;
+	
+	private String java="true";
 
 	private String provider;
 
@@ -283,6 +285,14 @@ public class ClusterSetup {
 					+ folder.getName() + ";./" + execScript);
 		}
 		
+	}
+
+	public String getJava() {
+		return java;
+	}
+
+	public void setJava(String java) {
+		this.java = java;
 	}
 
 }

@@ -67,7 +67,7 @@ public class ClusterConfiguration {
 	private String log;
 	
 	private long startTime;
-
+	
 	public void setPk(int id) {
 		this.pk = id;
 	}
@@ -206,8 +206,8 @@ public class ClusterConfiguration {
 		conf.addProperty("whirr.identity", cloudUsername);
 		conf.addProperty("whirr.credential", cloudPwd);
 		conf.addProperty("whirr.instance-templates",
-				"1 nn+jt," + amount
-						+ " dn+tt");
+				"1 hadoop-namenode+hadoop-jobtracker," + amount
+						+ " hadoop-datanode+hadoop-tasktracker");
 		conf.addProperty("whirr.cluster-user", Settings.getInstance().getCloudUser());
 		conf.addProperty("whirr.provider", program.getProvider());
 		conf.addProperty("whirr.image-id", program.getImage());
@@ -222,13 +222,18 @@ public class ClusterConfiguration {
 					"install_cdh_hadoop");
 			conf.addProperty("whirr.hadoop.configure-function",
 					"configure_cdh_hadoop");
+		if(program.getJava().equals("false")){
+			conf.addProperty("whirr.java.install-function",
+					"install_oab_java_preConfigured");
+		}
 		}
 		/** user defined variables */
-		 conf.addProperty("whirr.max-startup-retries", 2);
+		 conf.addProperty("whirr.max-startup-retries", 1);
 		 if(getAmount()>1)
 		 conf.addProperty("whirr.instance-templates-max-percent-failures", "100 nn+jt,60 dn+tt");
 		 conf.addProperty("whirr.client-cidrs", program.getCidrs());
-		 conf.addProperty("whirr.env.repo", program.getHadoopVersion());
+		 conf.addProperty("whirr.firewall-rules", program.getPorts());
+		 conf.addProperty("whirr.env.REPO", "cdh3u5");
 		 if (program.getProperties()!=""){
 		 for(String newProb: program.getProperties().split(",")){
 			 conf.addProperty(newProb.split("=")[0].trim(),newProb.split("=")[1].trim());}
