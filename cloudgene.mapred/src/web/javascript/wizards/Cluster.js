@@ -83,6 +83,7 @@ MapRed.wizards.ClusterCard = Ext.extend(Ext.ux.Wiz.Card, {
 	    monitorValid : true,
 	    frame : false,
 	    border : false,
+	    autoScroll : true,
 	    height : '100%',
 	    defaults : {
 		labelStyle : 'font-size:11px'
