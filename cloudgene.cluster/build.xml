@@ -1,90 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="zip" name="" >
+<project default="zip" name="cloudgene.cluster" >
     
 	<property name="app.jar" value="cloudgene-cluster.jar" />
 	<property name="app.main" value="cloudgene.server.ClusterMain" />
 	
 	<target name="clean">
-    	<delete dir="dist"></delete>
-    	<mkdir dir="dist"></mkdir>
+	    	<delete dir="dist"></delete>
+	    	<mkdir dir="dist"></mkdir>
 		
-    	<mkdir dir="dist/src" />
-		<copy todir="dist/src">
-        	<fileset dir="files-src" />
-        </copy>	
+	    	<mkdir dir="dist/src" />
+			<copy todir="dist/src">
+			<fileset dir="files-src" />
+		</copy>	
 		
-		<mkdir dir="dist/src/src" />
-    	<copy todir="dist/src/src">
-    		<fileset dir="src" />
-    	</copy>
+			<mkdir dir="dist/src/src" />
+	    	<copy todir="dist/src/src">
+	    		<fileset dir="src" />
+	    	</copy>
 
-		<mkdir dir="dist/src/sql" />
-    	<copy todir="dist/src/sql">
-    		<fileset dir="sql" />
-    	</copy>
-    			
-		<mkdir dir="dist/src/lib" />
-    	<copy todir="dist/src/lib">
-    		<fileset dir="libsRestlet" />
-    	</copy>   
+			<mkdir dir="dist/src/sql" />
+	    	<copy todir="dist/src/sql">
+	    		<fileset dir="sql" />
+	    	</copy>
+	    			
+			<mkdir dir="dist/src/lib" />
+	    	<copy todir="dist/src/lib">
+	    		<fileset dir="libsRestlet" />
+	    	</copy>   
 		
 		<copy todir="dist/src/lib">
 		<fileset dir="libsWhirr" />
 		</copy> 
 		
-        <mkdir dir="dist/jar" />
-        <copy todir="dist/jar">
-        	<fileset dir="files" />
-        </copy>	
-		<mkdir dir="dist/jar/lib" />
-    	<copy todir="dist/jar/lib">
-    		<fileset dir="libsRestlet" />
-    	</copy>    
+		<mkdir dir="dist/jar" />
+		<copy todir="dist/jar">
+			<fileset dir="files" />
+		</copy>	
+			<mkdir dir="dist/jar/lib" />
+	    	<copy todir="dist/jar/lib">
+	    		<fileset dir="libsRestlet" />
+	    	</copy>    
 		
 		<copy todir="dist/jar/lib">
 		<fileset dir="libsWhirr" />
 		</copy> 		
 		
 		
-		<mkdir dir="dist/temp" />
-			
-   
+		<mkdir dir="dist/bin" />
+	    	<copy todir="dist/bin">
+	    		<fileset dir="sql" />
+	    	</copy>	
+			<mkdir dir="dist/bin/web" />
+	    	<copy todir="dist/bin/web">
+	    		<fileset dir="src/web" />
+	    	</copy>			
+	   
 	</target>
 	
 	<target name="compile" depends="clean">
-    	<javac srcdir="src" destdir="dist/temp" classpath="" >
+    		<javac srcdir="src" destdir="dist/bin" classpath="" >
 			<classpath>
 				<fileset dir="libsWhirr" />
 				<fileset dir="libsRestlet" />
 			</classpath>
-    	</javac>   	
-    </target>
+		</javac>   	
+	</target>
 
 	
-    <target name="create_jar" depends="compile">   	
-    	<fileset dir="libsRestlet" id="lib.dist.filesetRestlet">
-    	   <include name="**/*.jar"/>
-    	  </fileset>
-    	  <pathconvert pathsep=" " property="compile.classpath" refid="lib.dist.filesetRestlet" dirsep="/" >
-    	   <map from="${basedir}\libsRestlet\" to="lib/" />
-    	  </pathconvert>
+	<target name="create_jar" depends="compile">   	
+    		<fileset dir="libsRestlet" id="lib.dist.filesetRestlet">
+			<include name="**/*.jar"/>
+		</fileset>
+    	  	<pathconvert pathsep=" " property="compile.classpath" refid="lib.dist.filesetRestlet" dirsep="/" >
+			<map from="${basedir}\libsRestlet\" to="lib/" />
+		</pathconvert>
     	
 
         	<fileset dir="libsWhirr" id="lib.dist.filesetWhirr">
-        	   <include name="**/*.jar"/>
-        	  </fileset>
-        	  <pathconvert pathsep=" " property="compile.classpath1" refid="lib.dist.filesetWhirr" dirsep="/">
-        	   <map from="${basedir}\libsWhirr\" to="lib/" />
-        	  </pathconvert>
+        		<include name="**/*.jar"/>
+        	</fileset>
+       		<pathconvert pathsep=" " property="compile.classpath1" refid="lib.dist.filesetWhirr" dirsep="/">
+        		<map from="${basedir}\libsWhirr\" to="lib/" />
+       		</pathconvert>
     	
-        <jar destfile="dist/jar/${app.jar}" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="${app.main}"/>
-            	<attribute name="Class-Path" value=". ${compile.classpath} ${compile.classpath1}"/>
-            </manifest>
-            <fileset dir="bin"/>
-        </jar>
-    </target>
+		<jar destfile="dist/jar/${app.jar}" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="${app.main}"/>
+		    		<attribute name="Class-Path" value=". ${compile.classpath} ${compile.classpath1}"/>
+			</manifest>
+			<fileset dir="dist/bin"/>
+		</jar>
+	</target>
 
 	
 	<target name="zip" depends="create_jar">
