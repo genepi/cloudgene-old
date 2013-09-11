@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class MySecretKey {
-	public static final String key = "¾}k A¼(8¦§ð+o";
+	public static final String key = "Å¸}k AÅ’(8Å Â§Ã°+o";
 
 	public static void generateKey() {
 		byte[] key = null;
