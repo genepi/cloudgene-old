@@ -20,6 +20,7 @@ import cloudgene.mapred.database.UserDao;
 import cloudgene.mapred.jobs.JobQueue;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.HashUtil;
+import cloudgene.mapred.util.HdfsUtil;
 import cloudgene.mapred.util.Settings;
 
 public class Main {
@@ -121,6 +122,15 @@ public class Main {
 				}
 				dao.insert(user);
 				log.info("User " + username + " created.");
+				
+				String workspace = Settings.getInstance().getLocalWorkspace(username);				
+				FileUtil.createDirectory(workspace);
+				log.info("local workspace " + workspace + " created.");
+				
+				String workspaceHdfs = Settings.getInstance().getHdfsWorkspace(username);				
+				HdfsUtil.createDirectory(workspaceHdfs);
+				log.info("HDFS workspace " + workspaceHdfs + " created.");
+				
 				System.out.println("User " + username
 						+ " created successfully.");
 			} else {
