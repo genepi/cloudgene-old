@@ -19,7 +19,7 @@
 	 * along with this program; if not, see <http://www.gnu.org/licenses/>.
 	 ******************************************************************************/
 	 -->
-<project default="zip" name="">
+<project default="zip" name="cloudgene.mapred">
 
 	<property name="app.version" value="0.3.0" />
 	<property name="app.jar" value="cloudgene-mapred.jar" />
@@ -68,12 +68,19 @@
 		</copy>
 
 
-		<mkdir dir="dist/temp" />
+		<mkdir dir="dist/bin" />
+	    	<copy todir="dist/bin">
+	    		<fileset dir="sql" />
+	    	</copy>	
+			<mkdir dir="dist/bin/web" />
+	    	<copy todir="dist/bin/web">
+	    		<fileset dir="src/web" />
+	    	</copy>			
 
 	</target>
 
 	<target name="compile" depends="clean">
-		<javac srcdir="src" destdir="dist/temp" classpath="">
+		<javac srcdir="src" destdir="dist/bin" classpath="">
 			<classpath>
 				<fileset dir="lib" />
 			</classpath>
@@ -94,10 +101,10 @@
 				<attribute name="Main-Class" value="${app.main}" />
 				<attribute name="Class-Path" value=". ${compile.classpath}" />
 			</manifest>
-        	<zipfileset excludes="META-INF/*.*" src="lib/genepi-jets3t-0.9.0.jar"/>
+        		<zipfileset excludes="META-INF/*.*" src="lib/genepi-jets3t-0.9.0.jar"/>
 			<zipfileset excludes="META-INF/*.*" src="lib/httpclient-4.1.2.jar"/>
-        	<zipfileset excludes="META-INF/*.*" src="lib/httpcore-4.1.2.jar"/>
-			<fileset dir="bin" />
+	        	<zipfileset excludes="META-INF/*.*" src="lib/httpcore-4.1.2.jar"/>
+			<fileset dir="dist/bin" />
 		</jar>
 	</target>
 
