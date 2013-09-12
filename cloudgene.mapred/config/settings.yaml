@@ -1,5 +1,5 @@
 hadoopPath: /usr/bin
-appsPath: ../../cloudgene-samples/cloudgene.samples
+appsPath: resources/apps/
 outputPath: output
 tempPath: tmp
 localWorkspace: workspace/local
