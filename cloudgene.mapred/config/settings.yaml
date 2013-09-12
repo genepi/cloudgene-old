@@ -2,5 +2,5 @@ hadoopPath: /usr/bin
 appsPath: resources/apps/
 outputPath: output
 tempPath: tmp
-localWorkspace: workspace/local
-hdfsWorkspace: workspace/hdfs
+localWorkspace: workspace
+hdfsWorkspace: cloudgene
