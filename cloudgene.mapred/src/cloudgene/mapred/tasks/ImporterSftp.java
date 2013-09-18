@@ -1,4 +1,4 @@
-package cloudgene.mapred.tasks;d
+package cloudgene.mapred.tasks;
 
 import java.io.IOException;
 
