@@ -265,6 +265,15 @@ oldValue = table.selModel.getSelected().data.text;
 			wizard.show();
 
 		    }
+		},{
+		    text : 'From SFTP/SSH Server...',
+		    handler : function(btn) {
+		    var table = Ext.getCmp('file-grid');
+		    var store = table.getStore();
+			var wizard = new MapRed.wizards.ImportDataFtp({folder:store.path});
+			wizard.show();
+
+		    }
 		}, {
 		    text : 'From S3 Bucket...',
 		    handler : function(btn) {
