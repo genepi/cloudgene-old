@@ -115,6 +115,7 @@ public class WebApp extends Application {
 		router.attach("/hdfs/rename", RenameFile.class);
 
 		router.attach("/local/files", GetLocalFiles.class);
+		router.attach("/sftp/files", GetSftpFiles.class);
 
 		router.attach("/buckets/public", GetBucketsPublic.class);
 		router.attach("/buckets/private", GetBucketsPrivate.class);
