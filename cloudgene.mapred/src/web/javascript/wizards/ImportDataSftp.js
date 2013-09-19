@@ -19,7 +19,7 @@
 
 Ext.ns('MapRed.wizards');
 
-MapRed.wizards.ImportDataFtp = Ext.extend(Ext.ux.Wiz, {
+MapRed.wizards.ImportDataSftp = Ext.extend(Ext.ux.Wiz, {
 
     folder: "",
 
@@ -48,7 +48,7 @@ MapRed.wizards.ImportDataFtp = Ext.extend(Ext.ux.Wiz, {
 			},
 			width : 480,
 			height : 500,
-			cards : [ new MapRed.wizards.ImportDataFtpCard({folder: this.folder}) ],
+			cards : [ new MapRed.wizards.ImportDataSftpCard({folder: this.folder}) ],
 			listeners : {
 				// defined in addSessionHandler
 				finish : this.onFinish
@@ -56,7 +56,7 @@ MapRed.wizards.ImportDataFtp = Ext.extend(Ext.ux.Wiz, {
 
 		});
 
-		MapRed.wizards.ImportDataFtp.superclass.initComponent.apply(this,
+		MapRed.wizards.ImportDataSftp.superclass.initComponent.apply(this,
 				arguments);
 
 	},
@@ -111,7 +111,7 @@ MapRed.wizards.ImportDataFtp = Ext.extend(Ext.ux.Wiz, {
 
 Ext.ns('MapRed.wizards');
 
-MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
+MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 
 	serverField : null,
 
@@ -128,8 +128,8 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 		this.serverField = new Ext.form.TextField({
 			id : "server",
 			name : 'server',
-			value : 'ftp://',
-			fieldLabel : 'FTP-Server',
+			value : 'sftp://',
+			fieldLabel : 'SFTP-Server',
 			allowBlank : false
 		});
 
@@ -192,7 +192,7 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 		Ext.apply(this, {
 			id : 'card2',
 			wizRef : this,
-			title : 'Import from FTP-Server.',
+			title : 'Import from SFTP-Server.',
 			monitorValid : true,
 			frame : false,
 			fileUpload : true,
@@ -226,7 +226,7 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 						}) ]
 					},
 					{
-						title : 'FTP-Server',
+						title : 'SFTP-Server',
 						id : 'fieldset-amazon',
 						xtype : 'fieldset',
 						autoHeight : true,
@@ -241,12 +241,12 @@ MapRed.wizards.ImportDataFtpCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 
 		// call parent
-		MapRed.wizards.ImportDataFtpCard.superclass.initComponent.apply(this,
+		MapRed.wizards.ImportDataSftpCard.superclass.initComponent.apply(this,
 				arguments);
 
 	},
 
-	// ftp-fields
+	// sftp-fields
 
 	setAnonymous : function() {
 		this.userField.setVisible(false);

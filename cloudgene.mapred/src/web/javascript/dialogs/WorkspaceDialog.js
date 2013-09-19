@@ -270,7 +270,7 @@ oldValue = table.selModel.getSelected().data.text;
 		    handler : function(btn) {
 		    var table = Ext.getCmp('file-grid');
 		    var store = table.getStore();
-			var wizard = new MapRed.wizards.ImportDataFtp({folder:store.path});
+			var wizard = new MapRed.wizards.ImportDataSftp({folder:store.path});
 			wizard.show();
 
 		    }
