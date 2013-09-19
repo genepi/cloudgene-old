@@ -44,7 +44,6 @@ public class SftpFileTree {
 			
 			for(ChannelSftp.LsEntry entry : filelist) {
 			 if(entry.getAttrs().isDir()){
-				// System.out.println(entry.getLongname());
 				 results[count] = new FileItem();
 				 results[count].setText(entry.getFilename());
 				 results[count].setPath(path + "/" + entry.getFilename());
@@ -52,11 +51,7 @@ public class SftpFileTree {
 				 count++;
 			 }
 			}
-			// System.out.println(count);
-				//System.out.println(entry.getFilename());
-				//System.out.println(entry.getAttrs());
-				//System.out.println(entry.getLongname());
-				//System.out.println(entry.getAttrs().isDir());
+			
 			 for(ChannelSftp.LsEntry entry : filelist) {
 				 if(!entry.getAttrs().isDir()){
 					results[count] = new FileItem();
