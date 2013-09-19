@@ -266,7 +266,7 @@ oldValue = table.selModel.getSelected().data.text;
 
 		    }
 		},{
-		    text : 'From SFTP/SSH Server...',
+		    text : 'From SFTP Server...',
 		    handler : function(btn) {
 		    var table = Ext.getCmp('file-grid');
 		    var store = table.getStore();
