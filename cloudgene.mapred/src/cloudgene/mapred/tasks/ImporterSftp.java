@@ -35,7 +35,7 @@ public class ImporterSftp extends AbstractTask {
 	public ImporterSftp(String server, String username, String password,
 			String path) {
 
-		setName("import-ftp");
+		setName("import-sftp");
 		
 		this.username = username.trim();
 		this.password = password;

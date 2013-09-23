@@ -138,8 +138,7 @@ MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 			name : 'username',
 			fieldLabel : 'Username',
 			value : '',
-			allowBlank : true,
-			hidden : true
+			allowBlank : true
 		});
 
 		this.passwordField = new Ext.form.TextField({
@@ -148,8 +147,7 @@ MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 			fieldLabel : 'Password',
 			allowBlank : true,
 			inputType : 'password',
-			value : '',
-			hidden : true
+			value : ''
 		});
 
 		this.ftpModeBox = new Ext.form.RadioGroup({
