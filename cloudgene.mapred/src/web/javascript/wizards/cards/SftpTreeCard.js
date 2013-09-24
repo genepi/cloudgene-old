@@ -30,7 +30,7 @@ MapRed.wizards.SftpTreeCard = Ext
 
 				this.rootNode = new Ext.tree.AsyncTreeNode({
 				    id : '1000genomes',
-				    text : 'My sftp Buckets',
+				    text : 'SFTP',
 				    path : '',
 				    expanded : true
 				}),
@@ -95,7 +95,7 @@ MapRed.wizards.SftpTreeCard = Ext
 												    Ext.Msg
 													    .alert(
 														    'Error',
-														    'Problems connect to sftp server.');
+														    'Problems connect to sftp server.'+ Ext.getCmp('sftp-server').getValue());
 												    this.error = true;
 												},
 												listeners : {
@@ -136,8 +136,7 @@ MapRed.wizards.SftpTreeCard = Ext
 
 			
 
-			    sftpServer = Ext.getCmp('sftp-server')
-				    .getValue();
+			    sftpServer = Ext.getCmp('sftp-server').getValue();
 
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
 				id : SftpServer.replace("sftp://", ""),
