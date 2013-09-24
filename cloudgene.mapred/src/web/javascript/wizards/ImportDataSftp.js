@@ -49,7 +49,7 @@ MapRed.wizards.ImportDataSftp = Ext.extend(Ext.ux.Wiz, {
 			width : 480,
 			height : 500,
 			cards : [ new MapRed.wizards.SelectSftpServerCard({folder: this.folder}), 
-				new MapRed.wizards.S3TreeCard()],
+				new MapRed.wizards.SftpTreeCard()],
 			listeners : {
 				// defined in addSessionHandler
 				finish : this.onFinish
