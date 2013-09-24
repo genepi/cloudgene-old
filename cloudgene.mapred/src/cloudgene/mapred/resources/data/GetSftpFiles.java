@@ -13,7 +13,6 @@ import cloudgene.mapred.core.User;
 import cloudgene.mapred.core.UserSessions;
 import cloudgene.mapred.representations.LoginPageRepresentation;
 import cloudgene.mapred.util.FileItem;
-import cloudgene.mapred.util.Settings;
 
 public class GetSftpFiles extends ServerResource {
 
@@ -30,17 +29,8 @@ public class GetSftpFiles extends ServerResource {
 
 		if (user != null) {
 
-			Settings settings = Settings.getInstance();
-			String workspace = settings.getLocalWorkspace(user.getUsername());
 
-			String rootNode = null;
-			if (node.equals("root")) {
-				rootNode = "";
-			} else {
-				rootNode = node;
-			}
-
-			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree("/root" + node);
+			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(node);
 			JSONArray jsonArray = JSONArray.fromObject(items);
 
 			representation = new StringRepresentation(jsonArray.toString());
