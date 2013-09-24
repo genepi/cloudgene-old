@@ -34,15 +34,18 @@ public class SftpFileTree {
 			channelSftp.cd(path);
 			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(path);
 			FileItem[] results = null;
-			results = new FileItem[filelist.size()];
+			//-2 to take away folder ".." and "."
+			results = new FileItem[filelist.size()-2];
 			int count = 0;
 			
 			for(ChannelSftp.LsEntry entry : filelist) {
-			 if(entry.getAttrs().isDir()){
+			 if(entry.getAttrs().isDir() && !(entry.getFilename().equals(".") || entry.getFilename().equals("..")) ){
 				 results[count] = new FileItem();
+				 results[count].setId(path + "/" + entry.getFilename());
 				 results[count].setText(entry.getFilename());
 				 results[count].setPath(path + "/" + entry.getFilename());
 				 results[count].setCls("folder");
+				 results[count].setLeaf(false); 
 				 count++;
 			 }
 			}

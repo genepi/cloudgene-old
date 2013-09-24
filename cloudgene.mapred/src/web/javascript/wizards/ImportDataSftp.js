@@ -119,7 +119,7 @@ MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 
 	passwordField : null,
 
-	ftpModeBox : null,
+	sftpModeBox : null,
 
     folder: "",
 
@@ -150,7 +150,7 @@ MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 			value : ''
 		});
 
-		this.ftpModeBox = new Ext.form.RadioGroup({
+		this.sftpModeBox = new Ext.form.RadioGroup({
 			fieldLabel : 'Mode',
 			vertical : false,
 			id : "group1",
@@ -204,7 +204,7 @@ MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 					{
 						border : false,
 						bodyStyle : 'background:none;padding-bottom:30px;',
-						html : 'Please specify the FTP connection.'
+						html : 'Please specify the SFTP/SSH connection.'
 					},
 					{
 						title : '',
@@ -233,7 +233,7 @@ MapRed.wizards.ImportDataSftpCard = Ext.extend(Ext.ux.Wiz.Card, {
 							labelStyle : 'font-size:11px'
 						},
 						defaultType : 'textfield',
-						items : [ this.ftpModeBox, this.serverField,
+						items : [ this.sftpModeBox, this.serverField,
 								this.userField, this.passwordField ]
 					} ]
 		});

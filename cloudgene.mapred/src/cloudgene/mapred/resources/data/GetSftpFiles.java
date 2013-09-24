@@ -40,7 +40,7 @@ public class GetSftpFiles extends ServerResource {
 				rootNode = node;
 			}
 
-			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree("/root");
+			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree("/root" + node);
 			JSONArray jsonArray = JSONArray.fromObject(items);
 
 			representation = new StringRepresentation(jsonArray.toString());
