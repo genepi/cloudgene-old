@@ -77,7 +77,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 
 		Ext.apply(this, {
-			id : 'card2',
+			id : 'card1',
 			wizRef : this,
 			title : 'Import from SFTP-Server.',
 			monitorValid : true,
