@@ -128,7 +128,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 
 		// call parent
-		MapRed.wizards.ImportDataSftpCard.superclass.initComponent.apply(this,
+		MapRed.wizards.SelectSftpServerCard.superclass.initComponent.apply(this,
 				arguments);
 
 	},

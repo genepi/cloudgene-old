@@ -72,15 +72,8 @@ MapRed.wizards.SftpTreeCard = Ext.extend(Ext.ux.Wiz.Card, {
 					border : false,
 
 					loader : new Ext.tree.TreeLoader({
-						error : false,
 						dataUrl : '../sftp/files'
-						handleFailure : function(
-							response) {
-						Ext.Msg
-						    .alert(
-						    'Error',
-						    'Connecting to SFTP Server.');
-							this.error = true;		
+		
 					}),
 
 					root : new Ext.tree.AsyncTreeNode({
