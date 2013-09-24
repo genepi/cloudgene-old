@@ -1,3 +1,4 @@
+
 Ext.ns('MapRed.wizards');
 
 MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
@@ -15,7 +16,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 	initComponent : function() {
 
 		this.serverField = new Ext.form.TextField({
-			id : "server",
+			id : "sftp-server",
 			name : 'server',
 			value : 'sftp://',
 			fieldLabel : 'SFTP-Server',
@@ -39,42 +40,6 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 			value : ''
 		});
 
-		this.sftpModeBox = new Ext.form.RadioGroup({
-			fieldLabel : 'Mode',
-			vertical : false,
-			id : "group1",
-			items : [ {
-				boxLabel : 'Anonymous',
-				name : 'buttonMode',
-				inputValue : '2',
-				checked : true,
-				userField : this.userField,
-				passwordField : this.passwordField,
-				listeners : {
-					'check' : function(checkbox, checked) {
-						if (checked) {
-							this.userField.setVisible(false);
-							this.passwordField.setVisible(false);
-						}
-					}
-				}
-			}, {
-				boxLabel : 'Standard Login',
-				name : 'buttonMode',
-				inputValue : '1',
-				userField : this.userField,
-				passwordField : this.passwordField,
-				listeners : {
-					'check' : function(checkbox, checked) {
-						if (checked) {
-							this.userField.setVisible(true);
-							this.passwordField.setVisible(true);
-						}
-					}
-				}
-			} ]
-
-		});
 
 		Ext.apply(this, {
 			id : 'card1',
@@ -114,7 +79,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 					},
 					{
 						title : 'SFTP-Server',
-						id : 'fieldset-amazon',
+						id : 'fieldset-sftp',
 						xtype : 'fieldset',
 						autoHeight : true,
 						defaults : {
@@ -122,7 +87,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 							labelStyle : 'font-size:11px'
 						},
 						defaultType : 'textfield',
-						items : [ this.sftpModeBox, this.serverField,
+						items : [ this.serverField,
 								this.userField, this.passwordField ]
 					} ]
 		});
@@ -133,17 +98,5 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 
 	},
 
-	// sftp-fields
-
-	setAnonymous : function() {
-		this.userField.setVisible(false);
-		this.passwordField.setVisible(false);
-		this.userField.setValue('');
-		this.passwordField.setValue('');
-	},
-
-	setStandardLogin : function() {
-		this.userField.setVisible(true);
-		this.passwordField.setVisible(true);
-	}
 });
+
