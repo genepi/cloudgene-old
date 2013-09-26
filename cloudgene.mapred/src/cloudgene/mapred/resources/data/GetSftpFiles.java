@@ -31,7 +31,7 @@ public class GetSftpFiles extends ServerResource {
 			
 			if (node.equals("NOLOAD")){
 				getResponse().setStatus(Status.SUCCESS_OK);
-				return;
+				return representation;
 			}
 			else {
 	
