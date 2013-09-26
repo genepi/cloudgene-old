@@ -12,7 +12,7 @@ public class SftpFileTree {
 	
 	public static FileItem[] getSftpFileTree(String path) {
 		String SFTPHOST = "localhost";
-		int    SFTPPORT = 49165;
+		int    SFTPPORT = 22;
 		String SFTPUSER = "root";
 		String SFTPPASS = "Deg";
 		//String SFTPWORKINGDIR = "/root";
