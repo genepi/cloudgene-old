@@ -48,7 +48,7 @@ public class SftpFileTree {
 			}
 			
 			 for(ChannelSftp.LsEntry entry : filelist) {
-				 if(!entry.getAttrs().isDir()){
+				 if(!entry.getAttrs().isDir() || !entry.getAttrs().isLink(){
 					results[count] = new FileItem();
 					results[count].setText(entry.getFilename());
 					results[count].setPath(path + "/" + entry.getFilename());
