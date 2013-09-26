@@ -29,7 +29,7 @@ MapRed.wizards.SftpTreeCard = Ext
 			});
 
 				this.rootNode = new Ext.tree.AsyncTreeNode({
-				    id : '1000genomes',
+				    id : 'NOLOAD',
 				    text : 'SFTP',
 				    path : '',
 				    expanded : true
@@ -136,11 +136,11 @@ MapRed.wizards.SftpTreeCard = Ext
 
 			
 
-			    sftpServer = Ext.getCmp('sftp-server').getValue();
+			    sftpServer = Ext.getCmp('sftp-server').getValue().replace("sftp://", "");
 
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
-				id : SftpServer.replace("sftp://", ""),
-				text : SftpServer,
+				id : sftpServer,
+				text : sftpServer,
 				path : '',
 				expanded : true
 			    });
@@ -149,7 +149,7 @@ MapRed.wizards.SftpTreeCard = Ext
 			    Ext.getCmp('file-tree-sftp').setRootNode(
 				    this.rootNode);
 			
-			//Ext.getCmp('server').setValue("");
+			Ext.getCmp('server').setValue("");
 
 			// start monitoring
 			if (this.monitorValid) {
