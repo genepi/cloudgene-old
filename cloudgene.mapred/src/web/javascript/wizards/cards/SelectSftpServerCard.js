@@ -24,7 +24,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 
 		this.userField = new Ext.form.TextField({
-			id : "sftp-username",
+			id : "username",
 			name : 'username',
 			fieldLabel : 'Username',
 			value : '',
@@ -32,7 +32,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 
 		this.passwordField = new Ext.form.TextField({
-			id : "sftp-password",
+			id : "password",
 			name : 'password',
 			fieldLabel : 'Password',
 			allowBlank : false,
@@ -41,7 +41,7 @@ MapRed.wizards.SelectSftpServerCard = Ext.extend(Ext.ux.Wiz.Card, {
 		});
 		
 		this.portField = new Ext.form.TextField({
-			id : "sftp-port",
+			id : "port",
 			name : 'port',
 			fieldLabel : 'ssh port',
 			allowBlank : false,

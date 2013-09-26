@@ -29,6 +29,10 @@ public class GetSftpFiles extends ServerResource {
 
 		Form form = new Form(entity);
 		String node = form.getFirstValue("node");
+		String username = form.getFirstValue("sftpuser");
+		String password = form.getFirstValue("sftppass");
+		String host = form.getFirstValue("sftphost");
+		int port = Integer.parseInt(form.getFirstValue("sftpport"));
 		log.info("FORM IS" + form.toString());
 
 		StringRepresentation representation = null;
@@ -41,7 +45,7 @@ public class GetSftpFiles extends ServerResource {
 			}
 			else {
 	
-			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(node);
+			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(node,username,password,port);
 			JSONArray jsonArray = JSONArray.fromObject(items);
 			representation = new StringRepresentation(jsonArray.toString());
 			getResponse().setStatus(Status.SUCCESS_OK);

@@ -134,10 +134,10 @@ MapRed.wizards.SftpTreeCard = Ext
 
 		    reloadSftpTree : function() {
 
-				
-				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftpuser = Ext.getCmp('sftp-username').getValue();
-				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftppass = Ext.getCmp('sftp-password').getValue();
-				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftpport = Ext.getCmp('sftp-port').getValue();
+				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftphost = Ext.getCmp('sftp-server').getValue().replace("sftp://", "");
+				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftpuser = Ext.getCmp('username').getValue();
+				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftppass = Ext.getCmp('password').getValue();
+				Ext.getCmp('file-tree-sftp').getLoader().baseParams.sftpport = Ext.getCmp('port').getValue();
 				
 			    sftpServer = Ext.getCmp('sftp-server').getValue().replace("sftp://", "");
 

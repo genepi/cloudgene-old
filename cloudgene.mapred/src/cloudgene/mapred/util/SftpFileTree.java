@@ -6,15 +6,16 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+
 import org.apache.commons.io.FileUtils;
 
 public class SftpFileTree {
 	
-	public static FileItem[] getSftpFileTree(String path) {
-		String SFTPHOST = "localhost";
-		int    SFTPPORT = 22;
-		String SFTPUSER = "root";
-		String SFTPPASS = "Deg";
+	public static FileItem[] getSftpFileTree(String path, String SFTPHOST, String SFTPUSER, String SFTPPASS, int SFTPPORT) {
+		//String SFTPHOST = "localhost";
+		//int    SFTPPORT = 22;
+		//String SFTPUSER = "root";
+		//String SFTPPASS = "Deg";
 		//String SFTPWORKINGDIR = "/root";
 				
 		Session 	session 	= null;
@@ -31,8 +32,9 @@ public class SftpFileTree {
 			channel = session.openChannel("sftp");
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
-			channelSftp.cd(path);
-			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(path);
+			//channelSftp.cd(path);
+			
+			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(channelSftp.pwd()+path);
 			FileItem[] results = null;
 			//-2 to take away folder ".." and "."
 			results = new FileItem[filelist.size()-2];
