@@ -57,7 +57,7 @@ MapRed.wizards.SftpTreeCard = Ext
 							    {
 								border : false,
 								bodyStyle : 'background:none;padding-bottom:30px;',
-								html : 'Please specify your Amazon sftp connection.'
+								html : 'Please choose file to upload to Cloudgene.'
 							    },
 							    {
 								title : 'Sftp - Browser',
