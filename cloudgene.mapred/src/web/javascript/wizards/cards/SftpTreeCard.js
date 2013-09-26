@@ -88,6 +88,7 @@ MapRed.wizards.SftpTreeCard = Ext
 
 										    loader : new Ext.tree.TreeLoader(
 											    {
+											    baseParams : {sftphost : null ,sftpuser: null ,sftppass: null ,sftpport: 22 }, 
 												error : false,
 												dataUrl : '../sftp/files',
 												handleFailure : function(
@@ -142,7 +143,7 @@ MapRed.wizards.SftpTreeCard = Ext
 			    sftpServer = Ext.getCmp('sftp-server').getValue().replace("sftp://", "");
 
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
-				id : sftpServer,
+				id : '/',
 				text : sftpServer,
 				path : '',
 				expanded : true
