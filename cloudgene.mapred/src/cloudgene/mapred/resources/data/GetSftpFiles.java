@@ -1,6 +1,6 @@
 package cloudgene.mapred.resources.data;
 
-import H2Connector;
+
 import net.sf.json.JSONArray;
 
 import org.restlet.data.Form;
