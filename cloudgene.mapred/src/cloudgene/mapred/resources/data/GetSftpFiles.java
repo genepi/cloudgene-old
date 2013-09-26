@@ -28,15 +28,20 @@ public class GetSftpFiles extends ServerResource {
 		StringRepresentation representation = null;
 
 		if (user != null) {
-
-
+			
+			if (node.equals("NOLOAD")){
+				getResponse().setStatus(Status.SUCCESS_OK);
+				return;
+			}
+			else {
+	
 			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(node);
 			JSONArray jsonArray = JSONArray.fromObject(items);
-
 			representation = new StringRepresentation(jsonArray.toString());
 			getResponse().setStatus(Status.SUCCESS_OK);
 			getResponse().setEntity(representation);
 			return representation;
+			}
 
 		} else {
 
