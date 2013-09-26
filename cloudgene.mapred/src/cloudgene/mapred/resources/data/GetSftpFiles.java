@@ -1,5 +1,6 @@
 package cloudgene.mapred.resources.data;
 
+import H2Connector;
 import net.sf.json.JSONArray;
 
 import org.restlet.data.Form;
@@ -14,7 +15,11 @@ import cloudgene.mapred.core.UserSessions;
 import cloudgene.mapred.representations.LoginPageRepresentation;
 import cloudgene.mapred.util.FileItem;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class GetSftpFiles extends ServerResource {
+	private static final Log log = LogFactory.getLog(GetSftpFiles.class);
 
 	@Post
 	public Representation post(Representation entity) {
@@ -24,6 +29,7 @@ public class GetSftpFiles extends ServerResource {
 
 		Form form = new Form(entity);
 		String node = form.getFirstValue("node");
+		log.info("FORM IS" + form.toString());
 
 		StringRepresentation representation = null;
 
