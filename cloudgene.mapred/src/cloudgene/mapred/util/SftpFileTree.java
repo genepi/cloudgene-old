@@ -12,12 +12,7 @@ import org.apache.commons.io.FileUtils;
 public class SftpFileTree {
 	
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST, String SFTPUSER, String SFTPPASS, int SFTPPORT) {
-		//String SFTPHOST = "localhost";
-		//int    SFTPPORT = 22;
-		//String SFTPUSER = "root";
-		//String SFTPPASS = "Deg";
-		//String SFTPWORKINGDIR = "/root";
-				
+					
 		Session 	session 	= null;
 		Channel 	channel 	= null;
 		ChannelSftp channelSftp = null;
@@ -33,15 +28,15 @@ public class SftpFileTree {
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
 			//channelSftp.cd(path);
-			
+			if(path.equals("/")) {path = "";}
 			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(channelSftp.pwd()+path);
 			FileItem[] results = null;
 			//-2 to take away folder ".." and "."
-			results = new FileItem[filelist.size()-2];
+			results = new FileItem[filelist.size()-1];
 			int count = 0;
 			
 			for(ChannelSftp.LsEntry entry : filelist) {
-			 if(entry.getAttrs().isDir() && !(entry.getFilename().equals(".") || entry.getFilename().equals("..")) ){
+			 if(entry.getAttrs().isDir() && !(entry.getFilename().equals(".") ) ){
 				 results[count] = new FileItem();
 				 results[count].setId(path + "/" + entry.getFilename());
 				 results[count].setText(entry.getFilename());
