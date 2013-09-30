@@ -33,21 +33,22 @@ public class SftpFileTree {
 			channelSftp = (ChannelSftp)channel;
 			log.info("PATH IS " + path);
 			if(path.equals("/")) {path = channelSftp.pwd();}
-			log.info("PATH IS  after if" + path);
+			log.info("PATH IS  after if " + path);
 			log.info("pwd is  " + channelSftp.pwd());
 			channelSftp.cd(path);
 			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(path);
+			log.info("pwd is  " + channelSftp.pwd());
 			FileItem[] results = null;
 			//-2 to take away folder ".." and "."
 			results = new FileItem[filelist.size()-1];
 			int count = 0;
 			
 			for(ChannelSftp.LsEntry entry : filelist) {
-			 if(((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(path + entry.getFilename())).get(0)).getAttrs().isDir()  && !(entry.getFilename().equals(".") ) ){
+			 if(((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(entry.getFilename())).get(0)).getAttrs().isDir()  && !(entry.getFilename().equals(".") ) ){
 				 results[count] = new FileItem();
-				 results[count].setId(channelSftp.realpath(path + entry.getFilename()));
+				 results[count].setId(channelSftp.realpath(entry.getFilename()));
 				 results[count].setText(entry.getFilename());
-				 results[count].setPath(channelSftp.realpath(path + entry.getFilename()));
+				 results[count].setPath(channelSftp.realpath(entry.getFilename()));
 				 results[count].setCls("folder");
 				 results[count].setLeaf(false); 
 				 count++;
@@ -55,11 +56,11 @@ public class SftpFileTree {
 			}
 			
 			 for(ChannelSftp.LsEntry entry : filelist) {
-				 if(!((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(path + entry.getFilename())).get(0)).getAttrs().isDir()){
+				 if(!((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(entry.getFilename())).get(0)).getAttrs().isDir()){
 					results[count] = new FileItem();
 					results[count].setText(entry.getFilename());
-					results[count].setPath(channelSftp.realpath(path + entry.getFilename()));
-					results[count].setId(channelSftp.realpath(path + entry.getFilename()));
+					results[count].setPath(channelSftp.realpath(entry.getFilename()));
+					results[count].setId(channelSftp.realpath(entry.getFilename()));
 					results[count].setLeaf(true);
 					results[count].setCls("file");
 					results[count].setSize(FileUtils
