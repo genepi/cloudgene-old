@@ -6,7 +6,7 @@ public class FileItem extends ExtJsTreeItem {
 	
 	private String size;
 	
-	private boolean disabled = true;
+	private boolean disabled = false;
 	
 
 	public String getPath() {

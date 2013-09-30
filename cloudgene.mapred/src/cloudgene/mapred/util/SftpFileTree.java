@@ -49,7 +49,7 @@ public class SftpFileTree {
 				 results[count].setId(path + "/" + entry.getFilename());
 				 results[count].setText(entry.getFilename());
 				 results[count].setPath(channelSftp.realpath(entry.getFilename()));
-				 results[count].setCls("folder");
+				 results[count].setCls("x-dd-drop-nodrop");
 				 results[count].setDisabled(true);
 				 results[count].setLeaf(false); 
 				 count++;
