@@ -32,7 +32,7 @@ public class SftpFileTree {
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
 			log.info("PATH IS " + path);
-			if(path.equals("/")) {path = channelSftp.pwd();}
+			if(path.equals("~/")) {path = channelSftp.pwd();}
 			log.info("PATH IS  after if " + path);
 			log.info("pwd is  " + channelSftp.pwd());
 			channelSftp.cd(path);
