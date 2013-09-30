@@ -40,11 +40,11 @@ public class SftpFileTree {
 			log.info("pwd is  " + channelSftp.pwd());
 			FileItem[] results = null;
 			//-2 to take away folder ".." and "."
-			results = new FileItem[filelist.size()-1];
+			results = new FileItem[filelist.size()-2];
 			int count = 0;
 			
 			for(ChannelSftp.LsEntry entry : filelist) {
-			 if(((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(entry.getFilename())).get(0)).getAttrs().isDir()  && !(entry.getFilename().equals(".") ) ){
+			 if(((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(entry.getFilename())).get(0)).getAttrs().isDir()  && !((entry.getFilename().equals(".") || (entry.getFilename().equals(".."))) ) ){
 				 results[count] = new FileItem();
 				 results[count].setId(channelSftp.realpath(entry.getFilename()));
 				 results[count].setText(entry.getFilename());
