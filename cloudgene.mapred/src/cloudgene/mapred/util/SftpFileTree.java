@@ -2,15 +2,19 @@ package cloudgene.mapred.util;
 
 import java.util.Vector;
 
+import cloudgene.mapred.resources.data.GetSftpFiles;
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.FileUtils;
 
 public class SftpFileTree {
-	
+	private static final Log log = LogFactory.getLog(SftpFileTree.class);
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST, String SFTPUSER, String SFTPPASS, int SFTPPORT) {
 					
 		Session 	session 	= null;
@@ -27,7 +31,10 @@ public class SftpFileTree {
 			channel = session.openChannel("sftp");
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
+			log.info("PATH IS " + path);
 			if(path.equals("/")) {path = channelSftp.pwd();}
+			log.info("PATH IS  after if" + path);
+			log.info("pwd is  " + channelSftp.pwd());
 			channelSftp.cd(path);
 			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(path);
 			FileItem[] results = null;
