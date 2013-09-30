@@ -38,7 +38,7 @@ public class SftpFileTree {
 			for(ChannelSftp.LsEntry entry : filelist) {
 			 if(((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(path + entry.getFilename())).get(0)).getAttrs().isDir()  && !(entry.getFilename().equals(".") ) ){
 				 results[count] = new FileItem();
-				 results[count].setId(path + "/" + entry.getFilename());
+				 results[count].setId(channelSftp.realpath(path + entry.getFilename()));
 				 results[count].setText(entry.getFilename());
 				 results[count].setPath(channelSftp.realpath(path + entry.getFilename()));
 				 results[count].setCls("folder");
@@ -52,7 +52,7 @@ public class SftpFileTree {
 					results[count] = new FileItem();
 					results[count].setText(entry.getFilename());
 					results[count].setPath(channelSftp.realpath(path + entry.getFilename()));
-					results[count].setId(path + "/" + entry.getFilename());
+					results[count].setId(channelSftp.realpath(path + entry.getFilename()));
 					results[count].setLeaf(true);
 					results[count].setCls("file");
 					results[count].setSize(FileUtils
