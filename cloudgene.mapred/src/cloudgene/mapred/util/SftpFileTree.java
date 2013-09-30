@@ -36,11 +36,11 @@ public class SftpFileTree {
 			int count = 0;
 			
 			for(ChannelSftp.LsEntry entry : filelist) {
-			 if((entry.getAttrs().isDir() || entry.getAttrs().isLink())  && !(entry.getFilename().equals(".") ) ){
+			 if(((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(path + entry.getFilename())).get(0)).getAttrs().isDir()  && !(entry.getFilename().equals(".") ) ){
 				 results[count] = new FileItem();
 				 results[count].setId(path + "/" + entry.getFilename());
 				 results[count].setText(entry.getFilename());
-				 results[count].setPath(path + "/" + entry.getFilename());
+				 results[count].setPath(channelSftp.realpath(path + entry.getFilename()));
 				 results[count].setCls("folder");
 				 results[count].setLeaf(false); 
 				 count++;
@@ -48,10 +48,10 @@ public class SftpFileTree {
 			}
 			
 			 for(ChannelSftp.LsEntry entry : filelist) {
-				 if(!entry.getAttrs().isDir() || !entry.getAttrs().isLink()){
+				 if(!((ChannelSftp.LsEntry) channelSftp.ls(channelSftp.realpath(path + entry.getFilename())).get(0)).getAttrs().isDir()){
 					results[count] = new FileItem();
 					results[count].setText(entry.getFilename());
-					results[count].setPath(path + "/" + entry.getFilename());
+					results[count].setPath(channelSftp.realpath(path + entry.getFilename()));
 					results[count].setId(path + "/" + entry.getFilename());
 					results[count].setLeaf(true);
 					results[count].setCls("file");
