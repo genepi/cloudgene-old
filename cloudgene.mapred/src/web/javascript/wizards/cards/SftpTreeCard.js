@@ -31,7 +31,7 @@ MapRed.wizards.SftpTreeCard = Ext
 				this.rootNode = new Ext.tree.AsyncTreeNode({
 				    id : 'NOLOAD',
 				    text : 'SFTP',
-				    path : '',
+				    path : 'NOLOAD',
 				    expanded : true
 				}),
 
@@ -91,6 +91,7 @@ MapRed.wizards.SftpTreeCard = Ext
 											    {
 											    baseParams : {sftphost : null ,sftpuser: null ,sftppass: null ,sftpport: 22 }, 
 												error : false,
+												nodeParameter: 'path',
 												dataUrl : '../sftp/files',
 												handleFailure : function(
 													response) {

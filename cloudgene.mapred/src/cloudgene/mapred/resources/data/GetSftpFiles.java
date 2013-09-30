@@ -28,7 +28,7 @@ public class GetSftpFiles extends ServerResource {
 		User user = sessions.getUserByRequest(getRequest());
 
 		Form form = new Form(entity);
-		String node = form.getFirstValue("node");
+		String node = form.getFirstValue("path");
 		String username = form.getFirstValue("sftpuser");
 		String password = form.getFirstValue("sftppass");
 		String host = form.getFirstValue("sftphost");
