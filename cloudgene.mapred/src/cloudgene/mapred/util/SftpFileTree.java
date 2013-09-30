@@ -27,8 +27,8 @@ public class SftpFileTree {
 			channel = session.openChannel("sftp");
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
-			channelSftp.cd(path);
 			if(path.equals("/")) {path = channelSftp.pwd();}
+			channelSftp.cd(path);
 			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(path);
 			FileItem[] results = null;
 			//-2 to take away folder ".." and "."
