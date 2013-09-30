@@ -27,7 +27,7 @@ public class SftpFileTree {
 			channel = session.openChannel("sftp");
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
-			//channelSftp.cd(path);
+			channelSftp.cd(path);
 			if(path.equals("/")) {path = channelSftp.pwd();}
 			Vector<ChannelSftp.LsEntry> filelist = channelSftp.ls(path);
 			FileItem[] results = null;
