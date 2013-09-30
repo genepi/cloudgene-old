@@ -148,12 +148,12 @@ MapRed.wizards.SftpTreeCard = Ext
 				children : [
                                 {  text: sftpServer + ':/', 
                                    id : '/',
-                                   path : '',
+                                   path : '/',
                                    expanded : false},
                                    { 
                                   text: sftpServer + ':~',
                                   id : '~/',
-                                  path : '',
+                                  path : '~/',
                                   expanded : true
                                  }]
 			    });
