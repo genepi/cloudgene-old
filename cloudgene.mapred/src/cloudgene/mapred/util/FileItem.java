@@ -16,6 +16,9 @@ public class FileItem extends ExtJsTreeItem {
 	public void setPath(String path) {
 		this.path = path;
 	}
+	public boolean isDisabled() {
+		return disabled;
+	}
 	
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
