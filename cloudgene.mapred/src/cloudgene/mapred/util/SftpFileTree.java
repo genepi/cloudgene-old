@@ -152,7 +152,7 @@ public class SftpFileTree {
 				}
 
 			} 		
-				 else if (!((entry.getFilename().equals(".") || (entry
+				 else if (!entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
 					.getFilename().equals(".."))))) {
 				results[count] = new FileItem();
 				results[count].setText(entry.getFilename());
