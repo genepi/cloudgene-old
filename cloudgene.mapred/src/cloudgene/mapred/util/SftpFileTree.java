@@ -90,6 +90,19 @@ public class SftpFileTree {
 		results = new FileItem[filelist.size() - 2];
 		int count = 0;
 		for (ChannelSftp.LsEntry entry : filelist) {
+			if (entry.getAttrs().isDir()
+					&& !((entry.getFilename().equals(".") || (entry
+							.getFilename().equals(".."))))) {
+				results[count] = new FileItem();
+				results[count].setText(entry.getFilename());
+				results[count].setLeaf(false);
+				results[count].setCls("folder");
+				results[count].setId(path + "/" + entry.getFilename());
+				results[count].setPath(path + "/" + entry.getFilename());
+				count++;
+			}
+		}
+		for (ChannelSftp.LsEntry entry : filelist) {
 
 			if (entry.getAttrs().isLink()) {
 				String link = null;
@@ -138,17 +151,8 @@ public class SftpFileTree {
 					count++;
 				}
 
-			} else if (entry.getAttrs().isDir()
-					&& !((entry.getFilename().equals(".") || (entry
-							.getFilename().equals(".."))))) {
-				results[count] = new FileItem();
-				results[count].setText(entry.getFilename());
-				results[count].setLeaf(false);
-				results[count].setCls("folder");
-				results[count].setId(path + "/" + entry.getFilename());
-				results[count].setPath(path + "/" + entry.getFilename());
-				count++;
-			} else if (!((entry.getFilename().equals(".") || (entry
+			} 		
+				 else if (!((entry.getFilename().equals(".") || (entry
 					.getFilename().equals(".."))))) {
 				results[count] = new FileItem();
 				results[count].setText(entry.getFilename());
