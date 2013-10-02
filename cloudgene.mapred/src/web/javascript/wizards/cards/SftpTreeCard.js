@@ -146,12 +146,12 @@ MapRed.wizards.SftpTreeCard = Ext
 
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
 				children : [
-                                {  text: sftpServer + ':/', 
+                                {  text: 'root@'+sftpServer + ':/',  
                                    id : '/',
                                    path : '/',
                                    expanded : false},
                                    { 
-                                  text: sftpServer + ':~',
+                                  text: 'home@' + sftpServer + ':~/',
                                   id : '~/',
                                   path : '~/',
                                   expanded : true
