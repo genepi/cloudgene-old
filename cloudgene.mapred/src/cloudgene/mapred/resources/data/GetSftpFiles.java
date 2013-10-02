@@ -51,9 +51,8 @@ public class GetSftpFiles extends ServerResource {
 					items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(
 							node, host, username, password, port);
 				} catch (Exception e) {
-					StringRepresentation error = new StringRepresentation(
-							"RESPONSE ERROR MSG");
-					getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage() );
+					StringRepresentation error = new StringRepresentation(e.getMessage());
+					getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST );
 					getResponse().setEntity(error);
 					return error;
 

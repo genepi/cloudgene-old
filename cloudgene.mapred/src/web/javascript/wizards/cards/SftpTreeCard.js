@@ -98,7 +98,7 @@ MapRed.wizards.SftpTreeCard = Ext
 												    Ext.Msg
 													    .alert(
 														    'Error',
-														    'Problems connect to sftp server.'+ response.responseText);
+														    'Problems connect Error: '+ response.responseText);
 												    this.error = true;
 												},
 												listeners : {
