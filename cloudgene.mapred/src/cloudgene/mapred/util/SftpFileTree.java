@@ -12,12 +12,18 @@ import com.jcraft.jsch.SftpException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.FileUtils;
+import org.restlet.data.Form;
+import org.restlet.data.Status;
+import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
+import org.restlet.resource.Post;
+import org.restlet.resource.ServerResource;
 
 public class SftpFileTree {
 	private static final Log log = LogFactory.getLog(SftpFileTree.class);
 
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST,
-			String SFTPUSER, String SFTPPASS, int SFTPPORT) {
+			String SFTPUSER, String SFTPPASS, int SFTPPORT) throws JSchException, SftpException {
 
 		Session session = null;
 		Channel channel = null;
@@ -28,8 +34,7 @@ public class SftpFileTree {
 			session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
 		session.setPassword(SFTPPASS);
 		java.util.Properties config = new java.util.Properties();
@@ -39,22 +44,21 @@ public class SftpFileTree {
 			session.connect();
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			
+			throw e;
+			
 		}
 		try {
 			channel = session.openChannel("sftp");
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
 		try {
 			channel.connect();
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
 		channelSftp = (ChannelSftp) channel;
 		log.info("PATH IS " + path);
@@ -63,8 +67,7 @@ public class SftpFileTree {
 				path = channelSftp.pwd();
 			} catch (SftpException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
+				throw e;
 			}
 		}
 		log.info("PATH IS  after if " + path);
@@ -73,16 +76,14 @@ public class SftpFileTree {
 			channelSftp.cd(path);
 		} catch (SftpException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
 		Vector<ChannelSftp.LsEntry> filelist = null;
 		try {
 			filelist = channelSftp.ls(path);
 		} catch (SftpException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
 		// log.info("pwd is  " + channelSftp.pwd());
 		FileItem[] results = null;
@@ -110,8 +111,7 @@ public class SftpFileTree {
 				try {
 					link = channelSftp.readlink(entry.getFilename());
 				} catch (SftpException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw e;
 				}
 				try {
 					linkIsdir = ((ChannelSftp.LsEntry) channelSftp.ls(link)

@@ -18,6 +18,8 @@ import cloudgene.mapred.util.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.jsch.JSchException;
+
 public class GetSftpFiles extends ServerResource {
 	private static final Log log = LogFactory.getLog(GetSftpFiles.class);
 
@@ -38,19 +40,29 @@ public class GetSftpFiles extends ServerResource {
 		StringRepresentation representation = null;
 
 		if (user != null) {
-			
-			if (node.equals("NOLOAD")){
+
+			if (node.equals("NOLOAD")) {
 				getResponse().setStatus(Status.SUCCESS_OK);
 				return representation;
-			}
-			else {
-	
-			FileItem[] items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(node,host,username,password,port);
-			JSONArray jsonArray = JSONArray.fromObject(items);
-			representation = new StringRepresentation(jsonArray.toString());
-			getResponse().setStatus(Status.SUCCESS_OK);
-			getResponse().setEntity(representation);
-			return representation;
+			} else {
+
+				FileItem[] items = null;
+				try {
+					items = cloudgene.mapred.util.SftpFileTree.getSftpFileTree(
+							node, host, username, password, port);
+				} catch (Exception e) {
+					StringRepresentation error = new StringRepresentation(
+							"RESPONSE ERROR MSG");
+					getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage() );
+					getResponse().setEntity(error);
+					return error;
+
+				}
+				JSONArray jsonArray = JSONArray.fromObject(items);
+				representation = new StringRepresentation(jsonArray.toString());
+				getResponse().setStatus(Status.SUCCESS_OK);
+				getResponse().setEntity(representation);
+				return representation;
 			}
 
 		} else {
