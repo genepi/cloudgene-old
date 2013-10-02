@@ -12,12 +12,7 @@ import com.jcraft.jsch.SftpException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.FileUtils;
-import org.restlet.data.Form;
-import org.restlet.data.Status;
-import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
-import org.restlet.resource.Post;
-import org.restlet.resource.ServerResource;
+
 
 public class SftpFileTree {
 	private static final Log log = LogFactory.getLog(SftpFileTree.class);
