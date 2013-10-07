@@ -176,7 +176,7 @@ MapRed.wizards.SftpTreeCard = Ext
 		    treeClickListener : function(node, event) {
 
 			if (!Ext.getCmp('file-tree-sftp').getLoader().error) {
-			    Ext.getCmp("server").setValue(node.attributes.id);
+			    Ext.getCmp("server").setValue(Ext.getCmp('sftp-server').getValue() + node.attributes.id);
 			}
 
 		    }

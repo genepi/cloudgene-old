@@ -1,8 +1,19 @@
 package cloudgene.mapred.tasks;
 
 import java.io.IOException;
+import java.util.Vector;
 
-import com.jcraft.jsch.JSch.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpATTRS;
+import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.SftpProgressMonitor;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -25,15 +36,19 @@ public class ImporterSftp extends AbstractTask {
 	private String path;
 
 	private String url;
+	
+	private int port;
 
 	private long size = 0;
 
 	private long read = 0;
 
+	private SftpProgressMonitor monitor;
+	
 	private CountingOutputStream t;
 
 	public ImporterSftp(String server, String username, String password,
-			String path) {
+			String path, int port) {
 
 		setName("import-sftp");
 		
@@ -41,13 +56,14 @@ public class ImporterSftp extends AbstractTask {
 		this.password = password;
 		this.path = path;
 		this.url = server;
+		this.port = port;
 
 		String server1 = server.replace("sftp://", "");
 		String split[] = server1.split("/", 2);
 		this.server = split[0].trim();
 		workingDir = split[1].trim();
 
-		size = getSize(this.server, workingDir, this.username, this.password);
+		size = getSize(this.server, workingDir, this.username, this.password, this.port);
 
 	}
 
@@ -59,8 +75,14 @@ public class ImporterSftp extends AbstractTask {
 		try {
 			fileSystem = FileSystem.get(conf);
 			return importIntoHdfs(server, workingDir, username, password,
-					fileSystem, path);
+					fileSystem, path, port);
 		} catch (IOException e) {
+			writeOutput(e.getLocalizedMessage());
+			return false;
+		} catch (JSchException e) {
+			writeOutput(e.getLocalizedMessage());
+			return false;
+		} catch (SftpException e) {
 			writeOutput(e.getLocalizedMessage());
 			return false;
 		}
@@ -68,38 +90,52 @@ public class ImporterSftp extends AbstractTask {
 	}
 
 	private long getSize(String server, String workingDir, String username,
-			String password) {
+			String password, int port)  {
 
 		long size = 0;
 
-		if (username == null || username.equals("")) {
-			username = "anonymous";
-		}
-
-		FTPClient client = new FTPClient();
+		
+		Session 	session 	= null;
+		Channel 	channel 	= null;
+		ChannelSftp channelSftp = null;
+		
+		JSch jsch = new JSch();
+		
+		
 		try {
+			session = jsch.getSession(username,server,port);
+			session.setPassword(password);
+			java.util.Properties config = new java.util.Properties();
+			config.put("StrictHostKeyChecking", "no");
+			session.setConfig(config);
+			session.connect();
+			channel = session.openChannel("sftp");
+			channel.connect();
+			channelSftp = (ChannelSftp)channel;
+			
+			Vector<ChannelSftp.LsEntry> filelist = null;
+		
+			filelist = channelSftp.ls(workingDir);
 
-			client.connect(server);
-			client.enterLocalPassiveMode();
-			client.login(username, password);
-			FTPFile[] ftpFiles = null;
-			if (client.changeWorkingDirectory(workingDir)) {
-				// directory
-				ftpFiles = client.listFiles();
-			} else {
-				// file
-				ftpFiles = client.listFiles(workingDir);
-			}
-
-			for (FTPFile ftpFile : ftpFiles) {
+			for (ChannelSftp.LsEntry entry : filelist) {
 
 				// Check if FTPFile is a regular file
-				if (ftpFile.getType() == FTPFile.FILE_TYPE) {
-					size += ftpFile.getSize();
+				if (!entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
+						.getFilename().equals(".."))))) {
+					if (entry.getAttrs().isLink()) {
+						SftpATTRS linkattr = channelSftp.lstat(workingDir);
+											
+						if (!linkattr.isDir()){
+							size +=linkattr.getSize(); 
+						}
+					}
+					
+					size += entry.getAttrs().getSize();
 				}
 			}
 
-			client.logout();
+			channel.disconnect();
+			session.disconnect();
 
 		} catch (Exception e) {
 
@@ -107,13 +143,8 @@ public class ImporterSftp extends AbstractTask {
 
 		} finally {
 
-			try {
-				client.disconnect();
-			} catch (IOException e) {
-				e.printStackTrace();
-
-				return 0;
-			}
+			channel.disconnect();
+			session.disconnect();
 		}
 
 		return size;
@@ -121,28 +152,37 @@ public class ImporterSftp extends AbstractTask {
 	}
 
 	public boolean importIntoHdfs(String server, String workingDir,
-			String username, String password, FileSystem fileSystem, String path)
-			throws IOException {
+			String username, String password, FileSystem fileSystem, String path, int port)
+			throws IOException, JSchException, SftpException {
 
-		if (username == null || username.equals("")) {
-			username = "anonymous";
-		}
 
 		writeOutput("Server: '" + server + "...");
 
-		FTPClient client = new FTPClient();
+		Session 	session 	= null;
+		Channel 	channel 	= null;
+		ChannelSftp channelSftp = null;
+		
+		JSch jsch = new JSch();
+		
+	
 		try {
-
-			client.connect(server);
-			client.enterLocalPassiveMode();
-			client.login(username, password);
-
-			FTPFile[] ftpFiles = null;
-
-			if (client.changeWorkingDirectory(workingDir)) {
+			
+			session = jsch.getSession(username,server,port);
+			session.setPassword(password);
+			java.util.Properties config = new java.util.Properties();
+			config.put("StrictHostKeyChecking", "no");
+			session.setConfig(config);
+			session.connect();
+			channel = session.openChannel("sftp");
+			channel.connect();
+			channelSftp = (ChannelSftp)channel;
+			
+			Vector<ChannelSftp.LsEntry> filelist = null;
+			
+			if ( channelSftp.lstat(workingDir).isDir() ) {
 
 				// directory
-				ftpFiles = client.listFiles();
+				filelist = channelSftp.ls(workingDir);
 
 			} else {
 
@@ -158,17 +198,18 @@ public class ImporterSftp extends AbstractTask {
 					}
 				}
 
-				ftpFiles = client.listFiles(filename);
-				client.changeWorkingDirectory(workingDir);
+				filelist = channelSftp.ls(filename);
+				channelSftp.cd(workingDir);
 			}
 
-			for (FTPFile ftpFile : ftpFiles) {
+			for (ChannelSftp.LsEntry entry : filelist) {
 
 				// Check if FTPFile is a regular file
-				if (ftpFile.getType() == FTPFile.FILE_TYPE) {
+				if (!entry.getAttrs().isLink() && !entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
+						.getFilename().equals(".."))))) {
 
 					// path in hdfs
-					String[] tiles = ftpFile.getName().split("/");
+					String[] tiles = entry.getFilename().split("/");
 					String name = tiles[tiles.length - 1];
 
 					Settings settings = Settings.getInstance();
@@ -177,24 +218,24 @@ public class ImporterSftp extends AbstractTask {
 
 					String target = HdfsUtil.path(workspace, path, name);
 
-					writeOutput("Downloading file " + ftpFile.getName() + "...");
+					writeOutput("Downloading file " + entry.getFilename() + "...");
 
 					FSDataOutputStream out = fileSystem
 							.create(new Path(target));
 
 					t = new CountingOutputStream(out);
-
-					client.retrieveFile(ftpFile.getName(), t);
+					
+					channelSftp.get(entry.getFilename(), t, monitor);
 
 					IOUtils.closeStream(out);
 
-					read += ftpFile.getSize();
+					read += entry.getAttrs().getSize();
 
 				}
 			}
-			client.logout();
+			channelSftp.disconnect();
 		} finally {
-			client.disconnect();
+			session.disconnect();
 		}
 		return true;
 	}
@@ -214,13 +255,13 @@ public class ImporterSftp extends AbstractTask {
 
 	@Override
 	public String[] getParameters() {
-		return new String[] { "Folder-Name", "Size", "Type", "FTP-Address" };
+		return new String[] { "Folder-Name", "Size", "Type", "SFTP-Address" };
 	}
 
 	@Override
 	public String[] getValues() {
 		return new String[] { path, FileUtils.byteCountToDisplaySize(size),
-				"FTP-Server", url };
+				"SFTP-Server", url };
 	}
 
 }
