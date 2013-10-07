@@ -79,7 +79,7 @@ MapRed.wizards.SftpTreeCard = Ext
 										    animate : false,
 										    enableDD : false,
 										    containerScroll : true,
-										    rootVisible: false,
+										    rootVisible: true,
 										    allowBlank : true,
 
 										    anchor : '100%',
@@ -145,13 +145,15 @@ MapRed.wizards.SftpTreeCard = Ext
 			    sftpServer = Ext.getCmp('sftp-server').getValue().replace("sftp://", "");
 
 			    this.rootNode = new Ext.tree.AsyncTreeNode({
+				text : sftpServer,
+                    		expanded : true,
 				children : [
-                                {  text: 'root@'+sftpServer + ':/',  
+                                {  text: 'File system (/)', 
                                    id : '/',
                                    path : '/',
                                    expanded : false},
                                    { 
-                                  text: 'home@' + sftpServer + ':~/',
+                                  text: 'Home folder (~/)',
                                   id : '~/',
                                   path : '~/',
                                   expanded : true
