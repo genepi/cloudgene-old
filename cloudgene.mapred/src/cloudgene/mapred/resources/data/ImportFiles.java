@@ -50,12 +50,16 @@ public class ImportFiles extends ServerResource {
 
 				String username = "";
 				String password = "";
+				int port;
 
 				if (obj.has("username")) {
 					username = obj.get("username").toString();
 				}
 				if (obj.has("password")) {
 					password = obj.get("password").toString();
+				}
+				if (obj.has("port")) {
+					port = Integer.parseInt(obj.get("port").toString());
 				}
 				String path = obj.get("path").toString();
 
