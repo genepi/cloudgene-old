@@ -161,7 +161,7 @@ public class SftpFileTree {
 			}
 
 		}
-
+		session.disconnect();
 		return results;
 
 	}
