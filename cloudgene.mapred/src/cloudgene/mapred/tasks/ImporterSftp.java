@@ -66,7 +66,7 @@ public class ImporterSftp extends AbstractTask {
 		String server1 = server.replace("sftp://", "");
 		String split[] = server1.split("/", 2);
 		this.server = split[0].trim();
-		workingDir = split[1].trim();
+		workingDir = "/" + split[1].trim();
 
 		size = getSize(this.server, workingDir, this.username, this.password, this.port);
 		log.info("SFTP-IMPORT user:" + this.username + " server:"+ this.server + " workdir:" + this.workingDir);
