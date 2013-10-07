@@ -21,6 +21,7 @@ import cloudgene.mapred.tasks.ImporterFtp;
 import cloudgene.mapred.tasks.ImporterHttp;
 import cloudgene.mapred.tasks.ImporterLocalFile;
 import cloudgene.mapred.tasks.ImporterS3;
+import cloudgene.mapred.tasks.ImporterSftp;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.Settings;
 
@@ -50,7 +51,7 @@ public class ImportFiles extends ServerResource {
 
 				String username = "";
 				String password = "";
-				int port;
+				int port = 0;
 
 				if (obj.has("username")) {
 					username = obj.get("username").toString();
@@ -89,6 +90,10 @@ public class ImportFiles extends ServerResource {
 				} else if (server.startsWith("ftp://")) {
 
 					task = new ImporterFtp(server, username, password, path);
+
+				} else if (server.startsWith("sftp://")) {
+
+					task = new ImporterSftp(server, username, password, path, port);
 
 				} else {
 
