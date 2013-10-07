@@ -204,8 +204,9 @@ public class ImporterSftp extends AbstractTask {
 					}
 				}
 
-				filelist = channelSftp.ls(filename);
 				channelSftp.cd(workingDir);
+				filelist = channelSftp.ls(filename);
+				
 			}
 
 			for (ChannelSftp.LsEntry entry : filelist) {
@@ -231,7 +232,7 @@ public class ImporterSftp extends AbstractTask {
 
 					t = new CountingOutputStream(out);
 					
-					channelSftp.get(entry.getFilename(), t, monitor);
+					channelSftp.get(workingDir + "/" + entry.getFilename(), t, monitor);
 
 					IOUtils.closeStream(out);
 
