@@ -1,4 +1,4 @@
-hadoopPath: /usr/lib/hadoop-0.20
+hadoopPath: /usr/local/hadoop
 appsPath: apps
 outputPath: output
 tempPath: tmp
