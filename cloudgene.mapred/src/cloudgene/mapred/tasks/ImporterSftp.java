@@ -23,11 +23,8 @@ import org.apache.hadoop.io.IOUtils;
 import cloudgene.mapred.util.HdfsUtil;
 import cloudgene.mapred.util.Settings;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class ImporterSftp extends AbstractTask {
-	private static final Log log = LogFactory.getLog(ImporterSftp.class);
+	
 
 	private String server;
 
