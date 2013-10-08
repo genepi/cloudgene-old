@@ -30,11 +30,6 @@
 		</delete>
 		<mkdir dir="dist">
 		</mkdir>
-		
-		<delete dir="bin">
-                </delete>
-                <mkdir dir="bin">
-                </mkdir>
 
 		<mkdir dir="dist/src" />
 		<copy todir="dist/src">
