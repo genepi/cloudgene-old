@@ -15,12 +15,8 @@ import cloudgene.mapred.core.UserSessions;
 import cloudgene.mapred.representations.LoginPageRepresentation;
 import cloudgene.mapred.util.FileItem;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class GetSftpFiles extends ServerResource {
-	private static final Log log = LogFactory.getLog(GetSftpFiles.class);
-
+	
 	@Post
 	public Representation post(Representation entity) {
 
@@ -33,7 +29,7 @@ public class GetSftpFiles extends ServerResource {
 		String password = form.getFirstValue("sftppass");
 		String host = form.getFirstValue("sftphost");
 		int port = Integer.parseInt(form.getFirstValue("sftpport"));
-		log.info("FORM IS" + form.toString());
+		
 
 		StringRepresentation representation = null;
 

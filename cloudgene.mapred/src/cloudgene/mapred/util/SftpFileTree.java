@@ -9,14 +9,12 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.FileUtils;
 
 
 public class SftpFileTree {
-	private static final Log log = LogFactory.getLog(SftpFileTree.class);
-
+	
+	
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST,
 			String SFTPUSER, String SFTPPASS, int SFTPPORT) throws JSchException, SftpException {
 
@@ -56,7 +54,7 @@ public class SftpFileTree {
 			throw e;
 		}
 		channelSftp = (ChannelSftp) channel;
-		log.info("PATH IS " + path);
+		
 		if (path.equals("~/")) {
 			try {
 				path = channelSftp.pwd();
@@ -65,7 +63,7 @@ public class SftpFileTree {
 				throw e;
 			}
 		}
-		log.info("PATH IS  after if " + path);
+	
 
 		try {
 			channelSftp.cd(path);
