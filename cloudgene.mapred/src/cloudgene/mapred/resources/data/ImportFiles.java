@@ -25,12 +25,9 @@ import cloudgene.mapred.tasks.ImporterSftp;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.Settings;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 
 public class ImportFiles extends ServerResource {
-	private static final Log log = LogFactory.getLog(ImportFiles.class);
+
 
 	@Post
 	public Representation post(Representation entity) {
@@ -43,7 +40,6 @@ public class ImportFiles extends ServerResource {
 			UserSessions sessions = UserSessions.getInstance();
 			User user = sessions.getUserByRequest(getRequest());
 			JSONObject obj = represent.getJsonObject();
-			log.info("FORM IS" + obj.toString());
 			
 			if (user != null) {
 
