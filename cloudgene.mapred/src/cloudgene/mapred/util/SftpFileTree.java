@@ -107,8 +107,7 @@ public class SftpFileTree {
 					throw e;
 				}
 				try {
-					linkIsdir = ((ChannelSftp.LsEntry) channelSftp.ls(link)
-							.get(0)).getAttrs().isDir();
+					linkIsdir = channelSftp.lstat(link).isDir();
 				} catch (com.jcraft.jsch.SftpException ex) {
 					if (ex.getMessage().equals("No such file")) {
 						results[count] = new FileItem();
