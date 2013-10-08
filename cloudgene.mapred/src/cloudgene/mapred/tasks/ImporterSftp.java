@@ -10,8 +10,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
-import com.jcraft.jsch.SftpProgressMonitor;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.hadoop.conf.Configuration;
@@ -88,6 +86,7 @@ public class ImporterSftp extends AbstractTask {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private long getSize(String server, String workingDir, String username,
 			String password, int port)  {
 
@@ -150,6 +149,7 @@ public class ImporterSftp extends AbstractTask {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean importIntoHdfs(String server, String workingDir,
 			String username, String password, FileSystem fileSystem, String path, int port)
 			throws IOException, JSchException, SftpException {
