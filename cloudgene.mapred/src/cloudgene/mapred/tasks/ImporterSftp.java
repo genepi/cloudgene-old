@@ -20,7 +20,6 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 
-import cloudgene.mapred.resources.data.GetSftpFiles;
 import cloudgene.mapred.util.HdfsUtil;
 import cloudgene.mapred.util.Settings;
 
@@ -69,7 +68,6 @@ public class ImporterSftp extends AbstractTask {
 		workingDir = "/" + split[1].trim();
 
 		size = getSize(this.server, workingDir, this.username, this.password, this.port);
-		log.info("SFTP-IMPORT user:" + this.username + " server:"+ this.server + " workdir:" + this.workingDir);
 
 	}
 
