@@ -37,7 +37,7 @@
 	<classpathentry kind="lib" path="libsRestlet/org.restlet.jar"/>
 	<classpathentry kind="lib" path="libsRestlet/yamlbeans-1.06.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/utils4j-0.6.8.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
 	<classpathentry kind="lib" path="libsWhirr/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/antlr-3.2.jar"/>
 	<classpathentry kind="lib" path="libsWhirr/antlr-runtime-3.2.jar"/>
