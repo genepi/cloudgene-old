@@ -43,8 +43,6 @@ public class ImporterSftp extends AbstractTask {
 	private long size = 0;
 
 	private long read = 0;
-
-	private SftpProgressMonitor monitor;
 	
 	private CountingOutputStream t;
 
@@ -227,7 +225,7 @@ public class ImporterSftp extends AbstractTask {
 
 					t = new CountingOutputStream(out);
 					
-					channelSftp.get(workingDir + "/" + entry.getFilename(), t, monitor);
+					channelSftp.get(workingDir + "/" + entry.getFilename(), t);
 
 					IOUtils.closeStream(out);
 

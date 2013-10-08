@@ -25,9 +25,7 @@ import cloudgene.mapred.tasks.ImporterSftp;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.Settings;
 
-
 public class ImportFiles extends ServerResource {
-
 
 	@Post
 	public Representation post(Representation entity) {
