@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -15,9 +16,10 @@ import org.apache.commons.io.FileUtils;
 public class SftpFileTree {
 	
 	
+	@SuppressWarnings("unchecked")
 	public static FileItem[] getSftpFileTree(String path, String SFTPHOST,
 			String SFTPUSER, String SFTPPASS, int SFTPPORT) throws JSchException, SftpException {
-
+		
 		Session session = null;
 		Channel channel = null;
 		ChannelSftp channelSftp = null;
@@ -71,9 +73,10 @@ public class SftpFileTree {
 			// TODO Auto-generated catch block
 			throw e;
 		}
-		Vector<ChannelSftp.LsEntry> filelist = null;
+		
+		Vector<LsEntry> filelist = null;
 		try {
-			filelist = channelSftp.ls(path);
+			filelist =  channelSftp.ls(path);
 		} catch (SftpException e) {
 			// TODO Auto-generated catch block
 			throw e;
