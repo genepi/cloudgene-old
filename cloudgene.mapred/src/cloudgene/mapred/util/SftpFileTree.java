@@ -136,8 +136,8 @@ public class SftpFileTree {
 				} else {
 					results[count] = new FileItem();
 					results[count].setText(entry.getFilename());
-					results[count].setPath(link);
-					results[count].setId(link);
+					results[count].setPath(path + "/" + link);
+					results[count].setId(path + "/" + link);
 					results[count].setLeaf(true);
 					results[count].setCls("file");
 					results[count]
