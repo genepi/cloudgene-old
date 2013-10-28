@@ -203,9 +203,15 @@ public class ImporterSftp extends AbstractTask {
 			}
 
 			for (ChannelSftp.LsEntry entry : filelist) {
+				boolean linkIsdir = false;
+                if (entry.getAttrs().isLink()) {
+                        String link = null;
+                        link = channelSftp.readlink(entry.getFilename());
+                        linkIsdir = channelSftp.lstat(link).isDir();
+                        }
 
 				// Check if FTPFile is a regular file
-				if (!entry.getAttrs().isLink() && !entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
+				if (!linkIsdir && !entry.getAttrs().isDir() && !((entry.getFilename().equals(".") || (entry
 						.getFilename().equals(".."))))) {
 
 					// path in hdfs
