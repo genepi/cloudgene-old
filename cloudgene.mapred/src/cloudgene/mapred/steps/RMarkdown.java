@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import cloudgene.mapred.jobs.CloudgeneContext;
 import cloudgene.mapred.jobs.CloudgeneStep;
+import cloudgene.mapred.jobs.LogMessage;
 import cloudgene.mapred.util.FileUtil;
 import cloudgene.mapred.util.HdfsUtil;
 import cloudgene.mapred.util.rscript.MyRScript;
@@ -14,6 +15,8 @@ public class RMarkdown extends CloudgeneStep {
 
 	@Override
 	public boolean run(CloudgeneContext context) {
+
+		context.beginTask("Running Report Script...");
 
 		String wd = context.getConfig().getPath();
 
@@ -32,7 +35,16 @@ public class RMarkdown extends CloudgeneStep {
 		}
 
 		int result = convert(FileUtil.path(wd, rmd), output, params, context);
-		return (result == 0);
+
+		if (result == 0) {
+			context.endTask("Execution successful.", LogMessage.OK);
+			return true;
+		} else {
+			context.endTask(
+					"Execution failed. Please have a look at the logfile for details.",
+					LogMessage.ERROR);
+			return false;
+		}
 
 	}
 
@@ -40,8 +52,6 @@ public class RMarkdown extends CloudgeneStep {
 			CloudgeneContext context) {
 
 		context.println("Creating RMarkdown report from " + rmdScript + "...");
-
-		String name = rmdScript.replace(".Rmd", "");
 
 		outputHtml = new File(outputHtml).getAbsolutePath();
 

@@ -15,6 +15,7 @@ import org.apache.hadoop.mapred.RunningJob;
 
 import cloudgene.mapred.jobs.CloudgeneContext;
 import cloudgene.mapred.jobs.CloudgeneStep;
+import cloudgene.mapred.jobs.LogMessage;
 import cloudgene.mapred.util.HadoopUtil;
 
 public abstract class Hadoop extends CloudgeneStep {
@@ -38,6 +39,8 @@ public abstract class Hadoop extends CloudgeneStep {
 		}
 
 		log.info(command);
+
+		context.beginTask("Running...");
 
 		context.println("Command: " + command);
 		context.println("Working Directory: "
@@ -83,11 +86,14 @@ public abstract class Hadoop extends CloudgeneStep {
 		process.waitFor();
 		context.println("Exit Code: " + process.exitValue());
 		if (process.exitValue() != 0) {
-			// setError("Abnormal Termination: " + process.exitValue());
+			context.endTask(
+					"Execution failed. Please have a look at the logfile for details.",
+					LogMessage.ERROR);
 			return false;
 		} else {
 			process.destroy();
 		}
+		context.endTask("Execution successful.", LogMessage.OK);
 		return true;
 	}
 
