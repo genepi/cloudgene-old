@@ -43,7 +43,7 @@ public class ClusterApp extends Application {
 	
 	 */
 	@Override
-	public synchronized Restlet createRoot() {
+	public synchronized Restlet createInboundRoot() {
 
 		Router router = new Router(getContext());
 		String target = "riap://host/index.html";

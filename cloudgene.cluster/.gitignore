@@ -10,3 +10,5 @@
 /run-clustinator.xml
 /tmp
 /copyJar.xml
+/bin
+/target/

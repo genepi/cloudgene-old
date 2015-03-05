@@ -5,6 +5,7 @@ package cloudgene.server.resources;
  *
  */
 
+import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
@@ -18,8 +19,6 @@ import cloudgene.database.ClusterDao;
 import cloudgene.user.User;
 import cloudgene.user.UserSessions;
 
-
-
 public class GetKeys extends ServerResource {
 
 	@Get
@@ -27,22 +26,26 @@ public class GetKeys extends ServerResource {
 
 		UserSessions sessions = UserSessions.getInstance();
 		User user = sessions.getUserByRequest(getRequest());
-		Representation representation;
+
 		if (user != null) {
 			ClusterDao dao = new ClusterDao();
 			String filename = getQuery().getFirstValue("id");
 			if (dao.checkKey(filename, user.getId())) {
 				filename += ".zip";
-				representation = new FileRepresentation(filename.trim(),
-						MediaType.APPLICATION_ZIP);
-				representation.setDownloadName("sshKey_" + user.getUsername());
-				representation.setDownloadable(true);
-				/*Disposition disp = new Disposition();
+				FileRepresentation rep = new FileRepresentation(
+						filename.trim(), MediaType.TEXT_ALL);
+				Disposition disp = new Disposition(Disposition.TYPE_ATTACHMENT);
 				disp.setFilename("sshKey_" + user.getUsername());
-				representation.setDisposition(new Disposition());*/
-				return representation;
+				rep.setDisposition(disp);
+				/*
+				 * Disposition disp = new Disposition();
+				 * disp.setFilename("sshKey_" + user.getUsername());
+				 * representation.setDisposition(new Disposition());
+				 */
+				return rep;
 			}
 		}
+
 		return new StringRepresentation("Access denied");
 	}
 

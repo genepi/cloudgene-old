@@ -90,10 +90,10 @@ public class ClusterTask implements Runnable {
 		try {
 
 			whirrConfig = clusterConfig.createStartUp();
-			/*logWriter.append(df.format(new Date())
+			logWriter.append(df.format(new Date())
 					+ ": using the following configuration: "
 					+ prog.getName()+System.getProperty("line.separator"));
-			whirrConfig.save(logWriter);*/
+			whirrConfig.save(logWriter);
 			logWriter.flush();
 
 			/**

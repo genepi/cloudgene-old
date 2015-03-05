@@ -224,7 +224,7 @@ public class ClusterConfiguration {
 					"configure_cdh_hadoop");
 		if(program.getJava().equals("false")){
 			conf.addProperty("whirr.java.install-function",
-					"install_oab_java_preConfigured");
+					"install_no_java");
 		}
 		}
 		/** user defined variables */

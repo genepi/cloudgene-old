@@ -50,10 +50,10 @@ public class GetMyBuckets extends ServerResource {
 				return representation;
 
 			} catch (ServiceException e) {
-				representation = new StringRepresentation(null);
+				StringRepresentation rep = new StringRepresentation(e.getMessage());
 				getResponse().setStatus(Status.CLIENT_ERROR_NOT_FOUND);
-				getResponse().setEntity(representation);
-				return representation;
+				getResponse().setEntity(rep);
+				return rep;
 
 			}
 		}
