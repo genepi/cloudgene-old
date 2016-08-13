@@ -24,6 +24,7 @@ import cloudgene.mapred.resources.data.GetFolderList;
 import cloudgene.mapred.resources.data.GetFormatsList;
 import cloudgene.mapred.resources.data.GetLocalFiles;
 import cloudgene.mapred.resources.data.GetMyBuckets;
+import cloudgene.mapred.resources.data.GetSftpFiles;
 import cloudgene.mapred.resources.data.ImportFiles;
 import cloudgene.mapred.resources.data.NewFolder;
 import cloudgene.mapred.resources.data.RemoveFiles;
@@ -115,6 +116,7 @@ public class WebApp extends Application {
 		router.attach("/hdfs/rename", RenameFile.class);
 
 		router.attach("/local/files", GetLocalFiles.class);
+		router.attach("/sftp/files", GetSftpFiles.class);
 
 		router.attach("/buckets/public", GetBucketsPublic.class);
 		router.attach("/buckets/private", GetBucketsPrivate.class);
